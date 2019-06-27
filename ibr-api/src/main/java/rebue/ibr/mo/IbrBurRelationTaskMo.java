@@ -73,7 +73,7 @@ public class IbrBurRelationTaskMo implements Serializable {
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    private String orderDetailId;
+    private Long orderDetailId;
 
     /**
      *    子任务类型
@@ -206,7 +206,7 @@ public class IbrBurRelationTaskMo implements Serializable {
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    public String getOrderDetailId() {
+    public Long getOrderDetailId() {
         return orderDetailId;
     }
 
@@ -217,7 +217,7 @@ public class IbrBurRelationTaskMo implements Serializable {
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    public void setOrderDetailId(String orderDetailId) {
+    public void setOrderDetailId(Long orderDetailId) {
         this.orderDetailId = orderDetailId;
     }
 

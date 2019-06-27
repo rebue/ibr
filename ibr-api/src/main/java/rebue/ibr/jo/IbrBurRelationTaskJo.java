@@ -83,8 +83,8 @@ public class IbrBurRelationTaskJo implements Serializable {
      *  @mbg.generated 自动生成，如需修改，请删除本行
      */
     @Basic(optional = false)
-    @Column(name = "ORDER_DETAIL_ID", nullable = false, length = 150)
-    private String orderDetailId;
+    @Column(name = "ORDER_DETAIL_ID", nullable = false, length = 19)
+    private Long orderDetailId;
 
     /**
      *  子任务类型

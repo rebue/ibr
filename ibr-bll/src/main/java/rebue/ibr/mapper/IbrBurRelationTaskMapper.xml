@@ -11,7 +11,7 @@
     <result column="EXECUTE_PLAN_TIME" jdbcType="TIMESTAMP" property="executePlanTime" />
     <result column="EXECUTE_FACT_TIME" jdbcType="TIMESTAMP" property="executeFactTime" />
     <result column="TASK_TYPE" jdbcType="TINYINT" property="taskType" />
-    <result column="ORDER_DETAIL_ID" jdbcType="VARCHAR" property="orderDetailId" />
+    <result column="ORDER_DETAIL_ID" jdbcType="BIGINT" property="orderDetailId" />
     <result column="SUB_TASK_TYPE" jdbcType="TINYINT" property="subTaskType" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -49,7 +49,7 @@
       EXECUTE_FACT_TIME, TASK_TYPE, ORDER_DETAIL_ID, 
       SUB_TASK_TYPE)
     values (#{id,jdbcType=BIGINT}, #{executeState,jdbcType=TINYINT}, #{executePlanTime,jdbcType=TIMESTAMP}, 
-      #{executeFactTime,jdbcType=TIMESTAMP}, #{taskType,jdbcType=TINYINT}, #{orderDetailId,jdbcType=VARCHAR}, 
+      #{executeFactTime,jdbcType=TIMESTAMP}, #{taskType,jdbcType=TINYINT}, #{orderDetailId,jdbcType=BIGINT}, 
       #{subTaskType,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="rebue.ibr.mo.IbrBurRelationTaskMo">
@@ -98,7 +98,7 @@
         #{taskType,jdbcType=TINYINT},
       </if>
       <if test="orderDetailId != null">
-        #{orderDetailId,jdbcType=VARCHAR},
+        #{orderDetailId,jdbcType=BIGINT},
       </if>
       <if test="subTaskType != null">
         #{subTaskType,jdbcType=TINYINT},
@@ -125,7 +125,7 @@
         TASK_TYPE = #{taskType,jdbcType=TINYINT},
       </if>
       <if test="orderDetailId != null">
-        ORDER_DETAIL_ID = #{orderDetailId,jdbcType=VARCHAR},
+        ORDER_DETAIL_ID = #{orderDetailId,jdbcType=BIGINT},
       </if>
       <if test="subTaskType != null">
         SUB_TASK_TYPE = #{subTaskType,jdbcType=TINYINT},
@@ -143,7 +143,7 @@
       EXECUTE_PLAN_TIME = #{executePlanTime,jdbcType=TIMESTAMP},
       EXECUTE_FACT_TIME = #{executeFactTime,jdbcType=TIMESTAMP},
       TASK_TYPE = #{taskType,jdbcType=TINYINT},
-      ORDER_DETAIL_ID = #{orderDetailId,jdbcType=VARCHAR},
+      ORDER_DETAIL_ID = #{orderDetailId,jdbcType=BIGINT},
       SUB_TASK_TYPE = #{subTaskType,jdbcType=TINYINT}
     where ID = #{id,jdbcType=BIGINT}
   </update>
@@ -177,8 +177,8 @@
       <if test="taskType != null">
         and TASK_TYPE = #{taskType,jdbcType=TINYINT}
       </if>
-      <if test="orderDetailId != null and orderDetailId != ''">
-        and ORDER_DETAIL_ID = #{orderDetailId,jdbcType=VARCHAR}
+      <if test="orderDetailId != null">
+        and ORDER_DETAIL_ID = #{orderDetailId,jdbcType=BIGINT}
       </if>
       <if test="subTaskType != null">
         and SUB_TASK_TYPE = #{subTaskType,jdbcType=TINYINT}
@@ -218,7 +218,7 @@
         and TASK_TYPE = #{taskType,jdbcType=TINYINT}
       </if>
       <if test="orderDetailId != null and orderDetailId != ''">
-        and ORDER_DETAIL_ID = #{orderDetailId,jdbcType=VARCHAR}
+        and ORDER_DETAIL_ID = #{orderDetailId,jdbcType=BIGINT}
       </if>
       <if test="subTaskType != null and subTaskType != ''">
         and SUB_TASK_TYPE = #{subTaskType,jdbcType=TINYINT}
@@ -245,8 +245,8 @@
       <if test="taskType != null">
         and TASK_TYPE = #{taskType,jdbcType=TINYINT}
       </if>
-      <if test="orderDetailId != null and orderDetailId != ''">
-        and ORDER_DETAIL_ID = #{orderDetailId,jdbcType=VARCHAR}
+      <if test="orderDetailId != null">
+        and ORDER_DETAIL_ID = #{orderDetailId,jdbcType=BIGINT}
       </if>
       <if test="subTaskType != null">
         and SUB_TASK_TYPE = #{subTaskType,jdbcType=TINYINT}

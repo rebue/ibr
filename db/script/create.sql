@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2019/6/27 17:28:25                           */
+/* Created on:     2019/6/27 18:14:45                           */
 /*==============================================================*/
 
 
@@ -20,7 +20,7 @@ create table IBR_BUR_RELATION_TASK
    EXECUTE_PLAN_TIME    datetime not null comment '计划执行时间',
    EXECUTE_FACT_TIME    datetime comment '实际执行时间',
    TASK_TYPE            tinyint not null comment '任务类型（1：匹配购买关系）',
-   ORDER_DETAIL_ID      varchar(150) not null comment '订单详情ID',
+   ORDER_DETAIL_ID      bigint not null comment '订单详情ID',
    SUB_TASK_TYPE        tinyint default -1 comment '子任务类型',
    primary key (ID),
    unique key AK_TASK_TYPE_AND_ORDER_DETAIL_ID (TASK_TYPE, ORDER_DETAIL_ID)
