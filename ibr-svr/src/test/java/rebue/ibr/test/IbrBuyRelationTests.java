@@ -65,4 +65,5 @@ public class IbrBuyRelationTests {
         System.out.println(deleteRo);
         Assert.assertEquals(ResultDic.SUCCESS, deleteRo.getResult());
     }
+
 }

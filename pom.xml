@@ -19,6 +19,7 @@
 		<module>ibr-api</module>
 		<module>ibr-bll</module>
 		<module>ibr-svr</module>
+		<module>ibr-scheduler-svr</module>
 	</modules>
 
 	<dependencyManagement>
