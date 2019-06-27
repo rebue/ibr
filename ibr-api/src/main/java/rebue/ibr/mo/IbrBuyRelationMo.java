@@ -35,11 +35,11 @@ public class IbrBuyRelationMo implements Serializable {
     /**
      *    父节点ID,其实也就是上家的订单详情ID
      *
-     *    数据库字段: IBR_BUY_RELATION.P_ID
+     *    数据库字段: IBR_BUY_RELATION.PARENT_ID
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    private Long pId;
+    private Long parentId;
 
     /**
      *    左值
@@ -120,23 +120,23 @@ public class IbrBuyRelationMo implements Serializable {
     /**
      *    父节点ID,其实也就是上家的订单详情ID
      *
-     *    数据库字段: IBR_BUY_RELATION.P_ID
+     *    数据库字段: IBR_BUY_RELATION.PARENT_ID
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    public Long getpId() {
-        return pId;
+    public Long getParentId() {
+        return parentId;
     }
 
     /**
      *    父节点ID,其实也就是上家的订单详情ID
      *
-     *    数据库字段: IBR_BUY_RELATION.P_ID
+     *    数据库字段: IBR_BUY_RELATION.PARENT_ID
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    public void setpId(Long pId) {
-        this.pId = pId;
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
     }
 
     /**
@@ -216,7 +216,7 @@ public class IbrBuyRelationMo implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", groupId=").append(groupId);
-        sb.append(", pId=").append(pId);
+        sb.append(", parentId=").append(parentId);
         sb.append(", leftValue=").append(leftValue);
         sb.append(", rightValue=").append(rightValue);
         sb.append(", relationSource=").append(relationSource);

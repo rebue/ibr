@@ -18,8 +18,6 @@ import rebue.wheel.RandomEx;
  */
 public class IbrBurRelationTaskTests {
 
-    private final String hostUrl = "http://127.0.0.1:9800";
-
     /**
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
@@ -62,4 +60,6 @@ public class IbrBurRelationTaskTests {
         System.out.println(deleteRo);
         Assert.assertEquals(ResultDic.SUCCESS, deleteRo.getResult());
     }
+
+    private final String hostUrl = "http://127.0.0.1:9800";
 }

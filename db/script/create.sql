@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2019/6/27 11:17:43                           */
+/* Created on:     2019/6/27 17:28:25                           */
 /*==============================================================*/
 
 
@@ -35,7 +35,7 @@ create table IBR_BUY_RELATION
 (
    ID                   bigint not null comment '购买关系ID,其实就是本家的订单详情ID',
    GROUP_ID             bigint not null comment '分组ID，按照商品单价来分组，单位是分',
-   P_ID                 bigint comment '父节点ID,其实也就是上家的订单详情ID',
+   PARENT_ID            bigint comment '父节点ID,其实也就是上家的订单详情ID',
    LEFT_VALUE           bigint not null comment '左值',
    RIGHT_VALUE          bigint not null comment '右值',
    RELATION_SOURCE      tinyint not null comment '关系来源（1：自己匹配自己  2：购买关系  3：注册关系  4：差一人且已有购买关系  5：差两人  6：差一人但没有购买关系 7:自由匹配）',

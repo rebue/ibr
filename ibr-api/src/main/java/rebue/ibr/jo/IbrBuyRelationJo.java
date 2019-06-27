@@ -51,8 +51,8 @@ public class IbrBuyRelationJo implements Serializable {
      *  @mbg.generated 自动生成，如需修改，请删除本行
      */
     @Basic(optional = true)
-    @Column(name = "P_ID", nullable = true, length = 19)
-    private Long pId;
+    @Column(name = "PARENT_ID", nullable = true, length = 19)
+    private Long parentId;
 
     /**
      *  左值

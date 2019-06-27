@@ -1,12 +1,9 @@
 package rebue.ibr.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
-
 import org.junit.Assert;
 import org.junit.Test;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import rebue.ibr.mo.IbrBuyRelationMo;
 import rebue.robotech.dic.ResultDic;
 import rebue.robotech.ro.IdRo;
@@ -21,17 +18,15 @@ import rebue.wheel.RandomEx;
  */
 public class IbrBuyRelationTests {
 
-    private final String       hostUrl       = "http://127.0.0.1:9800";
-
     /**
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
     private final ObjectMapper _objectMapper = new ObjectMapper();
 
     /**
-     * 测试基本的增删改查
+     *  测试基本的增删改查
      *
-     * @mbg.generated 自动生成，如需修改，请删除本行
+     *  @mbg.generated 自动生成，如需修改，请删除本行
      */
     @Test
     public void testCrud() throws IOException, ReflectiveOperationException {
@@ -66,4 +61,5 @@ public class IbrBuyRelationTests {
         Assert.assertEquals(ResultDic.SUCCESS, deleteRo.getResult());
     }
 
+    private final String hostUrl = "http://127.0.0.1:9800";
 }
