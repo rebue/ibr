@@ -1,25 +1,28 @@
 package rebue.ibr.jo;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 /**
- * The persistent class for the IBR_BUY_RELATION database table.
+ * The persistent class for the IBR_BUR_RELATION_TASK database table.
  * @mbg.generated 自动生成，如需修改，请删除本行
  */
 @Entity
-@Table(name = "IBR_BUY_RELATION")
+@Table(name = "IBR_BUR_RELATION_TASK")
 @Getter
 @Setter
 @ToString
-public class IbrBuyRelationJo implements Serializable {
+public class IbrBurRelationTaskJo implements Serializable {
 
     /**
      * @mbg.generated 自动生成，如需修改，请删除本行
@@ -27,7 +30,7 @@ public class IbrBuyRelationJo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     *  购买关系ID,其实就是本家的订单详情ID
+     *  任务ID
      *
      *  @mbg.generated 自动生成，如需修改，请删除本行
      */
@@ -37,49 +40,60 @@ public class IbrBuyRelationJo implements Serializable {
     private Long id;
 
     /**
-     *  分组ID，按照商品单价来分组，单位是分
+     *  执行状态
      *
      *  @mbg.generated 自动生成，如需修改，请删除本行
      */
     @Basic(optional = false)
-    @Column(name = "GROUP_ID", nullable = false, length = 19)
-    private Long groupId;
+    @Column(name = "EXECUTE_STATE", nullable = false, length = 3)
+    private Byte executeState;
 
     /**
-     *  父节点ID,其实也就是上家的订单详情ID
+     *  计划执行时间
+     *
+     *  @mbg.generated 自动生成，如需修改，请删除本行
+     */
+    @Basic(optional = false)
+    @Column(name = "EXECUTE_PLAN_TIME", nullable = false, length = 19)
+    @Temporal(TemporalType.DATE)
+    private Date executePlanTime;
+
+    /**
+     *  实际执行时间
      *
      *  @mbg.generated 自动生成，如需修改，请删除本行
      */
     @Basic(optional = true)
-    @Column(name = "P_ID", nullable = true, length = 19)
-    private Long pId;
+    @Column(name = "EXECUTE_FACT_TIME", nullable = true, length = 19)
+    @Temporal(TemporalType.DATE)
+    private Date executeFactTime;
 
     /**
-     *  左值
+     *  任务类型
      *
      *  @mbg.generated 自动生成，如需修改，请删除本行
      */
     @Basic(optional = false)
-    @Column(name = "LEFT_VALUE", nullable = false, length = 19)
-    private Long leftValue;
+    @Column(name = "TASK_TYPE", nullable = false, length = 3)
+    private Byte taskType;
 
     /**
-     *  右值
+     *  订单详情ID
      *
      *  @mbg.generated 自动生成，如需修改，请删除本行
      */
     @Basic(optional = false)
-    @Column(name = "RIGHT_VALUE", nullable = false, length = 19)
-    private Long rightValue;
+    @Column(name = "ORDER_DETAIL_ID", nullable = false, length = 150)
+    private String orderDetailId;
 
     /**
-     *  关系来源
+     *  子任务类型
      *
      *  @mbg.generated 自动生成，如需修改，请删除本行
      */
-    @Basic(optional = false)
-    @Column(name = "RELATION_SOURCE", nullable = false, length = 3)
-    private Byte relationSource;
+    @Basic(optional = true)
+    @Column(name = "SUB_TASK_TYPE", nullable = true, length = 3)
+    private Byte subTaskType;
 
     /**
      * @mbg.generated 自动生成，如需修改，请删除本行
@@ -103,7 +117,7 @@ public class IbrBuyRelationJo implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        IbrBuyRelationJo other = (IbrBuyRelationJo) obj;
+        IbrBurRelationTaskJo other = (IbrBurRelationTaskJo) obj;
         if (id == null) {
             if (other.id != null)
                 return false;

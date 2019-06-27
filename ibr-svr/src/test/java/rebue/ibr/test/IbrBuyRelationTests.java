@@ -18,8 +18,6 @@ import rebue.wheel.RandomEx;
  */
 public class IbrBuyRelationTests {
 
-    private final String hostUrl = "http://127.0.0.1:9009";
-
     /**
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
@@ -33,17 +31,18 @@ public class IbrBuyRelationTests {
     @Test
     public void testCrud() throws IOException, ReflectiveOperationException {
         IbrBuyRelationMo mo = null;
-        for (int i = 0; i < 20; i++) {
-            mo = (IbrBuyRelationMo) RandomEx.randomPojo(IbrBuyRelationMo.class);
-            mo.setId(null);
-            System.out.println("添加购买关系表的参数为：" + mo);
-            final String addResult = OkhttpUtils.postByJsonParams(hostUrl + "/ibr/buyrelation", mo);
-            System.out.println("添加购买关系表的返回值为：" + addResult);
-            final IdRo idRo = _objectMapper.readValue(addResult, IdRo.class);
-            System.out.println(idRo);
-            Assert.assertEquals(ResultDic.SUCCESS, idRo.getResult());
-            mo.setId(Long.valueOf(idRo.getId()));
-        }
+//        for (int i = 0; i < 20; i++) {
+//            System.out.println("开始循环：");
+//            mo = (IbrBuyRelationMo) RandomEx.randomPojo(IbrBuyRelationMo.class);
+//            mo.setId(null);
+//            System.out.println("添加购买关系表的参数为：" + mo);
+//            final String addResult = OkhttpUtils.postByJsonParams(hostUrl + "/ibr/buyrelation", mo);
+//            System.out.println("添加购买关系表的返回值为：" + addResult);
+//            final IdRo idRo = _objectMapper.readValue(addResult, IdRo.class);
+//            System.out.println(idRo);
+//            Assert.assertEquals(ResultDic.SUCCESS, idRo.getResult());
+//            mo.setId(Long.valueOf(idRo.getId()));
+//        }
         final String listResult = OkhttpUtils.get(hostUrl + "/ibr/buyrelation?pageNum=1&pageSize=5");
         System.out.println("查询购买关系表的返回值为：" + listResult);
         System.out.println("获取单个购买关系表的参数为：" + mo.getId());
@@ -62,4 +61,6 @@ public class IbrBuyRelationTests {
         System.out.println(deleteRo);
         Assert.assertEquals(ResultDic.SUCCESS, deleteRo.getResult());
     }
+
+    private final String hostUrl = "http://127.0.0.1:9800";
 }
