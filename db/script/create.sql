@@ -1,32 +1,14 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2019/6/27 18:14:45                           */
+/* Created on:     2019/6/28 9:16:10                            */
 /*==============================================================*/
 
-
-drop table if exists IBR_BUR_RELATION_TASK;
 
 drop table if exists IBR_BUY_RELATION;
 
+drop table if exists IBR_BUY_RELATION_TASK;
+
 drop table if exists IBR_INVITER_RELATION;
-
-/*==============================================================*/
-/* Table: IBR_BUR_RELATION_TASK                                 */
-/*==============================================================*/
-create table IBR_BUR_RELATION_TASK
-(
-   ID                   bigint not null comment '任务ID',
-   EXECUTE_STATE        tinyint not null default 0 comment '执行状态(-1:取消；0:未执行；1:已执行)',
-   EXECUTE_PLAN_TIME    datetime not null comment '计划执行时间',
-   EXECUTE_FACT_TIME    datetime comment '实际执行时间',
-   TASK_TYPE            tinyint not null comment '任务类型（1：匹配购买关系）',
-   ORDER_DETAIL_ID      bigint not null comment '订单详情ID',
-   SUB_TASK_TYPE        tinyint default -1 comment '子任务类型',
-   primary key (ID),
-   unique key AK_TASK_TYPE_AND_ORDER_DETAIL_ID (TASK_TYPE, ORDER_DETAIL_ID)
-);
-
-alter table IBR_BUR_RELATION_TASK comment '购买关系任务';
 
 /*==============================================================*/
 /* Table: IBR_BUY_RELATION                                      */
@@ -45,6 +27,24 @@ create table IBR_BUY_RELATION
 );
 
 alter table IBR_BUY_RELATION comment '购买关系表';
+
+/*==============================================================*/
+/* Table: IBR_BUY_RELATION_TASK                                 */
+/*==============================================================*/
+create table IBR_BUY_RELATION_TASK
+(
+   ID                   bigint not null comment '任务ID',
+   EXECUTE_STATE        tinyint not null default 0 comment '执行状态(-1:取消；0:未执行；1:已执行)',
+   EXECUTE_PLAN_TIME    datetime not null comment '计划执行时间',
+   EXECUTE_FACT_TIME    datetime comment '实际执行时间',
+   TASK_TYPE            tinyint not null comment '任务类型（1：匹配购买关系）',
+   ORDER_DETAIL_ID      bigint not null comment '订单详情ID',
+   SUB_TASK_TYPE        tinyint default -1 comment '子任务类型',
+   primary key (ID),
+   unique key AK_TASK_TYPE_AND_ORDER_DETAIL_ID (TASK_TYPE, ORDER_DETAIL_ID)
+);
+
+alter table IBR_BUY_RELATION_TASK comment '购买关系任务';
 
 /*==============================================================*/
 /* Table: IBR_INVITER_RELATION                                  */
