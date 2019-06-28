@@ -10,17 +10,17 @@ import org.springframework.format.annotation.DateTimeFormat;
 /**
  * 购买关系任务
  *
- * 数据库表: IBR_BUR_RELATION_TASK
+ * 数据库表: IBR_BUY_RELATION_TASK
  *
  * @mbg.generated 自动生成的注释，如需修改本注释，请删除本行
  */
 @JsonInclude(Include.NON_NULL)
-public class IbrBurRelationTaskMo implements Serializable {
+public class IbrBuyRelationTaskMo implements Serializable {
 
     /**
      *    任务ID
      *
-     *    数据库字段: IBR_BUR_RELATION_TASK.ID
+     *    数据库字段: IBR_BUY_RELATION_TASK.ID
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
@@ -29,7 +29,7 @@ public class IbrBurRelationTaskMo implements Serializable {
     /**
      *    执行状态(-1:取消；0:未执行；1:已执行)
      *
-     *    数据库字段: IBR_BUR_RELATION_TASK.EXECUTE_STATE
+     *    数据库字段: IBR_BUY_RELATION_TASK.EXECUTE_STATE
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
@@ -38,7 +38,7 @@ public class IbrBurRelationTaskMo implements Serializable {
     /**
      *    计划执行时间
      *
-     *    数据库字段: IBR_BUR_RELATION_TASK.EXECUTE_PLAN_TIME
+     *    数据库字段: IBR_BUY_RELATION_TASK.EXECUTE_PLAN_TIME
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
@@ -49,7 +49,7 @@ public class IbrBurRelationTaskMo implements Serializable {
     /**
      *    实际执行时间
      *
-     *    数据库字段: IBR_BUR_RELATION_TASK.EXECUTE_FACT_TIME
+     *    数据库字段: IBR_BUY_RELATION_TASK.EXECUTE_FACT_TIME
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
@@ -60,7 +60,7 @@ public class IbrBurRelationTaskMo implements Serializable {
     /**
      *    任务类型（1：匹配购买关系）
      *
-     *    数据库字段: IBR_BUR_RELATION_TASK.TASK_TYPE
+     *    数据库字段: IBR_BUY_RELATION_TASK.TASK_TYPE
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
@@ -69,7 +69,7 @@ public class IbrBurRelationTaskMo implements Serializable {
     /**
      *    订单详情ID
      *
-     *    数据库字段: IBR_BUR_RELATION_TASK.ORDER_DETAIL_ID
+     *    数据库字段: IBR_BUY_RELATION_TASK.ORDER_DETAIL_ID
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
@@ -78,7 +78,7 @@ public class IbrBurRelationTaskMo implements Serializable {
     /**
      *    子任务类型
      *
-     *    数据库字段: IBR_BUR_RELATION_TASK.SUB_TASK_TYPE
+     *    数据库字段: IBR_BUY_RELATION_TASK.SUB_TASK_TYPE
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
@@ -92,7 +92,7 @@ public class IbrBurRelationTaskMo implements Serializable {
     /**
      *    任务ID
      *
-     *    数据库字段: IBR_BUR_RELATION_TASK.ID
+     *    数据库字段: IBR_BUY_RELATION_TASK.ID
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
@@ -103,7 +103,7 @@ public class IbrBurRelationTaskMo implements Serializable {
     /**
      *    任务ID
      *
-     *    数据库字段: IBR_BUR_RELATION_TASK.ID
+     *    数据库字段: IBR_BUY_RELATION_TASK.ID
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
@@ -114,7 +114,7 @@ public class IbrBurRelationTaskMo implements Serializable {
     /**
      *    执行状态(-1:取消；0:未执行；1:已执行)
      *
-     *    数据库字段: IBR_BUR_RELATION_TASK.EXECUTE_STATE
+     *    数据库字段: IBR_BUY_RELATION_TASK.EXECUTE_STATE
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
@@ -125,7 +125,7 @@ public class IbrBurRelationTaskMo implements Serializable {
     /**
      *    执行状态(-1:取消；0:未执行；1:已执行)
      *
-     *    数据库字段: IBR_BUR_RELATION_TASK.EXECUTE_STATE
+     *    数据库字段: IBR_BUY_RELATION_TASK.EXECUTE_STATE
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
@@ -136,7 +136,7 @@ public class IbrBurRelationTaskMo implements Serializable {
     /**
      *    计划执行时间
      *
-     *    数据库字段: IBR_BUR_RELATION_TASK.EXECUTE_PLAN_TIME
+     *    数据库字段: IBR_BUY_RELATION_TASK.EXECUTE_PLAN_TIME
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
@@ -147,7 +147,7 @@ public class IbrBurRelationTaskMo implements Serializable {
     /**
      *    计划执行时间
      *
-     *    数据库字段: IBR_BUR_RELATION_TASK.EXECUTE_PLAN_TIME
+     *    数据库字段: IBR_BUY_RELATION_TASK.EXECUTE_PLAN_TIME
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
@@ -158,7 +158,7 @@ public class IbrBurRelationTaskMo implements Serializable {
     /**
      *    实际执行时间
      *
-     *    数据库字段: IBR_BUR_RELATION_TASK.EXECUTE_FACT_TIME
+     *    数据库字段: IBR_BUY_RELATION_TASK.EXECUTE_FACT_TIME
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
@@ -169,7 +169,7 @@ public class IbrBurRelationTaskMo implements Serializable {
     /**
      *    实际执行时间
      *
-     *    数据库字段: IBR_BUR_RELATION_TASK.EXECUTE_FACT_TIME
+     *    数据库字段: IBR_BUY_RELATION_TASK.EXECUTE_FACT_TIME
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
@@ -180,7 +180,7 @@ public class IbrBurRelationTaskMo implements Serializable {
     /**
      *    任务类型（1：匹配购买关系）
      *
-     *    数据库字段: IBR_BUR_RELATION_TASK.TASK_TYPE
+     *    数据库字段: IBR_BUY_RELATION_TASK.TASK_TYPE
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
@@ -191,7 +191,7 @@ public class IbrBurRelationTaskMo implements Serializable {
     /**
      *    任务类型（1：匹配购买关系）
      *
-     *    数据库字段: IBR_BUR_RELATION_TASK.TASK_TYPE
+     *    数据库字段: IBR_BUY_RELATION_TASK.TASK_TYPE
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
@@ -202,7 +202,7 @@ public class IbrBurRelationTaskMo implements Serializable {
     /**
      *    订单详情ID
      *
-     *    数据库字段: IBR_BUR_RELATION_TASK.ORDER_DETAIL_ID
+     *    数据库字段: IBR_BUY_RELATION_TASK.ORDER_DETAIL_ID
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
@@ -213,7 +213,7 @@ public class IbrBurRelationTaskMo implements Serializable {
     /**
      *    订单详情ID
      *
-     *    数据库字段: IBR_BUR_RELATION_TASK.ORDER_DETAIL_ID
+     *    数据库字段: IBR_BUY_RELATION_TASK.ORDER_DETAIL_ID
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
@@ -224,7 +224,7 @@ public class IbrBurRelationTaskMo implements Serializable {
     /**
      *    子任务类型
      *
-     *    数据库字段: IBR_BUR_RELATION_TASK.SUB_TASK_TYPE
+     *    数据库字段: IBR_BUY_RELATION_TASK.SUB_TASK_TYPE
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
@@ -235,7 +235,7 @@ public class IbrBurRelationTaskMo implements Serializable {
     /**
      *    子任务类型
      *
-     *    数据库字段: IBR_BUR_RELATION_TASK.SUB_TASK_TYPE
+     *    数据库字段: IBR_BUY_RELATION_TASK.SUB_TASK_TYPE
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
@@ -278,7 +278,7 @@ public class IbrBurRelationTaskMo implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        IbrBurRelationTaskMo other = (IbrBurRelationTaskMo) that;
+        IbrBuyRelationTaskMo other = (IbrBuyRelationTaskMo) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()));
     }
 

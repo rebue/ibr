@@ -5,11 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import rebue.ibr.dao.IbrBurRelationTaskDao;
-import rebue.ibr.jo.IbrBurRelationTaskJo;
-import rebue.ibr.mapper.IbrBurRelationTaskMapper;
-import rebue.ibr.mo.IbrBurRelationTaskMo;
-import rebue.ibr.svc.IbrBurRelationTaskSvc;
+import rebue.ibr.dao.IbrBuyRelationTaskDao;
+import rebue.ibr.jo.IbrBuyRelationTaskJo;
+import rebue.ibr.mapper.IbrBuyRelationTaskMapper;
+import rebue.ibr.mo.IbrBuyRelationTaskMo;
+import rebue.ibr.svc.IbrBuyRelationTaskSvc;
 import rebue.robotech.svc.impl.BaseSvcImpl;
 
 /**
@@ -28,19 +28,19 @@ import rebue.robotech.svc.impl.BaseSvcImpl;
  */
 @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 @Service
-public class IbrBurRelationTaskSvcImpl extends BaseSvcImpl<java.lang.Long, IbrBurRelationTaskJo, IbrBurRelationTaskDao, IbrBurRelationTaskMo, IbrBurRelationTaskMapper> implements IbrBurRelationTaskSvc {
+public class IbrBuyRelationTaskSvcImpl extends BaseSvcImpl<java.lang.Long, IbrBuyRelationTaskJo, IbrBuyRelationTaskDao, IbrBuyRelationTaskMo, IbrBuyRelationTaskMapper> implements IbrBuyRelationTaskSvc {
 
     /**
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
-    private static final Logger _log = LoggerFactory.getLogger(IbrBurRelationTaskSvcImpl.class);
+    private static final Logger _log = LoggerFactory.getLogger(IbrBuyRelationTaskSvcImpl.class);
 
     /**
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public int add(IbrBurRelationTaskMo mo) {
+    public int add(IbrBuyRelationTaskMo mo) {
         _log.info("添加购买关系任务");
         // 如果id为空那么自动生成分布式id
         if (mo.getId() == null || mo.getId() == 0) {

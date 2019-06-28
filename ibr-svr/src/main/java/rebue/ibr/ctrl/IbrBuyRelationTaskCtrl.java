@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import rebue.ibr.mo.IbrBurRelationTaskMo;
-import rebue.ibr.svc.IbrBurRelationTaskSvc;
+import rebue.ibr.mo.IbrBuyRelationTaskMo;
+import rebue.ibr.svc.IbrBuyRelationTaskSvc;
 import rebue.robotech.dic.ResultDic;
 import rebue.robotech.ro.IdRo;
 import rebue.robotech.ro.Ro;
@@ -24,18 +24,18 @@ import rebue.robotech.ro.Ro;
  * @mbg.generated 自动生成的注释，如需修改本注释，请删除本行
  */
 @RestController
-public class IbrBurRelationTaskCtrl {
+public class IbrBuyRelationTaskCtrl {
 
     /**
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
-    private static final Logger _log = LoggerFactory.getLogger(IbrBurRelationTaskCtrl.class);
+    private static final Logger _log = LoggerFactory.getLogger(IbrBuyRelationTaskCtrl.class);
 
     /**
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
     @Resource
-    private IbrBurRelationTaskSvc svc;
+    private IbrBuyRelationTaskSvc svc;
 
     /**
      * 有唯一约束的字段名称
@@ -49,9 +49,9 @@ public class IbrBurRelationTaskCtrl {
      *
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
-    @PostMapping("/ibr/burrelationtask")
-    IdRo add(@RequestBody IbrBurRelationTaskMo mo) throws Exception {
-        _log.info("add IbrBurRelationTaskMo: {}", mo);
+    @PostMapping("/Ibr/BuyRelationTask")
+    IdRo add(@RequestBody IbrBuyRelationTaskMo mo) throws Exception {
+        _log.info("add IbrBuyRelationTaskMo: {}", mo);
         IdRo ro = new IdRo();
         try {
             int result = svc.add(mo);
@@ -89,9 +89,9 @@ public class IbrBurRelationTaskCtrl {
      *
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
-    @PutMapping("/ibr/burrelationtask")
-    Ro modify(@RequestBody IbrBurRelationTaskMo mo) throws Exception {
-        _log.info("modify IbrBurRelationTaskMo: {}", mo);
+    @PutMapping("/Ibr/BuyRelationTask")
+    Ro modify(@RequestBody IbrBuyRelationTaskMo mo) throws Exception {
+        _log.info("modify IbrBuyRelationTaskMo: {}", mo);
         Ro ro = new Ro();
         try {
             if (svc.modify(mo) == 1) {
@@ -127,9 +127,9 @@ public class IbrBurRelationTaskCtrl {
      *
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
-    @DeleteMapping("/ibr/burrelationtask")
+    @DeleteMapping("/Ibr/BuyRelationTask")
     Ro del(@RequestParam("id") java.lang.Long id) {
-        _log.info("del IbrBurRelationTaskMo by id: {}", id);
+        _log.info("del IbrBuyRelationTaskMo by id: {}", id);
         int result = svc.del(id);
         Ro ro = new Ro();
         if (result == 1) {
@@ -152,19 +152,19 @@ public class IbrBurRelationTaskCtrl {
      *
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
-    @GetMapping("/ibr/burrelationtask")
-    PageInfo<IbrBurRelationTaskMo> list(IbrBurRelationTaskMo mo, @RequestParam(value = "pageNum", required = false) Integer pageNum, @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+    @GetMapping("/Ibr/BuyRelationTask")
+    PageInfo<IbrBuyRelationTaskMo> list(IbrBuyRelationTaskMo mo, @RequestParam(value = "pageNum", required = false) Integer pageNum, @RequestParam(value = "pageSize", required = false) Integer pageSize) {
         if (pageNum == null)
             pageNum = 1;
         if (pageSize == null)
             pageSize = 5;
-        _log.info("list IbrBurRelationTaskMo:" + mo + ", pageNum = " + pageNum + ", pageSize = " + pageSize);
+        _log.info("list IbrBuyRelationTaskMo:" + mo + ", pageNum = " + pageNum + ", pageSize = " + pageSize);
         if (pageSize > 50) {
             String msg = "pageSize不能大于50";
             _log.error(msg);
             throw new IllegalArgumentException(msg);
         }
-        PageInfo<IbrBurRelationTaskMo> result = svc.list(mo, pageNum, pageSize);
+        PageInfo<IbrBuyRelationTaskMo> result = svc.list(mo, pageNum, pageSize);
         _log.info("result: " + result);
         return result;
     }
@@ -174,9 +174,9 @@ public class IbrBurRelationTaskCtrl {
      *
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
-    @GetMapping("/ibr/burrelationtask/getbyid")
-    IbrBurRelationTaskMo getById(@RequestParam("id") java.lang.Long id) {
-        _log.info("get IbrBurRelationTaskMo by id: {}", id);
+    @GetMapping("/Ibr/BuyRelationTask/getbyid")
+    IbrBuyRelationTaskMo getById(@RequestParam("id") java.lang.Long id) {
+        _log.info("get IbrBuyRelationTaskMo by id: {}", id);
         return svc.getById(id);
     }
 }

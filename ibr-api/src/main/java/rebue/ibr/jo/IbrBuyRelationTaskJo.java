@@ -14,15 +14,15 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * The persistent class for the IBR_BUR_RELATION_TASK database table.
+ * The persistent class for the IBR_BUY_RELATION_TASK database table.
  * @mbg.generated 自动生成，如需修改，请删除本行
  */
 @Entity
-@Table(name = "IBR_BUR_RELATION_TASK")
+@Table(name = "IBR_BUY_RELATION_TASK")
 @Getter
 @Setter
 @ToString
-public class IbrBurRelationTaskJo implements Serializable {
+public class IbrBuyRelationTaskJo implements Serializable {
 
     /**
      * @mbg.generated 自动生成，如需修改，请删除本行
@@ -117,7 +117,7 @@ public class IbrBurRelationTaskJo implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        IbrBurRelationTaskJo other = (IbrBurRelationTaskJo) obj;
+        IbrBuyRelationTaskJo other = (IbrBuyRelationTaskJo) obj;
         if (id == null) {
             if (other.id != null)
                 return false;

@@ -2,11 +2,11 @@ package rebue.ibr.mapper;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
-import rebue.ibr.mo.IbrBurRelationTaskMo;
+import rebue.ibr.mo.IbrBuyRelationTaskMo;
 import rebue.robotech.mapper.MybatisBaseMapper;
 
 @Mapper
-public interface IbrBurRelationTaskMapper extends MybatisBaseMapper<IbrBurRelationTaskMo, Long> {
+public interface IbrBuyRelationTaskMapper extends MybatisBaseMapper<IbrBuyRelationTaskMo, Long> {
 
     /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
@@ -16,37 +16,37 @@ public interface IbrBurRelationTaskMapper extends MybatisBaseMapper<IbrBurRelati
     /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    int insert(IbrBurRelationTaskMo record);
+    int insert(IbrBuyRelationTaskMo record);
 
     /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    int insertSelective(IbrBurRelationTaskMo record);
+    int insertSelective(IbrBuyRelationTaskMo record);
 
     /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    IbrBurRelationTaskMo selectByPrimaryKey(Long id);
+    IbrBuyRelationTaskMo selectByPrimaryKey(Long id);
 
     /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    int updateByPrimaryKeySelective(IbrBurRelationTaskMo record);
+    int updateByPrimaryKeySelective(IbrBuyRelationTaskMo record);
 
     /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    int updateByPrimaryKey(IbrBurRelationTaskMo record);
+    int updateByPrimaryKey(IbrBuyRelationTaskMo record);
 
     /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    List<IbrBurRelationTaskMo> selectAll();
+    List<IbrBuyRelationTaskMo> selectAll();
 
     /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    List<IbrBurRelationTaskMo> selectSelective(IbrBurRelationTaskMo record);
+    List<IbrBuyRelationTaskMo> selectSelective(IbrBuyRelationTaskMo record);
 
     /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
@@ -56,10 +56,10 @@ public interface IbrBurRelationTaskMapper extends MybatisBaseMapper<IbrBurRelati
     /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    boolean existSelective(IbrBurRelationTaskMo record);
+    boolean existSelective(IbrBuyRelationTaskMo record);
 
     /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    int countSelective(IbrBurRelationTaskMo record);
+    int countSelective(IbrBuyRelationTaskMo record);
 }
