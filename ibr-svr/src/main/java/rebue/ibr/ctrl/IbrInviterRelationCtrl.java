@@ -49,7 +49,7 @@ public class IbrInviterRelationCtrl {
      *
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
-    @PostMapping("/Ibr/InviterRelation")
+    @PostMapping("/ibr/InviterRelation")
     IdRo add(@RequestBody IbrInviterRelationMo mo) throws Exception {
         _log.info("add IbrInviterRelationMo: {}", mo);
         IdRo ro = new IdRo();
@@ -89,7 +89,7 @@ public class IbrInviterRelationCtrl {
      *
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
-    @PutMapping("/Ibr/InviterRelation")
+    @PutMapping("/ibr/InviterRelation")
     Ro modify(@RequestBody IbrInviterRelationMo mo) throws Exception {
         _log.info("modify IbrInviterRelationMo: {}", mo);
         Ro ro = new Ro();
@@ -127,7 +127,7 @@ public class IbrInviterRelationCtrl {
      *
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
-    @DeleteMapping("/Ibr/InviterRelation")
+    @DeleteMapping("/ibr/InviterRelation")
     Ro del(@RequestParam("id") java.lang.Long id) {
         _log.info("del IbrInviterRelationMo by id: {}", id);
         int result = svc.del(id);
@@ -152,7 +152,7 @@ public class IbrInviterRelationCtrl {
      *
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
-    @GetMapping("/Ibr/InviterRelation")
+    @GetMapping("/ibr/InviterRelation")
     PageInfo<IbrInviterRelationMo> list(IbrInviterRelationMo mo, @RequestParam(value = "pageNum", required = false) Integer pageNum, @RequestParam(value = "pageSize", required = false) Integer pageSize) {
         if (pageNum == null)
             pageNum = 1;
@@ -174,7 +174,7 @@ public class IbrInviterRelationCtrl {
      *
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
-    @GetMapping("/Ibr/InviterRelation/getbyid")
+    @GetMapping("/ibr/InviterRelation/getById")
     IbrInviterRelationMo getById(@RequestParam("id") java.lang.Long id) {
         _log.info("get IbrInviterRelationMo by id: {}", id);
         return svc.getById(id);

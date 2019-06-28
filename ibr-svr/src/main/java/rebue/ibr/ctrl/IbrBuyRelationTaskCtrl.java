@@ -49,7 +49,7 @@ public class IbrBuyRelationTaskCtrl {
      *
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
-    @PostMapping("/Ibr/BuyRelationTask")
+    @PostMapping("/ibr/BuyRelationTask")
     IdRo add(@RequestBody IbrBuyRelationTaskMo mo) throws Exception {
         _log.info("add IbrBuyRelationTaskMo: {}", mo);
         IdRo ro = new IdRo();
@@ -89,7 +89,7 @@ public class IbrBuyRelationTaskCtrl {
      *
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
-    @PutMapping("/Ibr/BuyRelationTask")
+    @PutMapping("/ibr/BuyRelationTask")
     Ro modify(@RequestBody IbrBuyRelationTaskMo mo) throws Exception {
         _log.info("modify IbrBuyRelationTaskMo: {}", mo);
         Ro ro = new Ro();
@@ -127,7 +127,7 @@ public class IbrBuyRelationTaskCtrl {
      *
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
-    @DeleteMapping("/Ibr/BuyRelationTask")
+    @DeleteMapping("/ibr/BuyRelationTask")
     Ro del(@RequestParam("id") java.lang.Long id) {
         _log.info("del IbrBuyRelationTaskMo by id: {}", id);
         int result = svc.del(id);
@@ -152,7 +152,7 @@ public class IbrBuyRelationTaskCtrl {
      *
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
-    @GetMapping("/Ibr/BuyRelationTask")
+    @GetMapping("/ibr/BuyRelationTask")
     PageInfo<IbrBuyRelationTaskMo> list(IbrBuyRelationTaskMo mo, @RequestParam(value = "pageNum", required = false) Integer pageNum, @RequestParam(value = "pageSize", required = false) Integer pageSize) {
         if (pageNum == null)
             pageNum = 1;
@@ -174,7 +174,7 @@ public class IbrBuyRelationTaskCtrl {
      *
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
-    @GetMapping("/Ibr/BuyRelationTask/getbyid")
+    @GetMapping("/ibr/BuyRelationTask/getById")
     IbrBuyRelationTaskMo getById(@RequestParam("id") java.lang.Long id) {
         _log.info("get IbrBuyRelationTaskMo by id: {}", id);
         return svc.getById(id);
