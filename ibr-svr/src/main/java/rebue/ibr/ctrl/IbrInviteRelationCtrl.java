@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import rebue.ibr.mo.IbrInviterRelationMo;
-import rebue.ibr.svc.IbrInviterRelationSvc;
+import rebue.ibr.mo.IbrInviteRelationMo;
+import rebue.ibr.svc.IbrInviteRelationSvc;
 import rebue.robotech.dic.ResultDic;
 import rebue.robotech.ro.IdRo;
 import rebue.robotech.ro.Ro;
@@ -24,18 +24,18 @@ import rebue.robotech.ro.Ro;
  * @mbg.generated 自动生成的注释，如需修改本注释，请删除本行
  */
 @RestController
-public class IbrInviterRelationCtrl {
+public class IbrInviteRelationCtrl {
 
     /**
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
-    private static final Logger _log = LoggerFactory.getLogger(IbrInviterRelationCtrl.class);
+    private static final Logger _log = LoggerFactory.getLogger(IbrInviteRelationCtrl.class);
 
     /**
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
     @Resource
-    private IbrInviterRelationSvc svc;
+    private IbrInviteRelationSvc svc;
 
     /**
      * 有唯一约束的字段名称
@@ -49,9 +49,9 @@ public class IbrInviterRelationCtrl {
      *
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
-    @PostMapping("/ibr/InviterRelation")
-    IdRo add(@RequestBody IbrInviterRelationMo mo) throws Exception {
-        _log.info("add IbrInviterRelationMo: {}", mo);
+    @PostMapping("/ibr/invite-relation")
+    IdRo add(@RequestBody IbrInviteRelationMo mo) throws Exception {
+        _log.info("add IbrInviteRelationMo: {}", mo);
         IdRo ro = new IdRo();
         try {
             int result = svc.add(mo);
@@ -89,9 +89,9 @@ public class IbrInviterRelationCtrl {
      *
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
-    @PutMapping("/ibr/InviterRelation")
-    Ro modify(@RequestBody IbrInviterRelationMo mo) throws Exception {
-        _log.info("modify IbrInviterRelationMo: {}", mo);
+    @PutMapping("/ibr/invite-relation")
+    Ro modify(@RequestBody IbrInviteRelationMo mo) throws Exception {
+        _log.info("modify IbrInviteRelationMo: {}", mo);
         Ro ro = new Ro();
         try {
             if (svc.modify(mo) == 1) {
@@ -127,9 +127,9 @@ public class IbrInviterRelationCtrl {
      *
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
-    @DeleteMapping("/ibr/InviterRelation")
+    @DeleteMapping("/ibr/invite-relation")
     Ro del(@RequestParam("id") java.lang.Long id) {
-        _log.info("del IbrInviterRelationMo by id: {}", id);
+        _log.info("del IbrInviteRelationMo by id: {}", id);
         int result = svc.del(id);
         Ro ro = new Ro();
         if (result == 1) {
@@ -152,19 +152,19 @@ public class IbrInviterRelationCtrl {
      *
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
-    @GetMapping("/ibr/InviterRelation")
-    PageInfo<IbrInviterRelationMo> list(IbrInviterRelationMo mo, @RequestParam(value = "pageNum", required = false) Integer pageNum, @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+    @GetMapping("/ibr/invite-relation")
+    PageInfo<IbrInviteRelationMo> list(IbrInviteRelationMo mo, @RequestParam(value = "pageNum", required = false) Integer pageNum, @RequestParam(value = "pageSize", required = false) Integer pageSize) {
         if (pageNum == null)
             pageNum = 1;
         if (pageSize == null)
             pageSize = 5;
-        _log.info("list IbrInviterRelationMo:" + mo + ", pageNum = " + pageNum + ", pageSize = " + pageSize);
+        _log.info("list IbrInviteRelationMo:" + mo + ", pageNum = " + pageNum + ", pageSize = " + pageSize);
         if (pageSize > 50) {
             String msg = "pageSize不能大于50";
             _log.error(msg);
             throw new IllegalArgumentException(msg);
         }
-        PageInfo<IbrInviterRelationMo> result = svc.list(mo, pageNum, pageSize);
+        PageInfo<IbrInviteRelationMo> result = svc.list(mo, pageNum, pageSize);
         _log.info("result: " + result);
         return result;
     }
@@ -174,9 +174,9 @@ public class IbrInviterRelationCtrl {
      *
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
-    @GetMapping("/ibr/InviterRelation/getById")
-    IbrInviterRelationMo getById(@RequestParam("id") java.lang.Long id) {
-        _log.info("get IbrInviterRelationMo by id: {}", id);
+    @GetMapping("/ibr/invite-relation/get-by-id")
+    IbrInviteRelationMo getById(@RequestParam("id") java.lang.Long id) {
+        _log.info("get IbrInviteRelationMo by id: {}", id);
         return svc.getById(id);
     }
 }

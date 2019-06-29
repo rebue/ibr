@@ -2,11 +2,11 @@ package rebue.ibr.mapper;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
-import rebue.ibr.mo.IbrInviterRelationMo;
+import rebue.ibr.mo.IbrInviteRelationMo;
 import rebue.robotech.mapper.MybatisBaseMapper;
 
 @Mapper
-public interface IbrInviterRelationMapper extends MybatisBaseMapper<IbrInviterRelationMo, Long> {
+public interface IbrInviteRelationMapper extends MybatisBaseMapper<IbrInviteRelationMo, Long> {
 
     /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
@@ -16,37 +16,37 @@ public interface IbrInviterRelationMapper extends MybatisBaseMapper<IbrInviterRe
     /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    int insert(IbrInviterRelationMo record);
+    int insert(IbrInviteRelationMo record);
 
     /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    int insertSelective(IbrInviterRelationMo record);
+    int insertSelective(IbrInviteRelationMo record);
 
     /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    IbrInviterRelationMo selectByPrimaryKey(Long id);
+    IbrInviteRelationMo selectByPrimaryKey(Long id);
 
     /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    int updateByPrimaryKeySelective(IbrInviterRelationMo record);
+    int updateByPrimaryKeySelective(IbrInviteRelationMo record);
 
     /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    int updateByPrimaryKey(IbrInviterRelationMo record);
+    int updateByPrimaryKey(IbrInviteRelationMo record);
 
     /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    List<IbrInviterRelationMo> selectAll();
+    List<IbrInviteRelationMo> selectAll();
 
     /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    List<IbrInviterRelationMo> selectSelective(IbrInviterRelationMo record);
+    List<IbrInviteRelationMo> selectSelective(IbrInviteRelationMo record);
 
     /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
@@ -56,10 +56,10 @@ public interface IbrInviterRelationMapper extends MybatisBaseMapper<IbrInviterRe
     /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    boolean existSelective(IbrInviterRelationMo record);
+    boolean existSelective(IbrInviteRelationMo record);
 
     /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    int countSelective(IbrInviterRelationMo record);
+    int countSelective(IbrInviteRelationMo record);
 }

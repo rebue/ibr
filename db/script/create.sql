@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2019/6/28 9:16:10                            */
+/* Created on:     2019/6/29 7:50:59                            */
 /*==============================================================*/
 
 
@@ -8,7 +8,7 @@ drop table if exists IBR_BUY_RELATION;
 
 drop table if exists IBR_BUY_RELATION_TASK;
 
-drop table if exists IBR_INVITER_RELATION;
+drop table if exists IBR_INVITE_RELATION;
 
 /*==============================================================*/
 /* Table: IBR_BUY_RELATION                                      */
@@ -47,9 +47,9 @@ create table IBR_BUY_RELATION_TASK
 alter table IBR_BUY_RELATION_TASK comment '购买关系任务';
 
 /*==============================================================*/
-/* Table: IBR_INVITER_RELATION                                  */
+/* Table: IBR_INVITE_RELATION                                   */
 /*==============================================================*/
-create table IBR_INVITER_RELATION
+create table IBR_INVITE_RELATION
 (
    ID                   bigint not null comment '邀请关系ID',
    INVITER_ID           bigint not null comment '邀请人ID，也就是邀请人的用户ID',
@@ -59,4 +59,5 @@ create table IBR_INVITER_RELATION
    unique key AK_INVITER_AND_INVITEE (INVITER_ID, INVITEE_ID)
 );
 
-alter table IBR_INVITER_RELATION comment '邀请关系表';
+alter table IBR_INVITE_RELATION comment '邀请关系表';
+
