@@ -1,7 +1,7 @@
 package rebue.ibr.ctrl;
 
+import com.github.pagehelper.PageInfo;
 import javax.annotation.Resource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.github.pagehelper.PageInfo;
-
 import rebue.ibr.mo.IbrInviteRelationMo;
 import rebue.ibr.svc.IbrInviteRelationSvc;
 import rebue.robotech.dic.ResultDic;
@@ -32,7 +29,7 @@ public class IbrInviteRelationCtrl {
     /**
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
-    private static final Logger  _log = LoggerFactory.getLogger(IbrInviteRelationCtrl.class);
+    private static final Logger _log = LoggerFactory.getLogger(IbrInviteRelationCtrl.class);
 
     /**
      * @mbg.generated 自动生成，如需修改，请删除本行
@@ -149,8 +146,7 @@ public class IbrInviteRelationCtrl {
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
     @GetMapping("/ibr/invite-relation")
-    PageInfo<IbrInviteRelationMo> list(final IbrInviteRelationMo mo, @RequestParam(value = "pageNum", required = false) Integer pageNum,
-            @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+    PageInfo<IbrInviteRelationMo> list(final IbrInviteRelationMo mo, @RequestParam(value = "pageNum", required = false) Integer pageNum, @RequestParam(value = "pageSize", required = false) Integer pageSize) {
         if (pageNum == null) {
             pageNum = 1;
         }

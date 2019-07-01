@@ -56,7 +56,7 @@ public class IbrBuyRelationCtrl {
                 ro.setId(mo.getId().toString());
                 return ro;
             } else {
-                String msg = "添加失败";
+                final String msg = "添加失败";
                 _log.error("{}: mo-{}", msg, mo);
                 ro.setMsg(msg);
                 ro.setResult(ResultDic.FAIL);
@@ -123,8 +123,8 @@ public class IbrBuyRelationCtrl {
     @DeleteMapping("/ibr/buy-relation")
     Ro del(@RequestParam("id") final java.lang.Long id) {
         _log.info("del IbrBuyRelationMo by id: {}", id);
-        int result = svc.del(id);
-        Ro ro = new Ro();
+        final int result = svc.del(id);
+        final Ro ro = new Ro();
         if (result == 1) {
             final String msg = "删除成功";
             _log.info("{}: id-{}", msg, id);
@@ -147,10 +147,12 @@ public class IbrBuyRelationCtrl {
      */
     @GetMapping("/ibr/buy-relation")
     PageInfo<IbrBuyRelationMo> list(final IbrBuyRelationMo mo, @RequestParam(value = "pageNum", required = false) Integer pageNum, @RequestParam(value = "pageSize", required = false) Integer pageSize) {
-        if (pageNum == null)
+        if (pageNum == null) {
             pageNum = 1;
-        if (pageSize == null)
+        }
+        if (pageSize == null) {
             pageSize = 5;
+        }
         _log.info("list IbrBuyRelationMo:" + mo + ", pageNum = " + pageNum + ", pageSize = " + pageSize);
         if (pageSize > 50) {
             final String msg = "pageSize不能大于50";
