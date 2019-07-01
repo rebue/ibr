@@ -1,10 +1,13 @@
 package rebue.ibr.svc.impl;
 
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import rebue.ibr.dao.IbrInviteRelationDao;
 import rebue.ibr.jo.IbrInviteRelationJo;
 import rebue.ibr.mapper.IbrInviteRelationMapper;
@@ -28,7 +31,8 @@ import rebue.robotech.svc.impl.BaseSvcImpl;
  */
 @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 @Service
-public class IbrInviteRelationSvcImpl extends BaseSvcImpl<java.lang.Long, IbrInviteRelationJo, IbrInviteRelationDao, IbrInviteRelationMo, IbrInviteRelationMapper> implements IbrInviteRelationSvc {
+public class IbrInviteRelationSvcImpl extends BaseSvcImpl<java.lang.Long, IbrInviteRelationJo, IbrInviteRelationDao, IbrInviteRelationMo, IbrInviteRelationMapper>
+        implements IbrInviteRelationSvc {
 
     /**
      * @mbg.generated 自动生成，如需修改，请删除本行
@@ -36,16 +40,18 @@ public class IbrInviteRelationSvcImpl extends BaseSvcImpl<java.lang.Long, IbrInv
     private static final Logger _log = LoggerFactory.getLogger(IbrInviteRelationSvcImpl.class);
 
     /**
-     * @mbg.generated 自动生成，如需修改，请删除本行
+     * 添加邀请关系
+     * 邀请时间戳不用传进来，在这里直接取当前时间戳
      */
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public int add(IbrInviteRelationMo mo) {
+    public int add(final IbrInviteRelationMo mo) {
         _log.info("添加邀请关系表");
         // 如果id为空那么自动生成分布式id
         if (mo.getId() == null || mo.getId() == 0) {
             mo.setId(_idWorker.getId());
         }
+        mo.setInviteTimestamp(new Date().getTime());
         return super.add(mo);
     }
 }
