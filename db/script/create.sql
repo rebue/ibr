@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2019/6/29 7:50:59                            */
+/* Created on:     2019/7/3 18:09:27                            */
 /*==============================================================*/
 
 
@@ -21,12 +21,13 @@ create table IBR_BUY_RELATION
    LEFT_VALUE           bigint not null comment '左值',
    RIGHT_VALUE          bigint not null comment '右值',
    RELATION_SOURCE      tinyint not null comment '关系来源（1：自己匹配自己  2：购买关系  3：注册关系  4：差一人且已有购买关系  5：差两人  6：差一人但没有购买关系 7:自由匹配）',
+   IS_SETTLED           bool not null default false comment '是否已结算，在该订单结算的时候修改，默认是false',
    primary key (ID),
    unique key AK_GROUP_ID_AND_LEFT_VALUE (GROUP_ID, LEFT_VALUE),
    unique key AK_GROUP_ID_AND_RIGHT_VALUE (GROUP_ID, RIGHT_VALUE)
 );
 
-alter table IBR_BUY_RELATION comment '购买关系表';
+alter table IBR_BUY_RELATION comment '购买关系';
 
 /*==============================================================*/
 /* Table: IBR_BUY_RELATION_TASK                                 */
@@ -59,5 +60,4 @@ create table IBR_INVITE_RELATION
    unique key AK_INVITER_AND_INVITEE (INVITER_ID, INVITEE_ID)
 );
 
-alter table IBR_INVITE_RELATION comment '邀请关系表';
-
+alter table IBR_INVITE_RELATION comment '邀请关系';
