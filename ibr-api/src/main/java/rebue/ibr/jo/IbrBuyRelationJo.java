@@ -82,6 +82,15 @@ public class IbrBuyRelationJo implements Serializable {
     private Byte relationSource;
 
     /**
+     *  是否已结算，在该订单结算的时候修改，默认是false
+     *
+     *  @mbg.generated 自动生成，如需修改，请删除本行
+     */
+    @Basic(optional = false)
+    @Column(name = "IS_SETTLE", nullable = false, length = 3)
+    private Boolean isSettle;
+
+    /**
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
     @Override

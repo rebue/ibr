@@ -69,6 +69,15 @@ public class IbrBuyRelationMo implements Serializable {
     private Byte relationSource;
 
     /**
+     *    是否已结算，在该订单结算的时候修改，默认是false
+     *
+     *    数据库字段: IBR_BUY_RELATION.IS_SETTLE
+     *
+     *    @mbg.generated 自动生成，如需修改，请删除本行
+     */
+    private Boolean isSettle;
+
+    /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
     private static final long serialVersionUID = 1L;
@@ -206,6 +215,28 @@ public class IbrBuyRelationMo implements Serializable {
     }
 
     /**
+     *    是否已结算，在该订单结算的时候修改，默认是false
+     *
+     *    数据库字段: IBR_BUY_RELATION.IS_SETTLE
+     *
+     *    @mbg.generated 自动生成，如需修改，请删除本行
+     */
+    public Boolean getIsSettle() {
+        return isSettle;
+    }
+
+    /**
+     *    是否已结算，在该订单结算的时候修改，默认是false
+     *
+     *    数据库字段: IBR_BUY_RELATION.IS_SETTLE
+     *
+     *    @mbg.generated 自动生成，如需修改，请删除本行
+     */
+    public void setIsSettle(Boolean isSettle) {
+        this.isSettle = isSettle;
+    }
+
+    /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
     @Override
@@ -220,6 +251,7 @@ public class IbrBuyRelationMo implements Serializable {
         sb.append(", leftValue=").append(leftValue);
         sb.append(", rightValue=").append(rightValue);
         sb.append(", relationSource=").append(relationSource);
+        sb.append(", isSettle=").append(isSettle);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
