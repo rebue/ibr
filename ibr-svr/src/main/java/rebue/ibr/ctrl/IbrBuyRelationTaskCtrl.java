@@ -64,7 +64,7 @@ public class IbrBuyRelationTaskCtrl {
                 return ro;
             }
         } catch (final DuplicateKeyException e) {
-            final String msg = "添加失败，唯一键重复：" + e.getMessage();
+            final String msg = "添加失败，唯一键重复：" + e.getCause().getMessage();
             _log.error(msg + ": mo-" + mo, e);
             ro.setMsg(msg);
             ro.setResult(ResultDic.FAIL);
@@ -103,7 +103,7 @@ public class IbrBuyRelationTaskCtrl {
                 return ro;
             }
         } catch (final DuplicateKeyException e) {
-            final String msg = "修改失败，唯一键重复：" + e.getMessage();
+            final String msg = "修改失败，唯一键重复：" + e.getCause().getMessage();
             _log.error(msg + ": mo=" + mo, e);
             ro.setMsg(msg);
             ro.setResult(ResultDic.FAIL);
