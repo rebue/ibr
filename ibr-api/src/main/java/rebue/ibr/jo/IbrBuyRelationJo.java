@@ -73,13 +73,13 @@ public class IbrBuyRelationJo implements Serializable {
     private Long rightValue;
 
     /**
-     *  关系来源
+     *  买家ID
      *
      *  @mbg.generated 自动生成，如需修改，请删除本行
      */
     @Basic(optional = false)
-    @Column(name = "RELATION_SOURCE", nullable = false, length = 3)
-    private Byte relationSource;
+    @Column(name = "BUYER_ID", nullable = false, length = 19)
+    private Long buyerId;
 
     /**
      *  是否已结算，在该订单结算的时候修改，默认是false
@@ -89,6 +89,24 @@ public class IbrBuyRelationJo implements Serializable {
     @Basic(optional = false)
     @Column(name = "IS_SETTLED", nullable = false, length = 3)
     private Boolean isSettled;
+
+    /**
+     *  关系来源
+     *
+     *  @mbg.generated 自动生成，如需修改，请删除本行
+     */
+    @Basic(optional = true)
+    @Column(name = "RELATION_SOURCE", nullable = true, length = 3)
+    private Byte relationSource;
+
+    /**
+     *  下单时间戳
+     *
+     *  @mbg.generated 自动生成，如需修改，请删除本行
+     */
+    @Basic(optional = false)
+    @Column(name = "ORDER_TIMESTAMP", nullable = false, length = 19)
+    private Long orderTimestamp;
 
     /**
      * @mbg.generated 自动生成，如需修改，请删除本行

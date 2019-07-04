@@ -60,13 +60,13 @@ public class IbrBuyRelationMo implements Serializable {
     private Long rightValue;
 
     /**
-     *    关系来源（1：自己匹配自己  2：购买关系  3：注册关系  4：差一人且已有购买关系  5：差两人  6：差一人但没有购买关系 7:自由匹配）
+     *    买家ID(也就是在suc中用户表的id)
      *
-     *    数据库字段: IBR_BUY_RELATION.RELATION_SOURCE
+     *    数据库字段: IBR_BUY_RELATION.BUYER_ID
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    private Byte relationSource;
+    private Long buyerId;
 
     /**
      *    是否已结算，在该订单结算的时候修改，默认是false
@@ -76,6 +76,24 @@ public class IbrBuyRelationMo implements Serializable {
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
     private Boolean isSettled;
+
+    /**
+     *    关系来源（1：自己匹配自己  2：购买关系  3：注册关系  4：差一人且已有购买关系  5：差两人  6：差一人但没有购买关系 7:自由匹配）纪录为空的是根节点
+     *
+     *    数据库字段: IBR_BUY_RELATION.RELATION_SOURCE
+     *
+     *    @mbg.generated 自动生成，如需修改，请删除本行
+     */
+    private Byte relationSource;
+
+    /**
+     *    下单时间戳
+     *
+     *    数据库字段: IBR_BUY_RELATION.ORDER_TIMESTAMP
+     *
+     *    @mbg.generated 自动生成，如需修改，请删除本行
+     */
+    private Long orderTimestamp;
 
     /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
@@ -193,25 +211,25 @@ public class IbrBuyRelationMo implements Serializable {
     }
 
     /**
-     *    关系来源（1：自己匹配自己  2：购买关系  3：注册关系  4：差一人且已有购买关系  5：差两人  6：差一人但没有购买关系 7:自由匹配）
+     *    买家ID(也就是在suc中用户表的id)
      *
-     *    数据库字段: IBR_BUY_RELATION.RELATION_SOURCE
+     *    数据库字段: IBR_BUY_RELATION.BUYER_ID
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    public Byte getRelationSource() {
-        return relationSource;
+    public Long getBuyerId() {
+        return buyerId;
     }
 
     /**
-     *    关系来源（1：自己匹配自己  2：购买关系  3：注册关系  4：差一人且已有购买关系  5：差两人  6：差一人但没有购买关系 7:自由匹配）
+     *    买家ID(也就是在suc中用户表的id)
      *
-     *    数据库字段: IBR_BUY_RELATION.RELATION_SOURCE
+     *    数据库字段: IBR_BUY_RELATION.BUYER_ID
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    public void setRelationSource(Byte relationSource) {
-        this.relationSource = relationSource;
+    public void setBuyerId(Long buyerId) {
+        this.buyerId = buyerId;
     }
 
     /**
@@ -237,6 +255,50 @@ public class IbrBuyRelationMo implements Serializable {
     }
 
     /**
+     *    关系来源（1：自己匹配自己  2：购买关系  3：注册关系  4：差一人且已有购买关系  5：差两人  6：差一人但没有购买关系 7:自由匹配）纪录为空的是根节点
+     *
+     *    数据库字段: IBR_BUY_RELATION.RELATION_SOURCE
+     *
+     *    @mbg.generated 自动生成，如需修改，请删除本行
+     */
+    public Byte getRelationSource() {
+        return relationSource;
+    }
+
+    /**
+     *    关系来源（1：自己匹配自己  2：购买关系  3：注册关系  4：差一人且已有购买关系  5：差两人  6：差一人但没有购买关系 7:自由匹配）纪录为空的是根节点
+     *
+     *    数据库字段: IBR_BUY_RELATION.RELATION_SOURCE
+     *
+     *    @mbg.generated 自动生成，如需修改，请删除本行
+     */
+    public void setRelationSource(Byte relationSource) {
+        this.relationSource = relationSource;
+    }
+
+    /**
+     *    下单时间戳
+     *
+     *    数据库字段: IBR_BUY_RELATION.ORDER_TIMESTAMP
+     *
+     *    @mbg.generated 自动生成，如需修改，请删除本行
+     */
+    public Long getOrderTimestamp() {
+        return orderTimestamp;
+    }
+
+    /**
+     *    下单时间戳
+     *
+     *    数据库字段: IBR_BUY_RELATION.ORDER_TIMESTAMP
+     *
+     *    @mbg.generated 自动生成，如需修改，请删除本行
+     */
+    public void setOrderTimestamp(Long orderTimestamp) {
+        this.orderTimestamp = orderTimestamp;
+    }
+
+    /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
     @Override
@@ -250,8 +312,10 @@ public class IbrBuyRelationMo implements Serializable {
         sb.append(", parentId=").append(parentId);
         sb.append(", leftValue=").append(leftValue);
         sb.append(", rightValue=").append(rightValue);
-        sb.append(", relationSource=").append(relationSource);
+        sb.append(", buyerId=").append(buyerId);
         sb.append(", isSettled=").append(isSettled);
+        sb.append(", relationSource=").append(relationSource);
+        sb.append(", orderTimestamp=").append(orderTimestamp);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
