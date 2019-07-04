@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2019/7/4 14:09:44                            */
+/* Created on:     2019/7/4 17:07:39                            */
 /*==============================================================*/
 
 
@@ -20,6 +20,7 @@ create table IBR_BUY_RELATION
    PARENT_ID            bigint comment '父节点ID,其实也就是上家的订单详情ID',
    LEFT_VALUE           bigint not null comment '左值',
    RIGHT_VALUE          bigint not null comment '右值',
+   CHILDREN_COUNT       tinyint not null default 0 comment '下家数量，默认是零，不能超过2',
    BUYER_ID             bigint not null comment '买家ID(也就是在suc中用户表的id)',
    IS_SETTLED           bool not null default false comment '是否已结算，在该订单结算的时候修改，默认是false',
    RELATION_SOURCE      tinyint comment '关系来源（1：自己匹配自己  2：购买关系  3：注册关系  4：差一人且已有购买关系  5：差两人  6：差一人但没有购买关系 7:自由匹配）纪录为空的是根节点',

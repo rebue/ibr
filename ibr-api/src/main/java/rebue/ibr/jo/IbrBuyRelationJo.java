@@ -73,6 +73,15 @@ public class IbrBuyRelationJo implements Serializable {
     private Long rightValue;
 
     /**
+     *  下家数量，默认是零，不能超过2
+     *
+     *  @mbg.generated 自动生成，如需修改，请删除本行
+     */
+    @Basic(optional = false)
+    @Column(name = "CHILDREN_COUNT", nullable = false, length = 3)
+    private Byte childrenCount;
+
+    /**
      *  买家ID
      *
      *  @mbg.generated 自动生成，如需修改，请删除本行

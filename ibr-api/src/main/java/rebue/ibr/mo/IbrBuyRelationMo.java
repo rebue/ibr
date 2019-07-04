@@ -60,6 +60,15 @@ public class IbrBuyRelationMo implements Serializable {
     private Long rightValue;
 
     /**
+     *    下家数量，默认是零，不能超过2
+     *
+     *    数据库字段: IBR_BUY_RELATION.CHILDREN_COUNT
+     *
+     *    @mbg.generated 自动生成，如需修改，请删除本行
+     */
+    private Byte childrenCount;
+
+    /**
      *    买家ID(也就是在suc中用户表的id)
      *
      *    数据库字段: IBR_BUY_RELATION.BUYER_ID
@@ -211,6 +220,28 @@ public class IbrBuyRelationMo implements Serializable {
     }
 
     /**
+     *    下家数量，默认是零，不能超过2
+     *
+     *    数据库字段: IBR_BUY_RELATION.CHILDREN_COUNT
+     *
+     *    @mbg.generated 自动生成，如需修改，请删除本行
+     */
+    public Byte getChildrenCount() {
+        return childrenCount;
+    }
+
+    /**
+     *    下家数量，默认是零，不能超过2
+     *
+     *    数据库字段: IBR_BUY_RELATION.CHILDREN_COUNT
+     *
+     *    @mbg.generated 自动生成，如需修改，请删除本行
+     */
+    public void setChildrenCount(Byte childrenCount) {
+        this.childrenCount = childrenCount;
+    }
+
+    /**
      *    买家ID(也就是在suc中用户表的id)
      *
      *    数据库字段: IBR_BUY_RELATION.BUYER_ID
@@ -312,6 +343,7 @@ public class IbrBuyRelationMo implements Serializable {
         sb.append(", parentId=").append(parentId);
         sb.append(", leftValue=").append(leftValue);
         sb.append(", rightValue=").append(rightValue);
+        sb.append(", childrenCount=").append(childrenCount);
         sb.append(", buyerId=").append(buyerId);
         sb.append(", isSettled=").append(isSettled);
         sb.append(", relationSource=").append(relationSource);
