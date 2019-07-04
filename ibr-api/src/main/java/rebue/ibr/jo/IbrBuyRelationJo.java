@@ -87,8 +87,8 @@ public class IbrBuyRelationJo implements Serializable {
      *  @mbg.generated 自动生成，如需修改，请删除本行
      */
     @Basic(optional = false)
-    @Column(name = "IS_SETTLE", nullable = false, length = 3)
-    private Boolean isSettle;
+    @Column(name = "IS_SETTLED", nullable = false, length = 3)
+    private Boolean isSettled;
 
     /**
      * @mbg.generated 自动生成，如需修改，请删除本行

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.io.Serializable;
 
 /**
- * 邀请关系表
+ * 邀请关系
  *
  * 数据库表: IBR_INVITE_RELATION
  *

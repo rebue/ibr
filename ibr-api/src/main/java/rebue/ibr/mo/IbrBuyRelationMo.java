@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.io.Serializable;
 
 /**
- * 购买关系表
+ * 购买关系
  *
  * 数据库表: IBR_BUY_RELATION
  *
@@ -71,11 +71,11 @@ public class IbrBuyRelationMo implements Serializable {
     /**
      *    是否已结算，在该订单结算的时候修改，默认是false
      *
-     *    数据库字段: IBR_BUY_RELATION.IS_SETTLE
+     *    数据库字段: IBR_BUY_RELATION.IS_SETTLED
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    private Boolean isSettle;
+    private Boolean isSettled;
 
     /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
@@ -217,23 +217,23 @@ public class IbrBuyRelationMo implements Serializable {
     /**
      *    是否已结算，在该订单结算的时候修改，默认是false
      *
-     *    数据库字段: IBR_BUY_RELATION.IS_SETTLE
+     *    数据库字段: IBR_BUY_RELATION.IS_SETTLED
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    public Boolean getIsSettle() {
-        return isSettle;
+    public Boolean getIsSettled() {
+        return isSettled;
     }
 
     /**
      *    是否已结算，在该订单结算的时候修改，默认是false
      *
-     *    数据库字段: IBR_BUY_RELATION.IS_SETTLE
+     *    数据库字段: IBR_BUY_RELATION.IS_SETTLED
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    public void setIsSettle(Boolean isSettle) {
-        this.isSettle = isSettle;
+    public void setIsSettled(Boolean isSettled) {
+        this.isSettled = isSettled;
     }
 
     /**
@@ -251,7 +251,7 @@ public class IbrBuyRelationMo implements Serializable {
         sb.append(", leftValue=").append(leftValue);
         sb.append(", rightValue=").append(rightValue);
         sb.append(", relationSource=").append(relationSource);
-        sb.append(", isSettle=").append(isSettle);
+        sb.append(", isSettled=").append(isSettled);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

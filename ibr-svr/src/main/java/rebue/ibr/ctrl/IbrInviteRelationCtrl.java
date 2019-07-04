@@ -19,7 +19,7 @@ import rebue.robotech.ro.IdRo;
 import rebue.robotech.ro.Ro;
 
 /**
- * 邀请关系表
+ * 邀请关系
  *
  * @mbg.generated 自动生成的注释，如需修改本注释，请删除本行
  */
@@ -38,13 +38,14 @@ public class IbrInviteRelationCtrl {
     private IbrInviteRelationSvc svc;
 
     /**
-     * 添加邀请关系表
+     * 添加邀请关系
      *
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
     @PostMapping("/ibr/invite-relation")
     IdRo add(@RequestBody final IbrInviteRelationMo mo) throws Exception {
-        _log.info("add IbrInviteRelationMo: {}", mo);
+        _log.info("received post:/ibr/invite-relation");
+        _log.info("inviteRelationCtrl.add: {}", mo);
         final IdRo ro = new IdRo();
         try {
             final int result = svc.add(mo);
@@ -78,13 +79,14 @@ public class IbrInviteRelationCtrl {
     }
 
     /**
-     * 修改邀请关系表
+     * 修改邀请关系
      *
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
     @PutMapping("/ibr/invite-relation")
     Ro modify(@RequestBody final IbrInviteRelationMo mo) throws Exception {
-        _log.info("modify IbrInviteRelationMo: {}", mo);
+        _log.info("received put:/ibr/invite-relation");
+        _log.info("inviteRelationCtrl.modify: {}", mo);
         final Ro ro = new Ro();
         try {
             if (svc.modify(mo) == 1) {
@@ -116,13 +118,14 @@ public class IbrInviteRelationCtrl {
     }
 
     /**
-     * 删除邀请关系表
+     * 删除邀请关系
      *
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
     @DeleteMapping("/ibr/invite-relation")
     Ro del(@RequestParam("id") final java.lang.Long id) {
-        _log.info("del IbrInviteRelationMo by id: {}", id);
+        _log.info("received delete:/ibr/invite-relation");
+        _log.info("inviteRelationCtrl.del: {}", id);
         final int result = svc.del(id);
         final Ro ro = new Ro();
         if (result == 1) {
@@ -141,12 +144,14 @@ public class IbrInviteRelationCtrl {
     }
 
     /**
-     * 查询邀请关系表
+     * 查询邀请关系
      *
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
     @GetMapping("/ibr/invite-relation")
     PageInfo<IbrInviteRelationMo> list(final IbrInviteRelationMo mo, @RequestParam(value = "pageNum", required = false) Integer pageNum, @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+        _log.info("received get:/ibr/invite-relation");
+        _log.info("inviteRelation.list: {},pageNum-{},pageSize-{}", mo, pageNum, pageSize);
         if (pageNum == null) {
             pageNum = 1;
         }
@@ -165,13 +170,14 @@ public class IbrInviteRelationCtrl {
     }
 
     /**
-     * 获取单个邀请关系表
+     * 获取单个邀请关系
      *
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
     @GetMapping("/ibr/invite-relation/get-by-id")
     IbrInviteRelationMo getById(@RequestParam("id") final java.lang.Long id) {
-        _log.info("get IbrInviteRelationMo by id: {}", id);
+        _log.info("received get:/ibr/invite-relation/get-by-id");
+        _log.info("ibrInviteRelationMoCtrl.getById: {}", id);
         return svc.getById(id);
     }
 }

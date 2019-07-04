@@ -5,7 +5,7 @@ import rebue.ibr.mo.IbrBuyRelationMo;
 import rebue.robotech.svc.BaseSvc;
 
 /**
- * 购买关系表
+ * 购买关系
  *
  * @mbg.generated 自动生成的注释，如需修改本注释，请删除本行
  */

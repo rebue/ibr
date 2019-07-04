@@ -13,7 +13,7 @@ import rebue.ibr.svc.IbrBuyRelationSvc;
 import rebue.robotech.svc.impl.BaseSvcImpl;
 
 /**
- * 购买关系表
+ * 购买关系
  *
  * 在单独使用不带任何参数的 @Transactional 注释时，
  * propagation(传播模式)=REQUIRED，readOnly=false，
@@ -41,7 +41,7 @@ public class IbrBuyRelationSvcImpl extends BaseSvcImpl<java.lang.Long, IbrBuyRel
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public int add(IbrBuyRelationMo mo) {
-        _log.info("添加购买关系表");
+        _log.info("ibrBuyRelationSvc.add: 添加购买关系 mo-", mo);
         // 如果id为空那么自动生成分布式id
         if (mo.getId() == null || mo.getId() == 0) {
             mo.setId(_idWorker.getId());

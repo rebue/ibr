@@ -41,7 +41,7 @@ public class IbrBuyRelationTaskSvcImpl extends BaseSvcImpl<java.lang.Long, IbrBu
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public int add(IbrBuyRelationTaskMo mo) {
-        _log.info("添加购买关系任务");
+        _log.info("ibrBuyRelationTaskSvc.add: 添加购买关系任务 mo-", mo);
         // 如果id为空那么自动生成分布式id
         if (mo.getId() == null || mo.getId() == 0) {
             mo.setId(_idWorker.getId());

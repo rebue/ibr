@@ -14,7 +14,7 @@ import rebue.ibr.svc.IbrInviteRelationSvc;
 import rebue.robotech.svc.impl.BaseSvcImpl;
 
 /**
- * 邀请关系表
+ * 邀请关系
  *
  * 在单独使用不带任何参数的 @Transactional 注释时，
  * propagation(传播模式)=REQUIRED，readOnly=false，
@@ -43,7 +43,7 @@ public class IbrInviteRelationSvcImpl extends BaseSvcImpl<java.lang.Long, IbrInv
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public int add(final IbrInviteRelationMo mo) {
-        _log.info("添加邀请关系表");
+        _log.info("添加邀请关系: mo-{}", mo);
         // 如果id为空那么自动生成分布式id
         if (mo.getId() == null || mo.getId() == 0) {
             mo.setId(_idWorker.getId());

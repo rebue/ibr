@@ -44,7 +44,8 @@ public class IbrBuyRelationTaskCtrl {
      */
     @PostMapping("/ibr/buy-relation-task")
     IdRo add(@RequestBody final IbrBuyRelationTaskMo mo) throws Exception {
-        _log.info("add IbrBuyRelationTaskMo: {}", mo);
+        _log.info("received post:/ibr/buy-relation-task");
+        _log.info("buyRelationTaskCtrl.add: {}", mo);
         final IdRo ro = new IdRo();
         try {
             final int result = svc.add(mo);
@@ -84,7 +85,8 @@ public class IbrBuyRelationTaskCtrl {
      */
     @PutMapping("/ibr/buy-relation-task")
     Ro modify(@RequestBody final IbrBuyRelationTaskMo mo) throws Exception {
-        _log.info("modify IbrBuyRelationTaskMo: {}", mo);
+        _log.info("received put:/ibr/buy-relation-task");
+        _log.info("buyRelationTaskCtrl.modify: {}", mo);
         final Ro ro = new Ro();
         try {
             if (svc.modify(mo) == 1) {
@@ -122,7 +124,8 @@ public class IbrBuyRelationTaskCtrl {
      */
     @DeleteMapping("/ibr/buy-relation-task")
     Ro del(@RequestParam("id") final java.lang.Long id) {
-        _log.info("del IbrBuyRelationTaskMo by id: {}", id);
+        _log.info("received delete:/ibr/buy-relation-task");
+        _log.info("buyRelationTaskCtrl.del: {}", id);
         final int result = svc.del(id);
         final Ro ro = new Ro();
         if (result == 1) {
@@ -147,6 +150,8 @@ public class IbrBuyRelationTaskCtrl {
      */
     @GetMapping("/ibr/buy-relation-task")
     PageInfo<IbrBuyRelationTaskMo> list(final IbrBuyRelationTaskMo mo, @RequestParam(value = "pageNum", required = false) Integer pageNum, @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+        _log.info("received get:/ibr/buy-relation-task");
+        _log.info("buyRelationTask.list: {},pageNum-{},pageSize-{}", mo, pageNum, pageSize);
         if (pageNum == null) {
             pageNum = 1;
         }
@@ -171,7 +176,8 @@ public class IbrBuyRelationTaskCtrl {
      */
     @GetMapping("/ibr/buy-relation-task/get-by-id")
     IbrBuyRelationTaskMo getById(@RequestParam("id") final java.lang.Long id) {
-        _log.info("get IbrBuyRelationTaskMo by id: {}", id);
+        _log.info("received get:/ibr/buy-relation-task/get-by-id");
+        _log.info("ibrBuyRelationTaskMoCtrl.getById: {}", id);
         return svc.getById(id);
     }
 }

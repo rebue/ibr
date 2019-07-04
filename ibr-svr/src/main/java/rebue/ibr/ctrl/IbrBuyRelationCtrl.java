@@ -19,7 +19,7 @@ import rebue.robotech.ro.IdRo;
 import rebue.robotech.ro.Ro;
 
 /**
- * 购买关系表
+ * 购买关系
  *
  * @mbg.generated 自动生成的注释，如需修改本注释，请删除本行
  */
@@ -38,14 +38,14 @@ public class IbrBuyRelationCtrl {
     private IbrBuyRelationSvc svc;
 
     /**
-     * 添加购买关系表
+     * 添加购买关系
      *
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
     @PostMapping("/ibr/buy-relation")
     IdRo add(@RequestBody final IbrBuyRelationMo mo) throws Exception {
         _log.info("received post:/ibr/buy-relation");
-        _log.info("BuyRelation add: {}", mo);
+        _log.info("buyRelationCtrl.add: {}", mo);
         final IdRo ro = new IdRo();
         try {
             final int result = svc.add(mo);
@@ -79,14 +79,14 @@ public class IbrBuyRelationCtrl {
     }
 
     /**
-     * 修改购买关系表
+     * 修改购买关系
      *
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
     @PutMapping("/ibr/buy-relation")
     Ro modify(@RequestBody final IbrBuyRelationMo mo) throws Exception {
         _log.info("received put:/ibr/buy-relation");
-        _log.info("BuyRelation modify: {}", mo);
+        _log.info("buyRelationCtrl.modify: {}", mo);
         final Ro ro = new Ro();
         try {
             if (svc.modify(mo) == 1) {
@@ -118,14 +118,14 @@ public class IbrBuyRelationCtrl {
     }
 
     /**
-     * 删除购买关系表
+     * 删除购买关系
      *
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
     @DeleteMapping("/ibr/buy-relation")
     Ro del(@RequestParam("id") final java.lang.Long id) {
         _log.info("received delete:/ibr/buy-relation");
-        _log.info("BuyRelation del: {}", id);
+        _log.info("buyRelationCtrl.del: {}", id);
         final int result = svc.del(id);
         final Ro ro = new Ro();
         if (result == 1) {
@@ -144,14 +144,14 @@ public class IbrBuyRelationCtrl {
     }
 
     /**
-     * 查询购买关系表
+     * 查询购买关系
      *
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
     @GetMapping("/ibr/buy-relation")
     PageInfo<IbrBuyRelationMo> list(final IbrBuyRelationMo mo, @RequestParam(value = "pageNum", required = false) Integer pageNum, @RequestParam(value = "pageSize", required = false) Integer pageSize) {
         _log.info("received get:/ibr/buy-relation");
-        _log.info("BuyRelation list: {},pageNum-{},pageSize-{}", mo, pageNum, pageSize);
+        _log.info("buyRelation.list: {},pageNum-{},pageSize-{}", mo, pageNum, pageSize);
         if (pageNum == null) {
             pageNum = 1;
         }
@@ -170,14 +170,14 @@ public class IbrBuyRelationCtrl {
     }
 
     /**
-     * 获取单个购买关系表
+     * 获取单个购买关系
      *
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
     @GetMapping("/ibr/buy-relation/get-by-id")
     IbrBuyRelationMo getById(@RequestParam("id") final java.lang.Long id) {
         _log.info("received get:/ibr/buy-relation/get-by-id");
-        _log.info("IbrBuyRelationMo getById: {}", id);
+        _log.info("ibrBuyRelationMoCtrl.getById: {}", id);
         return svc.getById(id);
     }
 
