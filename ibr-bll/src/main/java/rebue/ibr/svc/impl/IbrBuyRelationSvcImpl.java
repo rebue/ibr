@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import rebue.ibr.dao.IbrBuyRelationDao;
 import rebue.ibr.jo.IbrBuyRelationJo;
 import rebue.ibr.mapper.IbrBuyRelationMapper;
@@ -40,7 +41,7 @@ public class IbrBuyRelationSvcImpl extends BaseSvcImpl<java.lang.Long, IbrBuyRel
      */
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public int add(IbrBuyRelationMo mo) {
+    public int add(final IbrBuyRelationMo mo) {
         _log.info("ibrBuyRelationSvc.add: 添加购买关系 mo-", mo);
         // 如果id为空那么自动生成分布式id
         if (mo.getId() == null || mo.getId() == 0) {
@@ -48,4 +49,15 @@ public class IbrBuyRelationSvcImpl extends BaseSvcImpl<java.lang.Long, IbrBuyRel
         }
         return super.add(mo);
     }
+
+    /**
+     * 获取买家的最早购买节点
+     * 
+     * @return 最早购买记录，如果没有则返回null
+     */
+    @Override
+    public IbrBuyRelationMo getEarlestBuyRelationOfBuyer(final Long buyerId) {
+        return _mapper.getEarlestBuyRelationOfBuyer(buyerId);
+    }
+
 }
