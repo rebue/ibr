@@ -3,6 +3,7 @@ package rebue.ibr.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import rebue.ibr.mo.IbrBuyRelationMo;
@@ -79,15 +80,19 @@ public interface IbrBuyRelationMapper extends MybatisBaseMapper<IbrBuyRelationMo
     /**
      * 获取买家的最早购买节点
      * 
+     * @param groupId
+     *            分组ID，其实就是销售价格*100
+     * @param buyerId
+     *            买家ID
      * @return 最早购买记录，如果没有则返回null
      */
     @Select("SELECT " + //
-            "    *" + //
-            " FROM" + //
-            "    ibr.IBR_BUY_RELATION" + //
-            " WHERE" + //
-            "    GROUP_ID = 990" + //
-            " ORDER BY ORDER_TIMESTAMP" + //
-            " LIMIT 1")
-    IbrBuyRelationMo getEarlestBuyRelationOfBuyer(Long buyerId);
+            "    * " + //
+            "FROM " + //
+            "    IBR_BUY_RELATION " + //
+            "WHERE " + //
+            "    GROUP_ID = #{groupId} AND BUYER_ID = #{buyerId} AND CHILDREN_COUNT < 2 " + //
+            "ORDER BY ORDER_TIMESTAMP " + //
+            "LIMIT 1")
+    IbrBuyRelationMo getEarlestBuyRelationOfBuyer(@Param("groupId") Long groupId, @Param("buyerId") Long buyerId);
 }

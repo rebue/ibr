@@ -56,8 +56,8 @@ public class IbrBuyRelationSvcImpl extends BaseSvcImpl<java.lang.Long, IbrBuyRel
      * @return 最早购买记录，如果没有则返回null
      */
     @Override
-    public IbrBuyRelationMo getEarlestBuyRelationOfBuyer(final Long buyerId) {
-        return _mapper.getEarlestBuyRelationOfBuyer(buyerId);
+    public IbrBuyRelationMo getEarlestBuyRelationOfBuyer(final Long groupId, final Long buyerId) {
+        return _mapper.getEarlestBuyRelationOfBuyer(groupId, buyerId);
     }
 
 }

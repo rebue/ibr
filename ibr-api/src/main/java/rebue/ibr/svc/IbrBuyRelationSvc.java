@@ -14,7 +14,11 @@ public interface IbrBuyRelationSvc extends BaseSvc<java.lang.Long, IbrBuyRelatio
     /**
      * 获取买家的最早购买节点
      * 
+     * @param groupId
+     *            分组ID，其实就是销售价格*100
+     * @param buyerId
+     *            买家ID
      * @return 最早购买记录，如果没有则返回null
      */
-    IbrBuyRelationMo getEarlestBuyRelationOfBuyer(Long buyerId);
+    IbrBuyRelationMo getEarlestBuyRelationOfBuyer(Long groupId, Long buyerId);
 }
