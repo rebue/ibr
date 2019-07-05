@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2019/7/4 17:07:39                            */
+/* Created on:     2019/7/5 9:53:04                             */
 /*==============================================================*/
 
 
@@ -24,7 +24,7 @@ create table IBR_BUY_RELATION
    BUYER_ID             bigint not null comment '买家ID(也就是在suc中用户表的id)',
    IS_SETTLED           bool not null default false comment '是否已结算，在该订单结算的时候修改，默认是false',
    RELATION_SOURCE      tinyint comment '关系来源（1：自己匹配自己  2：购买关系  3：注册关系  4：差一人且已有购买关系  5：差两人  6：差一人但没有购买关系 7:自由匹配）纪录为空的是根节点',
-   ORDER_TIMESTAMP      bigint not null comment '下单时间戳',
+   PAID_NOTIFY_TIMESTAMP bigint not null comment '收到支付完成时的时间戳',
    primary key (ID),
    unique key AK_GROUP_ID_AND_LEFT_VALUE (GROUP_ID, LEFT_VALUE),
    unique key AK_GROUP_ID_AND_RIGHT_VALUE (GROUP_ID, RIGHT_VALUE)
