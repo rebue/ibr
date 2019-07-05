@@ -91,7 +91,8 @@ public interface IbrBuyRelationMapper extends MybatisBaseMapper<IbrBuyRelationMo
             "FROM " + //
             "    IBR_BUY_RELATION " + //
             "WHERE " + //
-            "    GROUP_ID = #{groupId} AND BUYER_ID = #{buyerId} AND CHILDREN_COUNT < 2 " + //
+            "    GROUP_ID = #{groupId} AND BUYER_ID = #{buyerId} " + //
+            "        AND CHILDREN_COUNT < 2 " + //
             "ORDER BY ORDER_TIMESTAMP " + //
             "LIMIT 1")
     IbrBuyRelationMo getEarlestBuyRelationOfBuyer(@Param("groupId") Long groupId, @Param("buyerId") Long buyerId);
