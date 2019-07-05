@@ -96,13 +96,13 @@ public class IbrBuyRelationMo implements Serializable {
     private Byte relationSource;
 
     /**
-     *    下单时间戳
+     *    收到支付完成时的时间戳
      *
-     *    数据库字段: IBR_BUY_RELATION.ORDER_TIMESTAMP
+     *    数据库字段: IBR_BUY_RELATION.PAID_NOTIFY_TIMESTAMP
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    private Long orderTimestamp;
+    private Long paidNotifyTimestamp;
 
     /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
@@ -308,25 +308,25 @@ public class IbrBuyRelationMo implements Serializable {
     }
 
     /**
-     *    下单时间戳
+     *    收到支付完成时的时间戳
      *
-     *    数据库字段: IBR_BUY_RELATION.ORDER_TIMESTAMP
+     *    数据库字段: IBR_BUY_RELATION.PAID_NOTIFY_TIMESTAMP
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    public Long getOrderTimestamp() {
-        return orderTimestamp;
+    public Long getPaidNotifyTimestamp() {
+        return paidNotifyTimestamp;
     }
 
     /**
-     *    下单时间戳
+     *    收到支付完成时的时间戳
      *
-     *    数据库字段: IBR_BUY_RELATION.ORDER_TIMESTAMP
+     *    数据库字段: IBR_BUY_RELATION.PAID_NOTIFY_TIMESTAMP
      *
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
-    public void setOrderTimestamp(Long orderTimestamp) {
-        this.orderTimestamp = orderTimestamp;
+    public void setPaidNotifyTimestamp(Long paidNotifyTimestamp) {
+        this.paidNotifyTimestamp = paidNotifyTimestamp;
     }
 
     /**
@@ -347,7 +347,7 @@ public class IbrBuyRelationMo implements Serializable {
         sb.append(", buyerId=").append(buyerId);
         sb.append(", isSettled=").append(isSettled);
         sb.append(", relationSource=").append(relationSource);
-        sb.append(", orderTimestamp=").append(orderTimestamp);
+        sb.append(", paidNotifyTimestamp=").append(paidNotifyTimestamp);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

@@ -109,13 +109,13 @@ public class IbrBuyRelationJo implements Serializable {
     private Byte relationSource;
 
     /**
-     *  下单时间戳
+     *  收到支付完成时的时间戳
      *
      *  @mbg.generated 自动生成，如需修改，请删除本行
      */
     @Basic(optional = false)
-    @Column(name = "ORDER_TIMESTAMP", nullable = false, length = 19)
-    private Long orderTimestamp;
+    @Column(name = "PAID_NOTIFY_TIMESTAMP", nullable = false, length = 19)
+    private Long paidNotifyTimestamp;
 
     /**
      * @mbg.generated 自动生成，如需修改，请删除本行

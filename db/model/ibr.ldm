@@ -1456,7 +1456,7 @@ Shadow=0</a:DisplayPreferences>
 <a:CreationDate>1561604698</a:CreationDate>
 <a:ModificationDate>1562146654</a:ModificationDate>
 <a:IconMode>-1</a:IconMode>
-<a:Rect>((-22511,22875), (-7113,35323))</a:Rect>
+<a:Rect>((-23283,22875), (-6341,35323))</a:Rect>
 <a:LineColor>11881048</a:LineColor>
 <a:FillColor>16759472</a:FillColor>
 <a:ShadowColor>12632256</a:ShadowColor>
@@ -2043,13 +2043,13 @@ LABL 0 新宋体,8,N</a:FontList>
 </o:EntityAttribute>
 <o:EntityAttribute Id="o29">
 <a:ObjectID>9A76C6CB-EFDD-4767-957F-288704EFEDFB</a:ObjectID>
-<a:Name>下单时间戳</a:Name>
-<a:Code>ORDER_TIMESTAMP</a:Code>
+<a:Name>支付完成时间戳</a:Name>
+<a:Code>PAID_NOTIFY_TIMESTAMP</a:Code>
 <a:CreationDate>1562214693</a:CreationDate>
 <a:Creator>admin</a:Creator>
-<a:ModificationDate>1562216389</a:ModificationDate>
+<a:ModificationDate>1562291523</a:ModificationDate>
 <a:Modifier>admin</a:Modifier>
-<a:Comment>下单时间戳</a:Comment>
+<a:Comment>收到支付完成时的时间戳</a:Comment>
 <a:DataType>LI</a:DataType>
 <a:LogicalAttribute.Mandatory>1</a:LogicalAttribute.Mandatory>
 </o:EntityAttribute>
@@ -2360,12 +2360,12 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:Code>ibr-mysql</a:Code>
 <a:CreationDate>1562146657</a:CreationDate>
 <a:Creator>admin</a:Creator>
-<a:ModificationDate>1562231205</a:ModificationDate>
+<a:ModificationDate>1562291546</a:ModificationDate>
 <a:Modifier>admin</a:Modifier>
 <a:TargetModelURL>file:///%[PRJ_ROOT_DIR]%/ibr-mysql.pdm</a:TargetModelURL>
 <a:TargetModelID>906395C0-641E-4C8E-9666-6EC2B23409A5</a:TargetModelID>
 <a:TargetModelClassID>CDE44E21-9669-11D1-9914-006097355D9B</a:TargetModelClassID>
-<a:TargetModelLastModificationDate>1562231206</a:TargetModelLastModificationDate>
+<a:TargetModelLastModificationDate>1562291546</a:TargetModelLastModificationDate>
 <c:SessionShortcuts>
 <o:Shortcut Ref="o8"/>
 </c:SessionShortcuts>
