@@ -1,0 +1,52 @@
+-- 获取买家最早未匹配满的购买节点
+explain 
+SELECT 
+    *
+FROM
+    IBR_BUY_RELATION
+WHERE
+    GROUP_ID = 990 AND BUYER_ID = 1
+        AND CHILDREN_COUNT < 2
+ORDER BY PAID_NOTIFY_TIMESTAMP
+LIMIT 1;
+
+-- 获取买家的所有邀请人ID，并按邀请时间从近到远排序
+explain
+SELECT 
+    ID
+FROM
+    IBR_INVITE_RELATION
+WHERE
+    INVITEE_ID = 2
+ORDER BY INVITE_TIMESTAMP DESC;
+
+-- 获取最晚邀请人的最早未匹配满的购买关系记录
+explain 
+SELECT 
+    *
+FROM
+    IBR_BUY_RELATION
+WHERE
+    GROUP_ID = 990
+        AND BUYER_ID IN (SELECT 
+            INVITER_ID
+        FROM
+            IBR_INVITE_RELATION
+        WHERE
+            INVITEE_ID = 2)
+        AND CHILDREN_COUNT < 2
+ORDER BY PAID_NOTIFY_TIMESTAMP
+LIMIT 1;
+
+
+-- 获取最早未匹配满的购买关系记录
+explain 
+SELECT 
+    *
+FROM
+    IBR_BUY_RELATION
+WHERE
+    GROUP_ID = 990 
+        AND CHILDREN_COUNT < 2
+ORDER BY PAID_NOTIFY_TIMESTAMP
+LIMIT 1;
