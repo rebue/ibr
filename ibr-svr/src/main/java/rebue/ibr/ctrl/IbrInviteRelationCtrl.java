@@ -1,7 +1,7 @@
 package rebue.ibr.ctrl;
 
-import com.github.pagehelper.PageInfo;
 import javax.annotation.Resource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.github.pagehelper.PageInfo;
+
 import rebue.ibr.mo.IbrInviteRelationMo;
 import rebue.ibr.svc.IbrInviteRelationSvc;
 import rebue.robotech.dic.ResultDic;
@@ -149,7 +152,9 @@ public class IbrInviteRelationCtrl {
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
     @GetMapping("/ibr/invite-relation")
-    PageInfo<IbrInviteRelationMo> list(final IbrInviteRelationMo mo, @RequestParam(value = "pageNum", required = false) Integer pageNum, @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+    PageInfo<IbrInviteRelationMo> list(final IbrInviteRelationMo mo,
+            @RequestParam(value = "pageNum", required = false) Integer pageNum,
+            @RequestParam(value = "pageSize", required = false) Integer pageSize) {
         _log.info("received get:/ibr/invite-relation");
         _log.info("inviteRelation.list: {},pageNum-{},pageSize-{}", mo, pageNum, pageSize);
         if (pageNum == null) {
@@ -179,5 +184,16 @@ public class IbrInviteRelationCtrl {
         _log.info("received get:/ibr/invite-relation/get-by-id");
         _log.info("ibrInviteRelationMoCtrl.getById: {}", id);
         return svc.getById(id);
+    }
+
+    /**
+     * 获取单个邀请关系
+     *
+     */
+    @GetMapping("/ibr/invite-relation/get-one")
+    IbrInviteRelationMo getOne(final IbrInviteRelationMo mo) {
+        _log.info("received get:/ibr/invite-relation/get-one");
+        _log.info("ibrInviteRelationMoCtrl.mo: {}", mo);
+        return svc.getOne(mo);
     }
 }
