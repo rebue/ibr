@@ -49,6 +49,10 @@ public class IbrMatchTests {
         postAddInviteRelation(4L, 7L);
         _log.info("{}. 添加邀请关系 买家4邀请买家8", ++stepCount);
         postAddInviteRelation(4L, 8L);
+        _log.info("{}. 添加邀请关系 买家4邀请买家9", ++stepCount);
+        postAddInviteRelation(4L, 9L);
+        _log.info("{}. 添加邀请关系 买家5邀请买家9", ++stepCount);
+        postAddInviteRelation(5L, 9L);
 
         _log.info("{}. 优先匹配自己 匹配价格9.9 节点1 买家1 应该是根节点", ++stepCount);
         postMatch(MatchSchemeDic.SELF, 9.9, 1L, 1L);
@@ -66,6 +70,8 @@ public class IbrMatchTests {
         postMatch(MatchSchemeDic.SELF, 9.9, 7L, 7L);
         _log.info("{}. 优先匹配自己 匹配价格9.9 节点8 买家6 应该匹配给节点6", ++stepCount);
         postMatch(MatchSchemeDic.SELF, 9.9, 8L, 6L);
+        _log.info("{}. 优先匹配自己 匹配价格9.9 节点9 买家9 应该匹配给节点5", ++stepCount);
+        postMatch(MatchSchemeDic.SELF, 9.9, 9L, 9L);
     }
 
     /**

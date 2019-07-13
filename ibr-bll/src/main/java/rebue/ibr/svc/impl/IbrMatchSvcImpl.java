@@ -101,7 +101,7 @@ public class IbrMatchSvcImpl implements IbrMatchSvc {
                 _log.info("{}. 获取指定人最早未匹配满的购买关系记录", stepCount++);
                 parent = buyRelationSvc.getNotFullAndEarlestBuyRelationOfBuyer(groupId, to.getMatchPersonId(), to.getMaxChildernCount());
                 if (parent != null) {
-                    _log.info("获取到指定人最早未匹配满的购买关系记录: ", parent);
+                    _log.info("获取到指定人最早未匹配满的购买关系记录: {}", parent);
                     _log.info("{}. 匹配指定人最早未匹配满的购买关系记录", stepCount++);
                     // FIXME 关系来源应该是指定人匹配
                     buyRelationSvc.insertNode(parent, to.getBuyerId(), to.getPaidNotifyTimestamp(), RelationSourceDic.OWN, to.getMaxChildernCount());
@@ -115,7 +115,7 @@ public class IbrMatchSvcImpl implements IbrMatchSvc {
                 _log.info("{}. 获取自己最早未匹配满的购买关系记录", stepCount++);
                 parent = buyRelationSvc.getNotFullAndEarlestBuyRelationOfBuyer(groupId, to.getBuyerId(), to.getMaxChildernCount());
                 if (parent != null) {
-                    _log.info("获取到自己最早未匹配满的购买关系记录: ", parent);
+                    _log.info("获取到自己最早未匹配满的购买关系记录: {}", parent);
                     _log.info("{}. 匹配自己最早未匹配满的购买关系记录", stepCount++);
                     buyRelationSvc.insertNode(parent, to.getBuyerId(), to.getPaidNotifyTimestamp(), RelationSourceDic.OWN, to.getMaxChildernCount());
                     final String msg = "匹配成功";
@@ -135,7 +135,7 @@ public class IbrMatchSvcImpl implements IbrMatchSvc {
                         _log.info("{}.2.{}. 按顺序获取邀请人(id-{})的最早未匹配满的购买关系记录", stepCount++, ++count, inviterId);
                         parent = buyRelationSvc.getNotFullAndEarlestBuyRelationOfBuyer(groupId, inviterId, to.getMaxChildernCount());
                         if (parent != null) {
-                            _log.info("获取到最近邀请人的最早未匹配满的购买关系记录: ", parent);
+                            _log.info("获取到最近邀请人的最早未匹配满的购买关系记录: {}", parent);
                             _log.info("{}. 匹配最近邀请人的最早未匹配满的购买关系记录", stepCount++);
                             buyRelationSvc.insertNode(parent, to.getBuyerId(), to.getPaidNotifyTimestamp(), RelationSourceDic.BUY, to.getMaxChildernCount());
                             final String msg = "匹配成功";
@@ -152,7 +152,7 @@ public class IbrMatchSvcImpl implements IbrMatchSvc {
                 _log.info("{}. 获取最早未匹配满的购买关系记录", stepCount++);
                 parent = buyRelationSvc.getNotFullAndEarlestBuyRelation(groupId, to.getMaxChildernCount());
                 if (parent != null) {
-                    _log.info("获取到最早未匹配满的购买关系记录: ", parent);
+                    _log.info("获取到最早未匹配满的购买关系记录: {}", parent);
                     _log.info("{}. 匹配最早未匹配满的购买关系记录", stepCount++);
                     buyRelationSvc.insertNode(parent, to.getBuyerId(), to.getPaidNotifyTimestamp(), RelationSourceDic.FREE, to.getMaxChildernCount());
                     final String msg = "匹配成功";
