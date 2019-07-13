@@ -14,7 +14,7 @@ public interface IbrBuyRelationSvc extends BaseSvc<java.lang.Long, IbrBuyRelatio
 
     /**
      * 在指定的父节点下插入新节点
-     * 
+     *
      * @param parent
      *            父节点购买关系
      * @param buyerId
@@ -30,7 +30,7 @@ public interface IbrBuyRelationSvc extends BaseSvc<java.lang.Long, IbrBuyRelatio
 
     /**
      * 获取买家最早未匹配满的购买节点
-     * 
+     *
      * @param groupId
      *            分组ID，其实就是销售价格*100
      * @param buyerId
@@ -43,7 +43,7 @@ public interface IbrBuyRelationSvc extends BaseSvc<java.lang.Long, IbrBuyRelatio
 
     /**
      * 获取最近邀请人的最早未匹配满的购买关系记录
-     * 
+     *
      * @param groupId
      *            分组ID，其实就是销售价格*100
      * @param maxChildernCount
@@ -54,7 +54,7 @@ public interface IbrBuyRelationSvc extends BaseSvc<java.lang.Long, IbrBuyRelatio
 
     /**
      * 获取最早未匹配满的购买关系记录
-     * 
+     *
      * @param groupId
      *            分组ID，其实就是销售价格*100
      * @param maxChildernCount

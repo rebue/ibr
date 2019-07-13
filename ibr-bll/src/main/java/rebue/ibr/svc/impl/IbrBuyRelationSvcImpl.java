@@ -1,13 +1,11 @@
 package rebue.ibr.svc.impl;
 
 import javax.annotation.Resource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
 import rebue.ibr.dao.IbrBuyRelationDao;
 import rebue.ibr.dic.RelationSourceDic;
 import rebue.ibr.jo.IbrBuyRelationJo;
@@ -44,7 +42,7 @@ public class IbrBuyRelationSvcImpl extends BaseSvcImpl<java.lang.Long, IbrBuyRel
      */
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public int add(final IbrBuyRelationMo mo) {
+    public int add(IbrBuyRelationMo mo) {
         _log.info("ibrBuyRelationSvc.add: 添加购买关系 mo-", mo);
         // 如果id为空那么自动生成分布式id
         if (mo.getId() == null || mo.getId() == 0) {
@@ -58,7 +56,7 @@ public class IbrBuyRelationSvcImpl extends BaseSvcImpl<java.lang.Long, IbrBuyRel
 
     /**
      * 在指定的父节点下插入新节点
-     * 
+     *
      * @param parent
      *            父节点购买关系
      * @param buyerId
@@ -70,21 +68,18 @@ public class IbrBuyRelationSvcImpl extends BaseSvcImpl<java.lang.Long, IbrBuyRel
      */
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void insertNode(final IbrBuyRelationMo parent, final Long buyerId, final Long paidNotifyTimestamp, final RelationSourceDic relationSource,
-            final Integer maxChildernCount) {
-        _log.info("ibrBuyRelationSvc.insertNode: 在指定的父节点下插入新节点 parent-{},buyerId-{},paidNotifyTimestamp-{},relationSource-{},maxChildernCount-{}", parent, buyerId,
-                paidNotifyTimestamp, relationSource, maxChildernCount);
-
-        final Long insertLeftValue = parent.getRightValue();            // 插入节点的左值 = 父节点原来的右值
-        final Long insertRightValue = insertLeftValue + 1;              // 插入节点的右值 = 插入节点的左值 + 1
+    public void insertNode(final IbrBuyRelationMo parent, final Long buyerId, final Long paidNotifyTimestamp, final RelationSourceDic relationSource, final Integer maxChildernCount) {
+        _log.info("ibrBuyRelationSvc.insertNode: 在指定的父节点下插入新节点 parent-{},buyerId-{},paidNotifyTimestamp-{},relationSource-{},maxChildernCount-{}", parent, buyerId, paidNotifyTimestamp, relationSource, maxChildernCount);
+        // 插入节点的左值 = 父节点原来的右值
+        final Long insertLeftValue = parent.getRightValue();
+        // 插入节点的右值 = 插入节点的左值 + 1
+        final Long insertRightValue = insertLeftValue + 1;
         _log.debug("计算插入新节点的左右值: 左值-{}, 右值-{}", insertLeftValue, insertRightValue);
-
-//        _log.debug("父节点原来的右值={}", parentOldRightValue);
+        // _log.debug("父节点原来的右值={}", parentOldRightValue);
         _log.debug("在插入新节点前更新这棵树的右值");
         _mapper.updateRightValueBeforeInsertNode(1, parent.getRightValue());
         _log.debug("在插入新节点前更新这棵树的左值");
         _mapper.updateLeftValueBeforeInsertNode(1, parent.getRightValue());
-
         final IbrBuyRelationMo mo = new IbrBuyRelationMo();
         mo.setGroupId(parent.getGroupId());
         mo.setBuyerId(buyerId);
@@ -99,7 +94,7 @@ public class IbrBuyRelationSvcImpl extends BaseSvcImpl<java.lang.Long, IbrBuyRel
 
     /**
      * 获取买家最早未匹配满的购买节点
-     * 
+     *
      * @param groupId
      *            分组ID，其实就是销售价格*100
      * @param buyerId
@@ -116,7 +111,7 @@ public class IbrBuyRelationSvcImpl extends BaseSvcImpl<java.lang.Long, IbrBuyRel
 
     /**
      * 获取最近邀请人的最早未匹配满的购买关系记录
-     * 
+     *
      * @param groupId
      *            分组ID，其实就是销售价格*100
      * @param maxChildernCount
@@ -131,7 +126,7 @@ public class IbrBuyRelationSvcImpl extends BaseSvcImpl<java.lang.Long, IbrBuyRel
 
     /**
      * 获取最早未匹配满的购买关系记录
-     * 
+     *
      * @param groupId
      *            分组ID，其实就是销售价格*100
      * @param maxChildernCount

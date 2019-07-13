@@ -52,7 +52,7 @@ public class IbrMatchSvcImpl implements IbrMatchSvc {
     public Ro match(final MatchTo to) {
         _log.info("ibrMatchSvc.match: 匹配(订单支付完成后，匹配订单详情到它的上家) to-{}", to);
 
-        _log.info("↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓开始进行匹配↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓");
+        _log.info("↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 开始进行匹配 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓");
 
         try {
             // 步骤计数器
@@ -62,18 +62,12 @@ public class IbrMatchSvcImpl implements IbrMatchSvc {
             if (to.getMatchScheme() == null || to.getBuyerId() == null || to.getMatchPrice() == null || to.getOrderDetailId() == null || to.getMaxChildernCount() == null) {
                 final String msg = "参数错误.没有填写匹配方案/买家ID/匹配价格/订单详情ID/最大子节点的数量";
                 _log.warn("{}: {}", msg, to);
-                final Ro ro = new Ro();
-                ro.setResult(ResultDic.PARAM_ERROR);
-                ro.setMsg(msg);
-                return ro;
+                return new Ro(ResultDic.PARAM_ERROR, msg);
             }
             if (MatchSchemeDic.SPECIFIED_PERSON == to.getMatchScheme() && to.getMatchPersonId() == null) {
                 final String msg = "参数错误.没有填写匹配人ID";
                 _log.warn("{}: {}", msg, to);
-                final Ro ro = new Ro();
-                ro.setResult(ResultDic.PARAM_ERROR);
-                ro.setMsg(msg);
-                return ro;
+                return new Ro(ResultDic.PARAM_ERROR, msg);
             }
 
             _log.info("{}. 将匹配价格转换成分组ID", stepCount++);
@@ -96,15 +90,12 @@ public class IbrMatchSvcImpl implements IbrMatchSvc {
 
                 final String msg = "匹配成功";
                 _log.info("{}. {}: {}", stepCount++, msg, to);
-                final Ro ro = new Ro();
-                ro.setResult(ResultDic.SUCCESS);
-                ro.setMsg(msg);
-                return ro;
+                return new Ro(ResultDic.SUCCESS, msg);
             }
 
             _log.info("该订单详情不是分组首单");
             IbrBuyRelationMo parent;
-            LABEL_SWITH: switch (to.getMatchScheme()) {
+            switch (to.getMatchScheme()) {
             case SPECIFIED_PERSON:
                 _log.info("执行优先匹配给指定人的方案");
                 _log.info("{}. 获取指定人最早未匹配满的购买关系记录", stepCount++);
@@ -114,7 +105,9 @@ public class IbrMatchSvcImpl implements IbrMatchSvc {
                     _log.info("{}. 匹配指定人最早未匹配满的购买关系记录", stepCount++);
                     // FIXME 关系来源应该是指定人匹配
                     buyRelationSvc.insertNode(parent, to.getBuyerId(), to.getPaidNotifyTimestamp(), RelationSourceDic.OWN, to.getMaxChildernCount());
-                    break;
+                    final String msg = "匹配成功";
+                    _log.info("{}. {}: {}", stepCount++, msg, to);
+                    return new Ro(ResultDic.SUCCESS, msg);
                 }
                 _log.info("没有找到指定人的购买记录");
             case SELF:
@@ -125,7 +118,9 @@ public class IbrMatchSvcImpl implements IbrMatchSvc {
                     _log.info("获取到自己最早未匹配满的购买关系记录: ", parent);
                     _log.info("{}. 匹配自己最早未匹配满的购买关系记录", stepCount++);
                     buyRelationSvc.insertNode(parent, to.getBuyerId(), to.getPaidNotifyTimestamp(), RelationSourceDic.OWN, to.getMaxChildernCount());
-                    break;
+                    final String msg = "匹配成功";
+                    _log.info("{}. {}: {}", stepCount++, msg, to);
+                    return new Ro(ResultDic.SUCCESS, msg);
                 }
                 _log.info("没有找到自己的购买记录");
 
@@ -143,7 +138,9 @@ public class IbrMatchSvcImpl implements IbrMatchSvc {
                             _log.info("获取到最近邀请人的最早未匹配满的购买关系记录: ", parent);
                             _log.info("{}. 匹配最近邀请人的最早未匹配满的购买关系记录", stepCount++);
                             buyRelationSvc.insertNode(parent, to.getBuyerId(), to.getPaidNotifyTimestamp(), RelationSourceDic.BUY, to.getMaxChildernCount());
-                            break LABEL_SWITH;
+                            final String msg = "匹配成功";
+                            _log.info("{}. {}: {}", stepCount++, msg, to);
+                            return new Ro(ResultDic.SUCCESS, msg);
                         }
                         _log.info("{}.2.{}. 没有找到邀请人(id-{})的购买关系记录", stepCount++, ++count, inviterId);
                     }
@@ -158,16 +155,17 @@ public class IbrMatchSvcImpl implements IbrMatchSvc {
                     _log.info("获取到最早未匹配满的购买关系记录: ", parent);
                     _log.info("{}. 匹配最早未匹配满的购买关系记录", stepCount++);
                     buyRelationSvc.insertNode(parent, to.getBuyerId(), to.getPaidNotifyTimestamp(), RelationSourceDic.FREE, to.getMaxChildernCount());
-                    break;
+                    final String msg = "匹配成功";
+                    _log.info("{}. {}: {}", stepCount++, msg, to);
+                    return new Ro(ResultDic.SUCCESS, msg);
                 }
                 throw new RuntimeException("匹配失败，没有找到未匹配满的购买关系记录: " + to);
             default:
                 throw new RuntimeException("未定义此匹配方案: " + to.getMatchScheme());
             }
         } finally {
-            _log.info("↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑匹配完成↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑");
+            _log.info("↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ 匹配完成 ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑");
         }
-        return null;
     }
 
 }

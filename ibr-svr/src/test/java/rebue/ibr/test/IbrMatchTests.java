@@ -42,22 +42,54 @@ public class IbrMatchTests {
      */
     @Test
     public void testMatch() throws IOException {
-        _log.info("1. 添加邀请关系 买家3邀请买家4");
+        // 步骤计数器
+        int stepCount = 0;
+
+        _log.info("{}. 添加邀请关系 买家4邀请买家7", ++stepCount);
+        postAddInviteRelation(4L, 7L);
+        _log.info("{}. 添加邀请关系 买家4邀请买家8", ++stepCount);
+        postAddInviteRelation(4L, 8L);
+
+        _log.info("{}. 优先匹配自己 匹配价格9.9 节点1 买家1 应该是根节点", ++stepCount);
+        postMatch(MatchSchemeDic.SELF, 9.9, 1L, 1L);
+        _log.info("{}. 优先匹配自己 匹配价格9.9 节点2 买家2 应该匹配给节点1", ++stepCount);
+        postMatch(MatchSchemeDic.SELF, 9.9, 2L, 2L);
+        _log.info("{}. 优先匹配自己 匹配价格9.9 节点3 买家3 应该匹配给节点1", ++stepCount);
+        postMatch(MatchSchemeDic.SELF, 9.9, 3L, 3L);
+        _log.info("{}. 优先匹配自己 匹配价格9.9 节点4 买家4 应该匹配给节点2", ++stepCount);
+        postMatch(MatchSchemeDic.SELF, 9.9, 4L, 4L);
+        _log.info("{}. 优先匹配自己 匹配价格9.9 节点5 买家5 应该匹配给节点2", ++stepCount);
+        postMatch(MatchSchemeDic.SELF, 9.9, 5L, 5L);
+        _log.info("{}. 优先匹配自己 匹配价格9.9 节点6 买家6 应该匹配给节点3", ++stepCount);
+        postMatch(MatchSchemeDic.SELF, 9.9, 6L, 6L);
+        _log.info("{}. 优先匹配自己 匹配价格9.9 节点7 买家7 应该匹配给节点4", ++stepCount);
+        postMatch(MatchSchemeDic.SELF, 9.9, 7L, 7L);
+        _log.info("{}. 优先匹配自己 匹配价格9.9 节点8 买家6 应该匹配给节点6", ++stepCount);
+        postMatch(MatchSchemeDic.SELF, 9.9, 8L, 6L);
+    }
+
+    /**
+     * 提交添加邀请关系的请求
+     * 
+     * @param matchScheme
+     *            匹配方案
+     * @param matchPrice
+     *            匹配价格，*100就是分组ID
+     * @param id
+     *            新节点ID，其实就是订单详情ID
+     * @param buyerId
+     *            买家ID
+     */
+    private void postAddInviteRelation(final Long inviterId, final Long inviteeId) throws IOException, JsonParseException, JsonMappingException {
         final IbrInviteRelationMo inviteRelationMo = new IbrInviteRelationMo();
-        inviteRelationMo.setInviterId(3L);
-        inviteRelationMo.setInviteeId(4L);
+        inviteRelationMo.setInviterId(inviterId);
+        inviteRelationMo.setInviteeId(inviteeId);
         _log.info("添加邀请关系表的参数为：" + inviteRelationMo);
         final String postResult = OkhttpUtils.postByJsonParams(hostUrl + "/ibr/invite-relation", inviteRelationMo);
         _log.info("添加邀请关系表的返回值为：" + postResult);
         final IdRo idRo = _objectMapper.readValue(postResult, IdRo.class);
         _log.info(idRo.toString());
         Assert.assertEquals(ResultDic.SUCCESS, idRo.getResult());
-        inviteRelationMo.setId(Long.valueOf(idRo.getId()));
-
-        _log.info("2. 优先匹配自己 匹配价格9.9 节点1 买家1 应该是根节点");
-        postMatch(MatchSchemeDic.SELF, 9.9, 1L, 1L);
-        _log.info("3. 优先匹配自己 匹配价格9.9 节点2 买家2 应该匹配给节点1");
-        postMatch(MatchSchemeDic.SELF, 9.9, 2L, 2L);
     }
 
     /**
@@ -86,6 +118,7 @@ public class IbrMatchTests {
         postResult = OkhttpUtils.postByJsonParams(hostUrl + "/ibr/match", to);
         final Ro ro = _objectMapper.readValue(postResult, Ro.class);
         _log.info(ro.toString());
+        Assert.assertEquals(ResultDic.SUCCESS, ro.getResult());
     }
 
 }

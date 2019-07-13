@@ -87,33 +87,24 @@ public class IbrBuyRelationTaskCtrl {
     Ro modify(@RequestBody final IbrBuyRelationTaskMo mo) throws Exception {
         _log.info("received put:/ibr/buy-relation-task");
         _log.info("buyRelationTaskCtrl.modify: {}", mo);
-        final Ro ro = new Ro();
         try {
             if (svc.modify(mo) == 1) {
                 final String msg = "修改成功";
                 _log.info("{}: mo-{}", msg, mo);
-                ro.setMsg(msg);
-                ro.setResult(ResultDic.SUCCESS);
-                return ro;
+                return new Ro(ResultDic.SUCCESS, msg);
             } else {
                 final String msg = "修改失败";
                 _log.error("{}: mo-{}", msg, mo);
-                ro.setMsg(msg);
-                ro.setResult(ResultDic.FAIL);
-                return ro;
+                return new Ro(ResultDic.FAIL, msg);
             }
         } catch (final DuplicateKeyException e) {
             final String msg = "修改失败，唯一键重复：" + e.getCause().getMessage();
             _log.error(msg + ": mo=" + mo, e);
-            ro.setMsg(msg);
-            ro.setResult(ResultDic.FAIL);
-            return ro;
+            return new Ro(ResultDic.FAIL, msg);
         } catch (final RuntimeException e) {
             final String msg = "修改失败，出现运行时异常";
             _log.error(msg + ": mo-" + mo, e);
-            ro.setMsg(msg);
-            ro.setResult(ResultDic.FAIL);
-            return ro;
+            return new Ro(ResultDic.FAIL, msg);
         }
     }
 
@@ -127,19 +118,14 @@ public class IbrBuyRelationTaskCtrl {
         _log.info("received delete:/ibr/buy-relation-task");
         _log.info("buyRelationTaskCtrl.del: {}", id);
         final int result = svc.del(id);
-        final Ro ro = new Ro();
         if (result == 1) {
             final String msg = "删除成功";
             _log.info("{}: id-{}", msg, id);
-            ro.setMsg(msg);
-            ro.setResult(ResultDic.SUCCESS);
-            return ro;
+            return new Ro(ResultDic.SUCCESS, msg);
         } else {
             final String msg = "删除失败，找不到该记录";
             _log.error("{}: id-{}", msg, id);
-            ro.setMsg(msg);
-            ro.setResult(ResultDic.FAIL);
-            return ro;
+            return new Ro(ResultDic.FAIL, msg);
         }
     }
 

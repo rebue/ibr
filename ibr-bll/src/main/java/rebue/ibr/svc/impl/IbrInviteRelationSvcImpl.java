@@ -2,13 +2,11 @@ package rebue.ibr.svc.impl;
 
 import java.util.Date;
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
 import rebue.ibr.dao.IbrInviteRelationDao;
 import rebue.ibr.jo.IbrInviteRelationJo;
 import rebue.ibr.mapper.IbrInviteRelationMapper;
@@ -32,8 +30,7 @@ import rebue.robotech.svc.impl.BaseSvcImpl;
  */
 @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 @Service
-public class IbrInviteRelationSvcImpl extends BaseSvcImpl<java.lang.Long, IbrInviteRelationJo, IbrInviteRelationDao, IbrInviteRelationMo, IbrInviteRelationMapper>
-        implements IbrInviteRelationSvc {
+public class IbrInviteRelationSvcImpl extends BaseSvcImpl<java.lang.Long, IbrInviteRelationJo, IbrInviteRelationDao, IbrInviteRelationMo, IbrInviteRelationMapper> implements IbrInviteRelationSvc {
 
     /**
      * @mbg.generated 自动生成，如需修改，请删除本行
@@ -58,7 +55,7 @@ public class IbrInviteRelationSvcImpl extends BaseSvcImpl<java.lang.Long, IbrInv
 
     /**
      * 获取买家的所有邀请人ID，并按邀请时间从近到远排序
-     * 
+     *
      * @param buyerId
      *            买家ID
      * @return 所有邀请人ID列表
