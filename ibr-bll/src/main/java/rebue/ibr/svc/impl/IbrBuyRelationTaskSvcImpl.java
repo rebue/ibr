@@ -1,15 +1,19 @@
 package rebue.ibr.svc.impl;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import rebue.ibr.dao.IbrBuyRelationTaskDao;
 import rebue.ibr.jo.IbrBuyRelationTaskJo;
 import rebue.ibr.mapper.IbrBuyRelationTaskMapper;
 import rebue.ibr.mo.IbrBuyRelationTaskMo;
 import rebue.ibr.svc.IbrBuyRelationTaskSvc;
+import rebue.robotech.dic.TaskExecuteStateDic;
 import rebue.robotech.svc.impl.BaseSvcImpl;
 
 /**
@@ -28,7 +32,9 @@ import rebue.robotech.svc.impl.BaseSvcImpl;
  */
 @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 @Service
-public class IbrBuyRelationTaskSvcImpl extends BaseSvcImpl<java.lang.Long, IbrBuyRelationTaskJo, IbrBuyRelationTaskDao, IbrBuyRelationTaskMo, IbrBuyRelationTaskMapper> implements IbrBuyRelationTaskSvc {
+public class IbrBuyRelationTaskSvcImpl extends
+        BaseSvcImpl<java.lang.Long, IbrBuyRelationTaskJo, IbrBuyRelationTaskDao, IbrBuyRelationTaskMo, IbrBuyRelationTaskMapper>
+        implements IbrBuyRelationTaskSvc {
 
     /**
      * @mbg.generated 自动生成，如需修改，请删除本行
@@ -47,5 +53,10 @@ public class IbrBuyRelationTaskSvcImpl extends BaseSvcImpl<java.lang.Long, IbrBu
             mo.setId(_idWorker.getId());
         }
         return super.add(mo);
+    }
+
+    @Override
+    public List<Long> getTaskIdsThatShouldExecute(TaskExecuteStateDic executeState, byte taskType) {
+        return _mapper.getTaskIdsThatShouldExecute((byte) executeState.getCode(), taskType);
     }
 }

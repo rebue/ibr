@@ -17,6 +17,6 @@ public interface IbrInviteRelationSvc {
      * @return
      */
     @GetMapping("/ibr/invite-relation/get-one")
-    IbrInviteRelationMo getOne(@RequestParam("inviterId") java.lang.Long inviterId);
+    IbrInviteRelationMo getOne(@RequestParam("inviteeId") java.lang.Long inviteeId);
 
 }

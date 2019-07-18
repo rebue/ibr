@@ -1,7 +1,9 @@
 package rebue.ibr.ctrl;
 
-import com.github.pagehelper.PageInfo;
+import java.util.List;
+
 import javax.annotation.Resource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
@@ -12,9 +14,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.github.pagehelper.PageInfo;
+
 import rebue.ibr.mo.IbrBuyRelationTaskMo;
 import rebue.ibr.svc.IbrBuyRelationTaskSvc;
 import rebue.robotech.dic.ResultDic;
+import rebue.robotech.dic.TaskExecuteStateDic;
 import rebue.robotech.ro.IdRo;
 import rebue.robotech.ro.Ro;
 
@@ -135,7 +141,9 @@ public class IbrBuyRelationTaskCtrl {
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
     @GetMapping("/ibr/buy-relation-task")
-    PageInfo<IbrBuyRelationTaskMo> list(final IbrBuyRelationTaskMo mo, @RequestParam(value = "pageNum", required = false) Integer pageNum, @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+    PageInfo<IbrBuyRelationTaskMo> list(final IbrBuyRelationTaskMo mo,
+            @RequestParam(value = "pageNum", required = false) Integer pageNum,
+            @RequestParam(value = "pageSize", required = false) Integer pageSize) {
         _log.info("received get:/ibr/buy-relation-task");
         _log.info("buyRelationTask.list: {},pageNum-{},pageSize-{}", mo, pageNum, pageSize);
         if (pageNum == null) {
@@ -165,5 +173,17 @@ public class IbrBuyRelationTaskCtrl {
         _log.info("received get:/ibr/buy-relation-task/get-by-id");
         _log.info("ibrBuyRelationTaskMoCtrl.getById: {}", id);
         return svc.getById(id);
+    }
+
+    /**
+     * 获取需要执行的任务
+     * 
+     * @return
+     */
+    @GetMapping(value = "/ibr/buy-relation-task/tasks")
+    List<Long> getTaskIdsThatShouldExecute(@RequestParam("executeState") final TaskExecuteStateDic executeState,
+            @RequestParam("taskType") final byte taskType) {
+        _log.info("获取需要执行的任务,executeState-{},taskType-{}", executeState, taskType);
+        return svc.getTaskIdsThatShouldExecute(executeState, taskType);
     }
 }

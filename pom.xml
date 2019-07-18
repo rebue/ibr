@@ -28,6 +28,11 @@
 				<artifactId>ibr-api</artifactId>
 				<version>1.0.9</version>
 			</dependency>
+				<dependency>
+				<groupId>com.github.rebue.ibr</groupId>
+				<artifactId>ibr-svr-feign</artifactId>
+				<version>1.0.9</version>
+			</dependency>
 			<dependency>
 				<groupId>com.github.rebue.ibr</groupId>
 				<artifactId>ibr-bll</artifactId>
