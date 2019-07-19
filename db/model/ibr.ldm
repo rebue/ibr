@@ -1025,7 +1025,7 @@ RefrUpdRule=Restrict
 RefrDelRule=Restrict
 ColnFKName=%TABLE%_PK
 ColnFKNameUse=No</a:ModelOptionsText>
-<a:RepositoryFilename>%[PRJ_ROOT_DIR]%\ibr.ldm</a:RepositoryFilename>
+<a:RepositoryFilename>C:\Users\admin\Desktop\ibr.ldm</a:RepositoryFilename>
 <c:GeneratedModels>
 <o:Shortcut Id="o3">
 <a:ObjectID>559DDBE0-675F-4C08-B213-4A6AA9804E3B</a:ObjectID>
@@ -2036,9 +2036,9 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:Code>RELATION_SOURCE</a:Code>
 <a:CreationDate>1561604812</a:CreationDate>
 <a:Creator>admin</a:Creator>
-<a:ModificationDate>1562214831</a:ModificationDate>
+<a:ModificationDate>1563519113</a:ModificationDate>
 <a:Modifier>admin</a:Modifier>
-<a:Comment>关系来源（1：自己匹配自己  2：购买关系  3：注册关系  4：差一人且已有购买关系  5：差两人  6：差一人但没有购买关系 7:自由匹配）纪录为空的是根节点</a:Comment>
+<a:Comment>关系来源（1：自己匹配自己  2：购买关系  3：注册关系  4：差一人且已有购买关系  5：差两人  6：差一人但没有购买关系 7:自由匹配8：指定人）纪录为空的是根节点</a:Comment>
 <a:DataType>BT</a:DataType>
 </o:EntityAttribute>
 <o:EntityAttribute Id="o29">
@@ -2360,12 +2360,12 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:Code>ibr-mysql</a:Code>
 <a:CreationDate>1562146657</a:CreationDate>
 <a:Creator>admin</a:Creator>
-<a:ModificationDate>1562291546</a:ModificationDate>
+<a:ModificationDate>1563519157</a:ModificationDate>
 <a:Modifier>admin</a:Modifier>
 <a:TargetModelURL>file:///%[PRJ_ROOT_DIR]%/ibr-mysql.pdm</a:TargetModelURL>
 <a:TargetModelID>906395C0-641E-4C8E-9666-6EC2B23409A5</a:TargetModelID>
 <a:TargetModelClassID>CDE44E21-9669-11D1-9914-006097355D9B</a:TargetModelClassID>
-<a:TargetModelLastModificationDate>1562291546</a:TargetModelLastModificationDate>
+<a:TargetModelLastModificationDate>1563519158</a:TargetModelLastModificationDate>
 <c:SessionShortcuts>
 <o:Shortcut Ref="o8"/>
 </c:SessionShortcuts>
