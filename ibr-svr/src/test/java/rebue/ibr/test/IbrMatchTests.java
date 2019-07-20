@@ -26,16 +26,16 @@ import rebue.wheel.OkhttpUtils;
  */
 public class IbrMatchTests {
 
-    private static final Logger _log                     = LoggerFactory.getLogger(IbrMatchTests.class);
+    private static final Logger _log = LoggerFactory.getLogger(IbrMatchTests.class);
 
-    private final String        hostUrl                  = "http://127.0.0.1:9800";
+    private final String hostUrl = "http://127.0.0.1:9801";
 
-    private final ObjectMapper  _objectMapper            = new ObjectMapper();
+    private final ObjectMapper _objectMapper = new ObjectMapper();
 
     /**
      * 收到支付通知时的时间戳的计数器
      */
-    private int                 paidNotifyTimestampCount = 0;
+    private int paidNotifyTimestampCount = 0;
 
     /**
      * 测试匹配
@@ -72,6 +72,7 @@ public class IbrMatchTests {
         postMatch(MatchSchemeDic.SELF, 9.9, 8L, 6L);
         _log.info("{}. 优先匹配自己 匹配价格9.9 节点9 买家9 应该匹配给节点5", ++stepCount);
         postMatch(MatchSchemeDic.SELF, 9.9, 9L, 9L);
+
     }
 
     /**
@@ -86,7 +87,8 @@ public class IbrMatchTests {
      * @param buyerId
      *            买家ID
      */
-    private void postAddInviteRelation(final Long inviterId, final Long inviteeId) throws IOException, JsonParseException, JsonMappingException {
+    private void postAddInviteRelation(final Long inviterId, final Long inviteeId)
+            throws IOException, JsonParseException, JsonMappingException {
         final IbrInviteRelationMo inviteRelationMo = new IbrInviteRelationMo();
         inviteRelationMo.setInviterId(inviterId);
         inviteRelationMo.setInviteeId(inviteeId);

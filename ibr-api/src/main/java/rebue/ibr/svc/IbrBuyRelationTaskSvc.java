@@ -2,6 +2,7 @@ package rebue.ibr.svc;
 
 import java.util.List;
 
+import rebue.ibr.dic.MatchTaskTypeDic;
 import rebue.ibr.jo.IbrBuyRelationTaskJo;
 import rebue.ibr.mo.IbrBuyRelationTaskMo;
 import rebue.robotech.dic.TaskExecuteStateDic;
@@ -21,5 +22,12 @@ public interface IbrBuyRelationTaskSvc extends BaseSvc<java.lang.Long, IbrBuyRel
      * @param taskId
      * @return
      */
-    List<Long> getTaskIdsThatShouldExecute(TaskExecuteStateDic executeState, byte taskType);
+    List<Long> getTaskIdsThatShouldExecute(TaskExecuteStateDic executeState, MatchTaskTypeDic taskType);
+
+    /**
+     * 执行匹配购买关系任务
+     * 
+     * @param taskId
+     */
+    void executeSubscribeTraceTask(Long taskId);
 }

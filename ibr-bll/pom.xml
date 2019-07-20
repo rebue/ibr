@@ -20,6 +20,11 @@
 			<groupId>com.github.rebue.robotech</groupId>
 			<artifactId>robotech-bll</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.github.rebue.ord</groupId>
+			<artifactId>ord-svr-feign</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

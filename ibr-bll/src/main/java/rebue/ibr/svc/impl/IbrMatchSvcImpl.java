@@ -86,6 +86,7 @@ public class IbrMatchSvcImpl implements IbrMatchSvc {
                 mo.setRightValue(2L);
                 mo.setBuyerId(to.getBuyerId());
                 mo.setPaidNotifyTimestamp(to.getPaidNotifyTimestamp());
+                mo.setId(to.getOrderDetailId());
                 buyRelationSvc.add(mo);
 
                 final String msg = "匹配成功";
@@ -103,8 +104,7 @@ public class IbrMatchSvcImpl implements IbrMatchSvc {
                 if (parent != null) {
                     _log.info("获取到指定人最早未匹配满的购买关系记录: {}", parent);
                     _log.info("{}. 匹配指定人最早未匹配满的购买关系记录", stepCount++);
-                    // FIXME 关系来源应该是指定人匹配
-                    buyRelationSvc.insertNode(parent, to.getBuyerId(), to.getPaidNotifyTimestamp(), RelationSourceDic.OWN, to.getMaxChildernCount());
+                    buyRelationSvc.insertNode(parent, to.getBuyerId(), to.getPaidNotifyTimestamp(), RelationSourceDic.APPOINTED, to.getMaxChildernCount());
                     final String msg = "匹配成功";
                     _log.info("{}. {}: {}", stepCount++, msg, to);
                     return new Ro(ResultDic.SUCCESS, msg);

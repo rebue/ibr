@@ -87,7 +87,7 @@ public class IbrBuyRelationMo implements Serializable {
     private Boolean isSettled;
 
     /**
-     *    关系来源（1：自己匹配自己  2：购买关系  3：注册关系  4：差一人且已有购买关系  5：差两人  6：差一人但没有购买关系 7:自由匹配）纪录为空的是根节点
+     *    关系来源（1：自己匹配自己  2：购买关系  3：注册关系  4：差一人且已有购买关系  5：差两人  6：差一人但没有购买关系 7:自由匹配8：指定人）纪录为空的是根节点
      *
      *    数据库字段: IBR_BUY_RELATION.RELATION_SOURCE
      *
@@ -286,7 +286,7 @@ public class IbrBuyRelationMo implements Serializable {
     }
 
     /**
-     *    关系来源（1：自己匹配自己  2：购买关系  3：注册关系  4：差一人且已有购买关系  5：差两人  6：差一人但没有购买关系 7:自由匹配）纪录为空的是根节点
+     *    关系来源（1：自己匹配自己  2：购买关系  3：注册关系  4：差一人且已有购买关系  5：差两人  6：差一人但没有购买关系 7:自由匹配8：指定人）纪录为空的是根节点
      *
      *    数据库字段: IBR_BUY_RELATION.RELATION_SOURCE
      *
@@ -297,7 +297,7 @@ public class IbrBuyRelationMo implements Serializable {
     }
 
     /**
-     *    关系来源（1：自己匹配自己  2：购买关系  3：注册关系  4：差一人且已有购买关系  5：差两人  6：差一人但没有购买关系 7:自由匹配）纪录为空的是根节点
+     *    关系来源（1：自己匹配自己  2：购买关系  3：注册关系  4：差一人且已有购买关系  5：差两人  6：差一人但没有购买关系 7:自由匹配8：指定人）纪录为空的是根节点
      *
      *    数据库字段: IBR_BUY_RELATION.RELATION_SOURCE
      *

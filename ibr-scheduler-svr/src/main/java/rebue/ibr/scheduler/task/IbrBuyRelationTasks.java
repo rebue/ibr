@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import rebue.ibr.dic.MatchTaskTypeDic;
 import rebue.ibr.svr.feign.IbrBuyRelationTaskSvc;
 import rebue.robotech.dic.TaskExecuteStateDic;
 
@@ -21,14 +22,21 @@ public class IbrBuyRelationTasks {
     private IbrBuyRelationTaskSvc ibrBuyRelationTaskSvc;
 
     // buyRelation:订单匹配关执行的间隔(毫秒)，默认5分钟检查一次
-    @Scheduled(fixedDelayString = "${ord.scheduler.buyRelation:300000}")
-    public void executeTasks() {
+    @Scheduled(fixedDelayString = "${ibr.scheduler.buyRelation:300000}")
+    public void executeTasks() throws InterruptedException {
         _log.info("定时执行需要订单匹配关系的的任务");
-        List<Long> taskIds = ibrBuyRelationTaskSvc.getTaskIdsThatShouldExecute(TaskExecuteStateDic.NONE, (byte) 1);
+        List<Long> taskIds = ibrBuyRelationTaskSvc.getTaskIdsThatShouldExecute(TaskExecuteStateDic.NONE,
+                MatchTaskTypeDic.MATCH_BUY_RELATION);
         _log.info("获取到所有需要订单匹配关系的任务的列表为：{}", taskIds);
         try {
-            for (int i = 0; i < 50; i++) {
-                _log.info("定时执行需要订单匹配关系的的任务i-{}", i);
+            for (Long taskId : taskIds) {
+                try {
+                    _log.info("当前任务id-{}", taskId);
+                    ibrBuyRelationTaskSvc.executeMatchBuyRelationTask(taskId);
+                    Thread.sleep(1000);
+                } catch (final RuntimeException e) {
+                    _log.error("需要执行订单匹配关系任务失败", e);
+                }
             }
         } catch (final RuntimeException e) {
             _log.info("获取需要执行订单匹配关系任务时出现异常", e);
