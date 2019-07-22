@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: ord-scheduler-svr
+    name: ibr-scheduler-svr
   profiles:
     active: dev
   metrics:
@@ -16,4 +16,13 @@ eureka:
     prefer-ip-address: true
     # 将Instance ID设置成IP:端口的形式(在客户端配置)
     instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${server.port}
-    
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 20000
+ribbon:  
+  ReadTimeout: 20000  
+  ConnectTimeout: 20000
