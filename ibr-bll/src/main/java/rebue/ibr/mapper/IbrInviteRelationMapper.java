@@ -2,6 +2,7 @@ package rebue.ibr.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -92,4 +93,7 @@ public interface IbrInviteRelationMapper extends MybatisBaseMapper<IbrInviteRela
             "    INVITEE_ID = #{buyerId} " + //
             "ORDER BY INVITE_TIMESTAMP DESC")
     List<Long> listIdsOfBuyer(@Param("buyerId") Long buyerId);
+
+    @Delete(" delete from IBR_INVITE_RELATION where INVITEE_ID = #{inviteeId} and INVITER_ID = #{inviterId} ")
+    int deleteOldRelation(@Param("inviteeId") Long inviteeId, @Param("inviterId") Long inviterId);
 }

@@ -2,11 +2,13 @@ package rebue.ibr.svc.impl;
 
 import java.util.Date;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import rebue.ibr.dao.IbrInviteRelationDao;
 import rebue.ibr.jo.IbrInviteRelationJo;
 import rebue.ibr.mapper.IbrInviteRelationMapper;
@@ -30,7 +32,9 @@ import rebue.robotech.svc.impl.BaseSvcImpl;
  */
 @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 @Service
-public class IbrInviteRelationSvcImpl extends BaseSvcImpl<java.lang.Long, IbrInviteRelationJo, IbrInviteRelationDao, IbrInviteRelationMo, IbrInviteRelationMapper> implements IbrInviteRelationSvc {
+public class IbrInviteRelationSvcImpl extends
+        BaseSvcImpl<java.lang.Long, IbrInviteRelationJo, IbrInviteRelationDao, IbrInviteRelationMo, IbrInviteRelationMapper>
+        implements IbrInviteRelationSvc {
 
     /**
      * @mbg.generated 自动生成，如需修改，请删除本行
@@ -40,6 +44,7 @@ public class IbrInviteRelationSvcImpl extends BaseSvcImpl<java.lang.Long, IbrInv
     /**
      * 添加邀请关系
      * 邀请时间戳不用传进来，在这里直接取当前时间戳
+     * 且先删除旧的邀请关系，以确保当前关系是最新的
      */
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
@@ -49,6 +54,9 @@ public class IbrInviteRelationSvcImpl extends BaseSvcImpl<java.lang.Long, IbrInv
         if (mo.getId() == null || mo.getId() == 0) {
             mo.setId(_idWorker.getId());
         }
+        _log.info("添加邀请关系前先尝试删除旧的关系，参数: inviteeId-{},inviterId-{}", mo.getInviteeId(), mo.getInviterId());
+        int i = _mapper.deleteOldRelation(mo.getInviteeId(), mo.getInviterId());
+        _log.info("添加邀请关系前先尝试删除旧的关系，结果: i-{}", i);
         mo.setInviteTimestamp(new Date().getTime());
         return super.add(mo);
     }
