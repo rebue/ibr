@@ -19,6 +19,8 @@ public interface IbrBuyRelationSvc extends BaseSvc<java.lang.Long, IbrBuyRelatio
      *            父节点购买关系
      * @param buyerId
      *            买家ID
+     * @param currentDetalId
+     *            当前详情Id
      * @param paidNotifyTimestamp
      *            收到支付通知时的时间戳
      * @param relationSource
@@ -26,7 +28,7 @@ public interface IbrBuyRelationSvc extends BaseSvc<java.lang.Long, IbrBuyRelatio
      * @param maxChildernCount
      *            最大子节点的数量，其实就是最多有多少个下家，目前规则是2家
      */
-    void insertNode(IbrBuyRelationMo parent, Long buyerId, Long paidNotifyTimestamp, RelationSourceDic relationSource, Integer maxChildernCount);
+    void insertNode(IbrBuyRelationMo parent, Long buyerId,Long currentDetalId, Long paidNotifyTimestamp, RelationSourceDic relationSource, Integer maxChildernCount);
 
     /**
      * 获取买家最早未匹配满的购买节点

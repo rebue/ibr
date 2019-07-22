@@ -32,7 +32,9 @@ import rebue.robotech.svc.impl.BaseSvcImpl;
  */
 @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 @Service
-public class IbrBuyRelationSvcImpl extends BaseSvcImpl<java.lang.Long, IbrBuyRelationJo, IbrBuyRelationDao, IbrBuyRelationMo, IbrBuyRelationMapper> implements IbrBuyRelationSvc {
+public class IbrBuyRelationSvcImpl
+        extends BaseSvcImpl<java.lang.Long, IbrBuyRelationJo, IbrBuyRelationDao, IbrBuyRelationMo, IbrBuyRelationMapper>
+        implements IbrBuyRelationSvc {
 
     /**
      * @mbg.generated 自动生成，如需修改，请删除本行
@@ -40,7 +42,8 @@ public class IbrBuyRelationSvcImpl extends BaseSvcImpl<java.lang.Long, IbrBuyRel
     private static final Logger _log = LoggerFactory.getLogger(IbrBuyRelationSvcImpl.class);
 
     /**
-     * @mbg.generated 自动生成，如需修改，请删除本行
+     * 该方法已经被修改，没有传id进来将无法添加，因为id就是订单
+     * 详情id，按理不可能自动生成
      */
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
@@ -48,7 +51,8 @@ public class IbrBuyRelationSvcImpl extends BaseSvcImpl<java.lang.Long, IbrBuyRel
         _log.info("ibrBuyRelationSvc.add: 添加购买关系 mo-", mo);
         // 如果id为空那么自动生成分布式id
         if (mo.getId() == null || mo.getId() == 0) {
-            mo.setId(_idWorker.getId());
+            _log.error("添加购买关系失败,id(订单详情id)没有传进来");
+            throw new IllegalArgumentException("添加购买关系失败");
         }
         return super.add(mo);
     }
@@ -70,10 +74,11 @@ public class IbrBuyRelationSvcImpl extends BaseSvcImpl<java.lang.Long, IbrBuyRel
      */
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void insertNode(final IbrBuyRelationMo parent, final Long buyerId, final Long paidNotifyTimestamp, final RelationSourceDic relationSource,
-            final Integer maxChildernCount) {
-        _log.info("ibrBuyRelationSvc.insertNode: 在指定的父节点下插入新节点 parent-{},buyerId-{},paidNotifyTimestamp-{},relationSource-{},maxChildernCount-{}", parent, buyerId,
-                paidNotifyTimestamp, relationSource, maxChildernCount);
+    public void insertNode(final IbrBuyRelationMo parent, final Long buyerId, final Long currentDetalId,
+            final Long paidNotifyTimestamp, final RelationSourceDic relationSource, final Integer maxChildernCount) {
+        _log.info(
+                "ibrBuyRelationSvc.insertNode: 在指定的父节点下插入新节点 parent-{},buyerId-{},currentDetalId-{},paidNotifyTimestamp-{},relationSource-{},maxChildernCount-{}",
+                parent, buyerId, currentDetalId, paidNotifyTimestamp, relationSource, maxChildernCount);
 
         // 插入节点的左值 = 父节点原来的右值
         final Long insertLeftValue = parent.getRightValue();
@@ -92,6 +97,7 @@ public class IbrBuyRelationSvcImpl extends BaseSvcImpl<java.lang.Long, IbrBuyRel
 
         // 添加新节点
         final IbrBuyRelationMo mo = new IbrBuyRelationMo();
+        mo.setId(currentDetalId);
         mo.setGroupId(parent.getGroupId());
         mo.setBuyerId(buyerId);
         mo.setPaidNotifyTimestamp(paidNotifyTimestamp);
@@ -115,8 +121,11 @@ public class IbrBuyRelationSvcImpl extends BaseSvcImpl<java.lang.Long, IbrBuyRel
      * @return 最早购买记录，如果没有则返回null
      */
     @Override
-    public IbrBuyRelationMo getNotFullAndEarlestBuyRelationOfBuyer(final Long groupId, final Long buyerId, final Integer maxChildernCount) {
-        _log.info("ibrBuyRelationSvc.getNotFullAndEarlestBuyRelationOfBuyer: 获取买家最早未匹配满的购买节点 groupId-{},buyerId-{},maxChildernCount-{}", groupId, buyerId, maxChildernCount);
+    public IbrBuyRelationMo getNotFullAndEarlestBuyRelationOfBuyer(final Long groupId, final Long buyerId,
+            final Integer maxChildernCount) {
+        _log.info(
+                "ibrBuyRelationSvc.getNotFullAndEarlestBuyRelationOfBuyer: 获取买家最早未匹配满的购买节点 groupId-{},buyerId-{},maxChildernCount-{}",
+                groupId, buyerId, maxChildernCount);
         return _mapper.getEarlestBuyRelationOfBuyer(groupId, buyerId, maxChildernCount);
     }
 
@@ -130,8 +139,11 @@ public class IbrBuyRelationSvcImpl extends BaseSvcImpl<java.lang.Long, IbrBuyRel
      * @return 最早购买记录，如果没有则返回null
      */
     @Override
-    public IbrBuyRelationMo getNotFullAndEarlestBuyRelationOfLatestInviter(final Long groupId, final Integer maxChildernCount) {
-        _log.info("ibrBuyRelationSvc.getNotFullAndEarlestBuyRelationOfLatestInviter: 获取最近邀请人的最早未匹配满的购买关系记录 groupId-{},maxChildernCount-{}", groupId, maxChildernCount);
+    public IbrBuyRelationMo getNotFullAndEarlestBuyRelationOfLatestInviter(final Long groupId,
+            final Integer maxChildernCount) {
+        _log.info(
+                "ibrBuyRelationSvc.getNotFullAndEarlestBuyRelationOfLatestInviter: 获取最近邀请人的最早未匹配满的购买关系记录 groupId-{},maxChildernCount-{}",
+                groupId, maxChildernCount);
         return _mapper.getNotFullAndEarlestBuyRelationOfLatestInviter(groupId, maxChildernCount);
     }
 
@@ -146,7 +158,8 @@ public class IbrBuyRelationSvcImpl extends BaseSvcImpl<java.lang.Long, IbrBuyRel
      */
     @Override
     public IbrBuyRelationMo getNotFullAndEarlestBuyRelation(final Long groupId, final Integer maxChildernCount) {
-        _log.info("ibrBuyRelationSvc.getNotFullAndEarlestBuyRelation: 获取最早未匹配满的购买关系记录 groupId-{},maxChildernCount-{}", groupId, maxChildernCount);
+        _log.info("ibrBuyRelationSvc.getNotFullAndEarlestBuyRelation: 获取最早未匹配满的购买关系记录 groupId-{},maxChildernCount-{}",
+                groupId, maxChildernCount);
         return _mapper.getNotFullAndEarlestBuyRelation(groupId, maxChildernCount);
     }
 }
