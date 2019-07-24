@@ -1,7 +1,9 @@
 package rebue.ibr.ctrl;
 
-import com.github.pagehelper.PageInfo;
+import java.util.List;
+
 import javax.annotation.Resource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import rebue.ibr.mo.IbrBuyRelationMo;
 import rebue.ibr.svc.IbrBuyRelationSvc;
 import rebue.robotech.dic.ResultDic;
@@ -132,27 +135,12 @@ public class IbrBuyRelationCtrl {
     /**
      * 查询购买关系
      *
-     * @mbg.generated 自动生成，如需修改，请删除本行
      */
     @GetMapping("/ibr/buy-relation")
-    PageInfo<IbrBuyRelationMo> list(final IbrBuyRelationMo mo, @RequestParam(value = "pageNum", required = false) Integer pageNum, @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+    List<IbrBuyRelationMo> list(final IbrBuyRelationMo mo) {
         _log.info("received get:/ibr/buy-relation");
-        _log.info("buyRelation.list: {},pageNum-{},pageSize-{}", mo, pageNum, pageSize);
-        if (pageNum == null) {
-            pageNum = 1;
-        }
-        if (pageSize == null) {
-            pageSize = 5;
-        }
-        _log.info("list IbrBuyRelationMo:" + mo + ", pageNum = " + pageNum + ", pageSize = " + pageSize);
-        if (pageSize > 50) {
-            final String msg = "pageSize不能大于50";
-            _log.error(msg);
-            throw new IllegalArgumentException(msg);
-        }
-        final PageInfo<IbrBuyRelationMo> result = svc.list(mo, pageNum, pageSize);
-        _log.info("result: " + result);
-        return result;
+
+        return svc.list(mo);
     }
 
     /**

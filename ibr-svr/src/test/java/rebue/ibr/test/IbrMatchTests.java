@@ -28,7 +28,7 @@ public class IbrMatchTests {
 
     private static final Logger _log = LoggerFactory.getLogger(IbrMatchTests.class);
 
-    private final String hostUrl = "http://127.0.0.1:9801";
+    private final String hostUrl = "http://127.0.0.1:9800";
 
     private final ObjectMapper _objectMapper = new ObjectMapper();
 

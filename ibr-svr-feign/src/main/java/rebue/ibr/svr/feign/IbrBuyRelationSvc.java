@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import rebue.ibr.mo.IbrBuyRelationMo;
 import rebue.sbs.feign.FeignConfig;
@@ -19,13 +19,13 @@ public interface IbrBuyRelationSvc {
      * @return
      */
     @GetMapping("/ibr/buy-relation")
-    List<IbrBuyRelationMo> list(@RequestBody IbrBuyRelationMo mo);
+    List<IbrBuyRelationMo> list(@RequestParam("parentId") final java.lang.Long parentId);
 
     /**
-     * 获取单个购买关系表
+     * 获取单个购买关系
      *
      */
-    @GetMapping("/ibr/buy-relation/get-one")
-    IbrBuyRelationMo getOne(@RequestBody IbrBuyRelationMo mo);
+    @GetMapping("/ibr/buy-relation/get-by-id")
+    IbrBuyRelationMo getById(@RequestParam("id") final java.lang.Long id);
 
 }
