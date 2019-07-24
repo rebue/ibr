@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2019/7/19 14:52:56                           */
+/* Created on:     2019/7/24 16:17:22                           */
 /*==============================================================*/
 
 
@@ -41,7 +41,7 @@ create table IBR_BUY_RELATION_TASK
    EXECUTE_STATE        tinyint not null default 0 comment '执行状态(-1:取消；0:未执行；1:已执行)',
    EXECUTE_PLAN_TIME    datetime not null comment '计划执行时间',
    EXECUTE_FACT_TIME    datetime comment '实际执行时间',
-   TASK_TYPE            tinyint not null comment '任务类型（1：匹配购买关系）',
+   TASK_TYPE            tinyint not null comment '任务类型（1：匹配购买关系 2：结算返佣金）',
    ORDER_DETAIL_ID      bigint not null comment '订单详情ID',
    SUB_TASK_TYPE        tinyint default -1 comment '子任务类型',
    primary key (ID),

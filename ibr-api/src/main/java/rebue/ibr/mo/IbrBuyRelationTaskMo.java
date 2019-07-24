@@ -58,7 +58,7 @@ public class IbrBuyRelationTaskMo implements Serializable {
     private Date executeFactTime;
 
     /**
-     *    任务类型（1：匹配购买关系）
+     *    任务类型（1：匹配购买关系 2：结算返佣金）
      *
      *    数据库字段: IBR_BUY_RELATION_TASK.TASK_TYPE
      *
@@ -178,7 +178,7 @@ public class IbrBuyRelationTaskMo implements Serializable {
     }
 
     /**
-     *    任务类型（1：匹配购买关系）
+     *    任务类型（1：匹配购买关系 2：结算返佣金）
      *
      *    数据库字段: IBR_BUY_RELATION_TASK.TASK_TYPE
      *
@@ -189,7 +189,7 @@ public class IbrBuyRelationTaskMo implements Serializable {
     }
 
     /**
-     *    任务类型（1：匹配购买关系）
+     *    任务类型（1：匹配购买关系 2：结算返佣金）
      *
      *    数据库字段: IBR_BUY_RELATION_TASK.TASK_TYPE
      *

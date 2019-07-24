@@ -1025,7 +1025,7 @@ RefrUpdRule=Restrict
 RefrDelRule=Restrict
 ColnFKName=%TABLE%_PK
 ColnFKNameUse=No</a:ModelOptionsText>
-<a:RepositoryFilename>C:\Users\admin\Desktop\ibr.ldm</a:RepositoryFilename>
+<a:RepositoryFilename>%[PRJ_ROOT_DIR]%\ibr.ldm</a:RepositoryFilename>
 <c:GeneratedModels>
 <o:Shortcut Id="o3">
 <a:ObjectID>559DDBE0-675F-4C08-B213-4A6AA9804E3B</a:ObjectID>
@@ -2240,9 +2240,9 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:Code>TASK_TYPE</a:Code>
 <a:CreationDate>1561605110</a:CreationDate>
 <a:Creator>admin</a:Creator>
-<a:ModificationDate>1561605251</a:ModificationDate>
+<a:ModificationDate>1563956045</a:ModificationDate>
 <a:Modifier>admin</a:Modifier>
-<a:Comment>任务类型（1：匹配购买关系）</a:Comment>
+<a:Comment>任务类型（1：匹配购买关系 2：结算返佣金）</a:Comment>
 <a:DataType>BT</a:DataType>
 <a:LogicalAttribute.Mandatory>1</a:LogicalAttribute.Mandatory>
 </o:EntityAttribute>
