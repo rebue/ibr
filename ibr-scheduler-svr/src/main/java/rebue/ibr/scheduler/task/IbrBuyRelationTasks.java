@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import rebue.ibr.dic.MatchTaskTypeDic;
+import rebue.ibr.dic.TaskTypeDic;
 import rebue.ibr.svr.feign.IbrBuyRelationTaskSvc;
 import rebue.robotech.dic.TaskExecuteStateDic;
 
@@ -26,7 +26,7 @@ public class IbrBuyRelationTasks {
     public void executeTasks() throws InterruptedException {
         _log.info("定时执行需要订单匹配关系的的任务");
         List<Long> taskIds = ibrBuyRelationTaskSvc.getTaskIdsThatShouldExecute(TaskExecuteStateDic.NONE,
-                MatchTaskTypeDic.MATCH_BUY_RELATION);
+                TaskTypeDic.MATCH_BUY_RELATION);
         _log.info("获取到所有需要订单匹配关系的任务的列表为：{}", taskIds);
         try {
             for (Long taskId : taskIds) {

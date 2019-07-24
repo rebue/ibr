@@ -13,7 +13,7 @@ import rebue.wheel.baseintf.EnumBase;
  * 1:匹配购买关系
  * </pre>
  */
-public enum MatchTaskTypeDic implements EnumBase {
+public enum TaskTypeDic implements EnumBase {
 
     /**
      * 1: 匹配购买关系
@@ -37,12 +37,12 @@ public enum MatchTaskTypeDic implements EnumBase {
      * 否则jackson将调用默认的反序列化方法，而不会调用本方法
      */
     @JsonCreator
-    public static MatchTaskTypeDic getItem(final int code) {
+    public static TaskTypeDic getItem(final int code) {
         final EnumBase result = valueMap.get(code);
         if (result == null) {
             throw new IllegalArgumentException("输入的code" + code + "不在枚举的取值范围内");
         }
-        return (MatchTaskTypeDic) result;
+        return (TaskTypeDic) result;
     }
 
     private int code;
@@ -50,7 +50,7 @@ public enum MatchTaskTypeDic implements EnumBase {
     /**
      * 构造器，传入code
      */
-    MatchTaskTypeDic(final int code) {
+    TaskTypeDic(final int code) {
         this.code = code;
     }
 

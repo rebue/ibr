@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import rebue.ibr.dic.MatchTaskTypeDic;
+import rebue.ibr.dic.TaskTypeDic;
 import rebue.ibr.mo.IbrBuyRelationTaskMo;
 import rebue.robotech.dic.TaskExecuteStateDic;
 import rebue.robotech.ro.IdRo;
@@ -35,7 +35,7 @@ public interface IbrBuyRelationTaskSvc {
      */
     @GetMapping(value = "/ibr/buy-relation-task/tasks")
     List<Long> getTaskIdsThatShouldExecute(@RequestParam("executeState") final TaskExecuteStateDic executeState,
-            @RequestParam("taskType") final MatchTaskTypeDic taskType);
+            @RequestParam("taskType") final TaskTypeDic taskType);
 
     /**
      * 执行匹配购买关系任务

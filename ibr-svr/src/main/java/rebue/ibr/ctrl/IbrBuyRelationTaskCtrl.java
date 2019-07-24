@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageInfo;
 
-import rebue.ibr.dic.MatchTaskTypeDic;
+import rebue.ibr.dic.TaskTypeDic;
 import rebue.ibr.mo.IbrBuyRelationTaskMo;
 import rebue.ibr.svc.IbrBuyRelationTaskSvc;
 import rebue.robotech.dic.ResultDic;
@@ -183,7 +183,7 @@ public class IbrBuyRelationTaskCtrl {
      */
     @GetMapping(value = "/ibr/buy-relation-task/tasks")
     List<Long> getTaskIdsThatShouldExecute(@RequestParam("executeState") final TaskExecuteStateDic executeState,
-            @RequestParam("taskType") final MatchTaskTypeDic taskType) {
+            @RequestParam("taskType") final TaskTypeDic taskType) {
         _log.info("获取需要执行的任务,executeState-{},taskType-{}", executeState, taskType);
         return svc.getTaskIdsThatShouldExecute(executeState, taskType);
     }

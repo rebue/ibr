@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import rebue.ibr.dao.IbrBuyRelationTaskDao;
 import rebue.ibr.dic.MatchSchemeDic;
-import rebue.ibr.dic.MatchTaskTypeDic;
+import rebue.ibr.dic.TaskTypeDic;
 import rebue.ibr.jo.IbrBuyRelationTaskJo;
 import rebue.ibr.mapper.IbrBuyRelationTaskMapper;
 import rebue.ibr.mo.IbrBuyRelationTaskMo;
@@ -78,7 +78,7 @@ public class IbrBuyRelationTaskSvcImpl extends
     }
 
     @Override
-    public List<Long> getTaskIdsThatShouldExecute(TaskExecuteStateDic executeState, MatchTaskTypeDic taskType) {
+    public List<Long> getTaskIdsThatShouldExecute(TaskExecuteStateDic executeState, TaskTypeDic taskType) {
         return _mapper.getTaskIdsThatShouldExecute((byte) executeState.getCode(), (byte) taskType.getCode());
     }
 
