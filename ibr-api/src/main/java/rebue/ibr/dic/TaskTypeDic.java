@@ -11,7 +11,7 @@ import rebue.wheel.baseintf.EnumBase;
  * <pre>
  * 
  * 1:匹配购买关系
- * 2:匹配购买关系
+ * 2:结算-结算返佣金
  * </pre>
  */
 public enum TaskTypeDic implements EnumBase {
