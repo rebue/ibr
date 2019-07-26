@@ -11,6 +11,7 @@ import rebue.wheel.baseintf.EnumBase;
  * <pre>
  * 
  * 1:匹配购买关系
+ * 2:匹配购买关系
  * </pre>
  */
 public enum TaskTypeDic implements EnumBase {
@@ -18,7 +19,12 @@ public enum TaskTypeDic implements EnumBase {
     /**
      * 1: 匹配购买关系
      **/
-    MATCH_BUY_RELATION(1);
+    MATCH_BUY_RELATION(1),
+
+    /**
+     * 2:结算-结算返佣金
+     **/
+    SETTLE_COMMISSION(2);
 
     /**
      * 枚举的所有项，注意这个变量是静态单例的
