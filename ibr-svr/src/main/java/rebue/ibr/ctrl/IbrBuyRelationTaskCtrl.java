@@ -195,6 +195,6 @@ public class IbrBuyRelationTaskCtrl {
      */
     @PostMapping("/ibr/execute-task")
     void executeMatchBuyRelationTask(@RequestParam("taskId") final Long taskId) {
-        svc.executeSubscribeTraceTask(taskId);
+        svc.executeMatchTask(taskId);
     }
 }

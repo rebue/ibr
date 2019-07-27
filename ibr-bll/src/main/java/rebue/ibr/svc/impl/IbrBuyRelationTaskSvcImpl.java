@@ -90,7 +90,7 @@ public class IbrBuyRelationTaskSvcImpl extends
      * 4：调用执行匹配的方法
      */
     @Override
-    public void executeSubscribeTraceTask(Long taskId) {
+    public void executeMatchTask(Long taskId) {
         // 1：将任务取出来
         IbrBuyRelationTaskMo taskResult = super.getById(taskId);
         if (taskResult == null) {

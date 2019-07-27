@@ -29,5 +29,5 @@ public interface IbrBuyRelationTaskSvc extends BaseSvc<java.lang.Long, IbrBuyRel
      * 
      * @param taskId
      */
-    void executeSubscribeTraceTask(Long taskId);
+    void executeMatchTask(Long taskId);
 }
