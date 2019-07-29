@@ -187,6 +187,37 @@ public interface IbrBuyRelationMapper extends MybatisBaseMapper<IbrBuyRelationMo
             "ORDER BY PAID_NOTIFY_TIMESTAMP " + //
             "LIMIT 1")
     @ResultMap("BaseResultMap")
-    IbrBuyRelationMo getNotFullAndEarlestBuyRelation(@Param("groupId") Long groupId, @Param("maxChildernCount") Integer maxChildernCount);
+    IbrBuyRelationMo getNotFullAndEarlestBuyRelation(@Param("groupId") Long groupId,
+            @Param("maxChildernCount") Integer maxChildernCount);
+
+    @Update("")
+    int updateLeftoverNode(@Param("groupId") Long groupId, @Param("leftValue") Long leftValue,
+            @Param("rightValue") Long rightValue);
+
+    /**
+     * 删除节点前更新剩下节点的右值
+     * 
+     * @param groupId
+     * @param leftValue
+     * @param rightValue
+     * @param changeRange
+     * @return
+     */
+    @Update("UPDATE IBR_BUY_RELATION SET RIGHT_VALUE = RIGHT_VALUE - ${changeRange} where LEFT_VALUE < #{leftValue} and RIGHT_VALUE > rightValue")
+    int updateRightValueBeforeDelateNode(@Param("groupId") Long groupId, @Param("leftValue") Long leftValue,
+            @Param("rightValue") Long rightValue, @Param("changeRange") Long changeRange);
+
+    /**
+     * 删除节点前更新剩下节点的左右
+     * 
+     * @param groupId
+     * @param leftValue
+     * @param rightValue
+     * @param changeRange
+     * @return
+     */
+    @Update("UPDATE IBR_BUY_RELATION SET RIGHT_VALUE = RIGHT_VALUE - ${changeRange} , LEFT_VALUE =  LEFT_VALUE - ${changeRange}  where LEFT_VALUE > #{leftValue} and RIGHT_VALUE > rightValue")
+    int updateRightValueAndLeftValueBeforeDelateNode(@Param("groupId") Long groupId, @Param("leftValue") Long leftValue,
+            @Param("rightValue") Long rightValue, @Param("changeRange") Long changeRange);
 
 }

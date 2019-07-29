@@ -15,8 +15,11 @@ import rebue.ibr.dao.IbrBuyRelationTaskDao;
 import rebue.ibr.dic.MatchSchemeDic;
 import rebue.ibr.dic.TaskTypeDic;
 import rebue.ibr.jo.IbrBuyRelationTaskJo;
+import rebue.ibr.mapper.IbrBuyRelationMapper;
 import rebue.ibr.mapper.IbrBuyRelationTaskMapper;
+import rebue.ibr.mo.IbrBuyRelationMo;
 import rebue.ibr.mo.IbrBuyRelationTaskMo;
+import rebue.ibr.svc.IbrBuyRelationSvc;
 import rebue.ibr.svc.IbrBuyRelationTaskSvc;
 import rebue.ibr.svc.IbrMatchSvc;
 import rebue.ibr.to.MatchTo;
@@ -62,6 +65,12 @@ public class IbrBuyRelationTaskSvcImpl extends
 
     @Resource
     private IbrMatchSvc ibrMatchSvc;
+
+    @Resource
+    private IbrBuyRelationSvc ibrBuyRelationSvc;
+
+    @Resource
+    private IbrBuyRelationMapper ibrBuyRelationMapper;
 
     /**
      * @mbg.generated 自动生成，如需修改，请删除本行
@@ -168,5 +177,79 @@ public class IbrBuyRelationTaskSvcImpl extends
             _log.error("匹配失败 result-{}", result);
             throw new IllegalArgumentException("匹配失败");
         }
+    }
+
+    /**
+     * 执行退款成功后重新匹配关系关系任务
+     * 1：先根据退货节点将其下面的节点都加上一个标志，以免在第一步调整剩下的节点左右值的时候和
+     * 退货下面节点的左右值产生冲突，左右值的唯一标示应该加上这个标志。
+     * 2：根据退货的节点的左值来调整剩下的节点的左右值(调整的幅度公式为：右值-左值+1)
+     * 2-1：左大右大 => 左减，右减
+     * 2-2: 左小右大 => 右减
+     * 3：遍历当前节点的子节点，子节点匹配到某个父节点后，以这个父节点为基础，调整节点左右值(调整幅度公式为：即将插入的节点数x2)
+     * 3-1：左小右大 => 右加
+     * 3-2：左大右大 => 左加右加
+     * 4：重新计算插入节点树的各个节点(计算出即将插入的左右值调整幅度)
+     * 4-1：父节点下家字段值为0
+     * 4-1-1：左右值调整幅度=old左值-(父节点的左值+1)
+     * 4-2：父节点下家数量为1
+     * 4-2-1：左右值调整幅度=old左值-(另一个子节点的右值+1)
+     * 
+     */
+    @Override
+    public void executeRefundAgainMatchTask(Long taskId) {
+        IbrBuyRelationTaskMo taskResult = super.getById(taskId);
+        if (taskResult == null) {
+            _log.error("任务不存在 taskId-{}", taskId);
+            throw new IllegalArgumentException("任务不存在");
+        }
+
+        _log.info("1:将其子节点都加上标识");
+        // =========这里是代码
+        _log.info("2:更新剩下的子节点，调整幅度为去掉的节点的(右值-左值+1)");
+        IbrBuyRelationMo buyRelationResult = ibrBuyRelationSvc.getById(taskResult.getOrderDetailId());
+        if (buyRelationResult == null) {
+            _log.error("关系不存在 detialId-{}", taskResult.getOrderDetailId());
+            throw new IllegalArgumentException("关系不存在");
+        }
+        long changeRange = buyRelationResult.getRightValue() - buyRelationResult.getLeftValue();
+        _log.info("2-1:更新剩下的子节点左右值，调整幅度为去掉的节点的(右值-左值+1)");
+        ibrBuyRelationMapper.updateRightValueBeforeDelateNode(buyRelationResult.getGroupId(),
+                buyRelationResult.getLeftValue(), buyRelationResult.getRightValue(), changeRange);
+        _log.info("2-2:更新剩下的子节点右值，调整幅度为去掉的节点的(右值-左值+1)");
+        ibrBuyRelationMapper.updateRightValueAndLeftValueBeforeDelateNode(buyRelationResult.getGroupId(),
+                buyRelationResult.getLeftValue(), buyRelationResult.getRightValue(), changeRange);
+        _log.info("3:遍历当前节点的子节点，子节点匹配到某个父节点后，以这个父节点为基础，调整节点左右值(调整幅度公式为：即将插入的节点数x2)");
+        IbrBuyRelationMo getChildrenNodesMo = new IbrBuyRelationMo();
+        getChildrenNodesMo.setParentId(taskResult.getOrderDetailId());
+        List<IbrBuyRelationMo> childrenNodes = ibrBuyRelationSvc.list(getChildrenNodesMo);
+        for (IbrBuyRelationMo ibrBuyRelationMo : childrenNodes) {
+            _log.info("↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓循环插入节点树开始↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓");
+            OrdOrderDetailMo detailResult = ordOrderDetailSvc.getById(ibrBuyRelationMo.getId());
+            OrdOrderMo orderResult = ordOrderSvc.getById(detailResult.getOrderId());
+            MatchTo matchTo = new MatchTo();
+            matchTo.setOrderDetailId(detailResult.getId());
+            matchTo.setMatchPrice(detailResult.getBuyPrice());
+            matchTo.setBuyerId(detailResult.getUserId());
+            matchTo.setPaidNotifyTimestamp(orderResult.getPayTime().getTime());
+            matchTo.setMaxChildernCount(2);
+            if (detailResult.getInviteId() != null) {
+                matchTo.setMatchPersonId(detailResult.getInviteId());
+                matchTo.setMatchScheme(MatchSchemeDic.SPECIFIED_PERSON);
+            } else {
+                matchTo.setMatchScheme(MatchSchemeDic.SELF);
+            }
+            _log.info("调用执行匹配的参数为：matchTo-{}", matchTo);
+            Ro result = ibrMatchSvc.match(matchTo);
+            if (result.getResult() == ResultDic.FAIL) {
+                _log.error("匹配失败 matchTo-{}", matchTo);
+                throw new IllegalArgumentException("匹配失败");
+            }
+            _log.info("匹配成功");
+
+            _log.info("↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑循环插入节点树结束↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑");
+
+        }
+
     }
 }

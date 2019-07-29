@@ -30,4 +30,12 @@ public interface IbrBuyRelationTaskSvc extends BaseSvc<java.lang.Long, IbrBuyRel
      * @param taskId
      */
     void executeMatchTask(Long taskId);
+    
+    
+    /**
+     * 执行退款后宠幸匹配
+     * 
+     * @param taskId
+     */
+    void executeRefundAgainMatchTask(Long taskId);
 }
