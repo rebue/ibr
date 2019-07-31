@@ -118,6 +118,15 @@ public class IbrBuyRelationJo implements Serializable {
     private Long paidNotifyTimestamp;
 
     /**
+     *  默认false
+     *
+     *  @mbg.generated 自动生成，如需修改，请删除本行
+     */
+    @Basic(optional = true)
+    @Column(name = "IS_MOVING", nullable = true, length = 3)
+    private Boolean isMoving;
+
+    /**
      * @mbg.generated 自动生成，如需修改，请删除本行
      */
     @Override

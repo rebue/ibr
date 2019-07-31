@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2019/7/24 16:17:22                           */
+/* Created on:     2019/7/29 14:52:14                           */
 /*==============================================================*/
 
 
@@ -25,9 +25,10 @@ create table IBR_BUY_RELATION
    IS_SETTLED           bool not null default false comment '是否已结算，在该订单结算的时候修改，默认是false',
    RELATION_SOURCE      tinyint comment '关系来源（1：自己匹配自己  2：购买关系  3：注册关系  4：差一人且已有购买关系  5：差两人  6：差一人但没有购买关系 7:自由匹配8：指定人）纪录为空的是根节点',
    PAID_NOTIFY_TIMESTAMP bigint not null comment '收到支付完成时的时间戳',
+   IS_MOVING            bool default false comment '默认false 是否移动中，在退款成功后移动节点树的时候true',
    primary key (ID),
-   unique key AK_GROUP_ID_AND_LEFT_VALUE (GROUP_ID, LEFT_VALUE),
-   unique key AK_GROUP_ID_AND_RIGHT_VALUE (GROUP_ID, RIGHT_VALUE)
+   unique key AK_GROUP_ID_AND_LEFT_VALUE_AND_IS_MOVING (GROUP_ID, LEFT_VALUE, IS_MOVING),
+   unique key AK_GROUP_ID_AND_RIGHT_VALUE_AND_IS_MOVING (GROUP_ID, RIGHT_VALUE, IS_MOVING)
 );
 
 alter table IBR_BUY_RELATION comment '购买关系';
@@ -41,7 +42,7 @@ create table IBR_BUY_RELATION_TASK
    EXECUTE_STATE        tinyint not null default 0 comment '执行状态(-1:取消；0:未执行；1:已执行)',
    EXECUTE_PLAN_TIME    datetime not null comment '计划执行时间',
    EXECUTE_FACT_TIME    datetime comment '实际执行时间',
-   TASK_TYPE            tinyint not null comment '任务类型（1：匹配购买关系 2：结算返佣金）',
+   TASK_TYPE            tinyint not null comment '任务类型（1：匹配购买关系 2：结算返佣金 3:退款成功后重新匹配）',
    ORDER_DETAIL_ID      bigint not null comment '订单详情ID',
    SUB_TASK_TYPE        tinyint default -1 comment '子任务类型',
    primary key (ID),

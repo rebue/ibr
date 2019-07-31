@@ -105,6 +105,15 @@ public class IbrBuyRelationMo implements Serializable {
     private Long paidNotifyTimestamp;
 
     /**
+     *    默认false 是否移动中，在退款成功后移动节点树的时候true
+     *
+     *    数据库字段: IBR_BUY_RELATION.IS_MOVING
+     *
+     *    @mbg.generated 自动生成，如需修改，请删除本行
+     */
+    private Boolean isMoving;
+
+    /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
     private static final long serialVersionUID = 1L;
@@ -330,6 +339,28 @@ public class IbrBuyRelationMo implements Serializable {
     }
 
     /**
+     *    默认false 是否移动中，在退款成功后移动节点树的时候true
+     *
+     *    数据库字段: IBR_BUY_RELATION.IS_MOVING
+     *
+     *    @mbg.generated 自动生成，如需修改，请删除本行
+     */
+    public Boolean getIsMoving() {
+        return isMoving;
+    }
+
+    /**
+     *    默认false 是否移动中，在退款成功后移动节点树的时候true
+     *
+     *    数据库字段: IBR_BUY_RELATION.IS_MOVING
+     *
+     *    @mbg.generated 自动生成，如需修改，请删除本行
+     */
+    public void setIsMoving(Boolean isMoving) {
+        this.isMoving = isMoving;
+    }
+
+    /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
     @Override
@@ -348,6 +379,7 @@ public class IbrBuyRelationMo implements Serializable {
         sb.append(", isSettled=").append(isSettled);
         sb.append(", relationSource=").append(relationSource);
         sb.append(", paidNotifyTimestamp=").append(paidNotifyTimestamp);
+        sb.append(", isMoving=").append(isMoving);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

@@ -3,6 +3,8 @@ package rebue.ibr.test;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -40,7 +42,7 @@ public class IbrMatchTests {
     /**
      * 测试匹配
      */
-    @Test
+    // @Test
     public void testMatch() throws IOException {
         // 步骤计数器
         int stepCount = 0;
@@ -53,6 +55,8 @@ public class IbrMatchTests {
         postAddInviteRelation(4L, 9L);
         _log.info("{}. 添加邀请关系 买家5邀请买家9", ++stepCount);
         postAddInviteRelation(5L, 9L);
+//        _log.info("{}. 添加邀请关系 买家9邀请买家10", ++stepCount);
+//        postAddInviteRelation(9L, 10L);
 
         _log.info("{}. 优先匹配自己 匹配价格9.9 节点1 买家1 应该是根节点", ++stepCount);
         postMatch(MatchSchemeDic.SELF, 9.9, 1L, 1L);
@@ -72,6 +76,8 @@ public class IbrMatchTests {
         postMatch(MatchSchemeDic.SELF, 9.9, 8L, 6L);
         _log.info("{}. 优先匹配自己 匹配价格9.9 节点9 买家9 应该匹配给节点5", ++stepCount);
         postMatch(MatchSchemeDic.SELF, 9.9, 9L, 9L);
+//        _log.info("{}. 优先匹配自己 匹配价格9.9 节点10 买家10 应该匹配给节点9", ++stepCount);
+//        postMatch(MatchSchemeDic.SELF, 9.9, 10L, 10L);
 
     }
 
@@ -127,6 +133,19 @@ public class IbrMatchTests {
         final Ro ro = _objectMapper.readValue(postResult, Ro.class);
         _log.info(ro.toString());
         Assert.assertEquals(ResultDic.SUCCESS, ro.getResult());
+    }
+
+    /**
+     * 退款成功后重新匹配关系测试
+     * 
+     * @throws IOException
+     */
+    @Test
+    public void refundAgainMatchTask() throws IOException {
+        Map<String, Object> paramsMap = new LinkedHashMap<>();
+        paramsMap.put("taskId", 628504366957068299l);
+        OkhttpUtils.postByFormParams(hostUrl + "/ibr/execute-task-refund", paramsMap);
+
     }
 
 }

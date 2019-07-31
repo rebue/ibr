@@ -81,7 +81,7 @@ public interface IbrBuyRelationMapper extends MybatisBaseMapper<IbrBuyRelationMo
 
     /**
      * 在插入新节点前更新父节点的子节点数+=1
-     * 
+     *
      * @param parentId
      *            父节点ID
      * @param nodeCount
@@ -90,12 +90,14 @@ public interface IbrBuyRelationMapper extends MybatisBaseMapper<IbrBuyRelationMo
      *            最大子节点的数量，其实就是最多有多少个下家，目前规则是2家
      * @return 影响行数
      */
-    @Update("UPDATE IBR_BUY_RELATION  " + //
+    @//
+    Update(//
+    "UPDATE IBR_BUY_RELATION  " + //
             "SET  " + //
-            "    CHILDREN_COUNT = CHILDREN_COUNT + ${nodeCount} " + //
-            "WHERE " + //
-            "    ID = #{parentId} AND CHILDREN_COUNT < #{maxChildernCount}")
-    int updateChildrenCountOfParentBeforeInsertNode(@Param("parentId") Long parentId, @Param("nodeCount") int nodeCount, @Param("maxChildernCount") int maxChildernCount);
+            "    CHILDREN_COUNT = CHILDREN_COUNT + ${nodeCount} " + "WHERE "
+            + "    ID = #{parentId} AND CHILDREN_COUNT < #{maxChildernCount} AND IS_MOVING = FALSE ")
+    int updateChildrenCountOfParentBeforeInsertNode(@Param("parentId") Long parentId, @Param("nodeCount") int nodeCount,
+            @Param("maxChildernCount") int maxChildernCount);
 
     /**
      * 在插入节点前更新右值
@@ -108,12 +110,14 @@ public interface IbrBuyRelationMapper extends MybatisBaseMapper<IbrBuyRelationMo
      *            父结点的右值
      * @return 影响行数
      */
-    @Update("UPDATE IBR_BUY_RELATION  " + //
+    @//
+    Update(//
+    "UPDATE IBR_BUY_RELATION  " + //
             "SET  " + //
-            "    RIGHT_VALUE = RIGHT_VALUE + 2 * ${nodeCount} " + //
-            "WHERE " + //
-            "    GROUP_ID = #{groupId} AND RIGHT_VALUE >= #{parentRightValue} ORDER BY RIGHT_VALUE DESC")
-    int updateRightValueBeforeInsertNode(@Param("groupId") Long groupId, @Param("nodeCount") int nodeCount, @Param("parentRightValue") Long parentRightValue);
+            "    RIGHT_VALUE = RIGHT_VALUE + 2 * ${nodeCount} " + "WHERE "
+            + "    GROUP_ID = #{groupId} AND RIGHT_VALUE >= #{parentRightValue}  AND IS_MOVING = FALSE  ORDER BY RIGHT_VALUE DESC")
+    int updateRightValueBeforeInsertNode(@Param("groupId") Long groupId, @Param("nodeCount") int nodeCount,
+            @Param("parentRightValue") Long parentRightValue);
 
     /**
      * 在插入节点前更新左值
@@ -126,12 +130,14 @@ public interface IbrBuyRelationMapper extends MybatisBaseMapper<IbrBuyRelationMo
      *            父结点的右值
      * @return 影响行数
      */
-    @Update("UPDATE IBR_BUY_RELATION  " + //
+    @//
+    Update(//
+    "UPDATE IBR_BUY_RELATION  " + //
             "SET  " + //
-            "    LEFT_VALUE = LEFT_VALUE + 2 * ${nodeCount} " + //
-            "WHERE " + //
-            "    GROUP_ID = #{groupId} AND LEFT_VALUE > #{parentRightValue} ORDER BY LEFT_VALUE DESC")
-    int updateLeftValueBeforeInsertNode(@Param("groupId") Long groupId, @Param("nodeCount") int nodeCount, @Param("parentRightValue") Long parentRightValue);
+            "    LEFT_VALUE = LEFT_VALUE + 2 * ${nodeCount} " + "WHERE "
+            + "    GROUP_ID = #{groupId} AND LEFT_VALUE > #{parentRightValue}  AND IS_MOVING = FALSE  ORDER BY LEFT_VALUE DESC")
+    int updateLeftValueBeforeInsertNode(@Param("groupId") Long groupId, @Param("nodeCount") int nodeCount,
+            @Param("parentRightValue") Long parentRightValue);
 
     /**
      * 获取买家最早未匹配满的购买节点
@@ -144,17 +150,19 @@ public interface IbrBuyRelationMapper extends MybatisBaseMapper<IbrBuyRelationMo
      *            最大子节点的数量，其实就是最多有多少个下家，目前规则是2家
      * @return 最早购买记录，如果没有则返回null
      */
-    @Select("SELECT  " + //
+    @//
+    Select(//
+    "SELECT  " + //
             "    * " + //
             "FROM " + //
             "    IBR_BUY_RELATION " + //
             "WHERE " + //
             "    GROUP_ID = #{groupId} AND BUYER_ID = #{buyerId} " + //
-            "        AND CHILDREN_COUNT < #{maxChildernCount} " + //
-            "ORDER BY PAID_NOTIFY_TIMESTAMP " + //
-            "LIMIT 1")
+            "        AND CHILDREN_COUNT < #{maxChildernCount} AND IS_MOVING = FALSE  "
+            + "ORDER BY PAID_NOTIFY_TIMESTAMP " + "LIMIT 1")
     @ResultMap("BaseResultMap")
-    IbrBuyRelationMo getEarlestBuyRelationOfBuyer(@Param("groupId") Long groupId, @Param("buyerId") Long buyerId, @Param("maxChildernCount") int maxChildernCount);
+    IbrBuyRelationMo getEarlestBuyRelationOfBuyer(@Param("groupId") Long groupId, @Param("buyerId") Long buyerId,
+            @Param("maxChildernCount") int maxChildernCount);
 
     /**
      * 获取最近邀请人的最早未匹配满的购买关系记录
@@ -166,7 +174,8 @@ public interface IbrBuyRelationMapper extends MybatisBaseMapper<IbrBuyRelationMo
      * @return 最早购买记录，如果没有则返回null
      */
     @ResultMap("BaseResultMap")
-    IbrBuyRelationMo getNotFullAndEarlestBuyRelationOfLatestInviter(@Param("groupId") Long groupId, @Param("maxChildernCount") int maxChildernCount);
+    IbrBuyRelationMo getNotFullAndEarlestBuyRelationOfLatestInviter(@Param("groupId") Long groupId,
+            @Param("maxChildernCount") int maxChildernCount, @Param("isMoving") boolean isMoving);
 
     /**
      * 获取最早未匹配满的购买关系记录
@@ -177,47 +186,80 @@ public interface IbrBuyRelationMapper extends MybatisBaseMapper<IbrBuyRelationMo
      *            最大子节点的数量，其实就是最多有多少个下家，目前规则是2家
      * @return 最早购买记录，如果没有则返回null
      */
-    @Select("SELECT  " + //
+    @//
+    Select(//
+    "SELECT  " + //
             "    * " + //
             "FROM " + //
             "    IBR_BUY_RELATION " + //
             "WHERE " + //
             "    GROUP_ID =  #{groupId}  " + //
-            "        AND CHILDREN_COUNT < #{maxChildernCount} " + //
-            "ORDER BY PAID_NOTIFY_TIMESTAMP " + //
-            "LIMIT 1")
+            "        AND CHILDREN_COUNT < #{maxChildernCount}   AND IS_MOVING = FALSE   "
+            + "ORDER BY PAID_NOTIFY_TIMESTAMP " + "LIMIT 1")
     @ResultMap("BaseResultMap")
     IbrBuyRelationMo getNotFullAndEarlestBuyRelation(@Param("groupId") Long groupId,
             @Param("maxChildernCount") Integer maxChildernCount);
 
-    @Update("")
-    int updateLeftoverNode(@Param("groupId") Long groupId, @Param("leftValue") Long leftValue,
+    /**
+     * 跟新节点的右值
+     *
+     * @param groupId
+     * @param leftValue
+     * @param rightValue
+     * @param changeRange
+     * @return
+     */
+    @Update("UPDATE IBR_BUY_RELATION SET RIGHT_VALUE = RIGHT_VALUE - ${changeRange} where RIGHT_VALUE >= #{rightValue} AND IS_MOVING = false  ORDER BY RIGHT_VALUE ${order} ")
+    int updateRightValue(@Param("groupId") Long groupId, @Param("rightValue") Long rightValue,
+            @Param("changeRange") Long changeRange, @Param("order") String order);
+
+    /**
+     * 更新节点的左值
+     *
+     * @param groupId
+     * @param leftValue
+     * @param rightValue
+     * @param changeRange
+     * @return
+     */
+    @Update("UPDATE IBR_BUY_RELATION SET  LEFT_VALUE =  LEFT_VALUE - ${changeRange}  where LEFT_VALUE > #{leftValue} AND IS_MOVING = false ORDER BY LEFT_VALUE ${order} ")
+    int updateLeftValue(@Param("groupId") Long groupId, @Param("leftValue") Long leftValue,
+            @Param("changeRange") Long changeRange, @Param("order") String order);
+
+    /**
+     * 设置删除节点下的子节点isMoving字段为true
+     *
+     * @param groupId
+     * @param leftValue
+     * @param rightValue
+     * @return
+     */
+    @Update("UPDATE  IBR_BUY_RELATION SET IS_MOVING = true  WHERE LEFT_VALUE > #{leftValue} AND RIGHT_VALUE < #{rightValue}  ")
+    int updateIsmoving(@Param("groupId") Long groupId, @Param("leftValue") Long leftValue,
             @Param("rightValue") Long rightValue);
 
     /**
-     * 删除节点前更新剩下节点的右值
-     * 
+     * 获取正在移动的节点数量
+     *
      * @param groupId
      * @param leftValue
      * @param rightValue
-     * @param changeRange
      * @return
      */
-    @Update("UPDATE IBR_BUY_RELATION SET RIGHT_VALUE = RIGHT_VALUE - ${changeRange} where LEFT_VALUE < #{leftValue} and RIGHT_VALUE > rightValue")
-    int updateRightValueBeforeDelateNode(@Param("groupId") Long groupId, @Param("leftValue") Long leftValue,
-            @Param("rightValue") Long rightValue, @Param("changeRange") Long changeRange);
+    @Select("SELECT COUNT(*) FROM   IBR_BUY_RELATION  WHERE LEFT_VALUE > #{leftValue} AND RIGHT_VALUE < #{rightValue}  AND IS_MOVING = true ")
+    int getMovingNodesCound(@Param("groupId") Long groupId, @Param("leftValue") Long leftValue,
+            @Param("rightValue") Long rightValue);
 
     /**
-     * 删除节点前更新剩下节点的左右
-     * 
+     * 更新正在移动的节点左右值和移动标示
+     * 最后一个参数是为了在调整的时候不出现唯一约束错误
+     *
      * @param groupId
-     * @param leftValue
-     * @param rightValue
      * @param changeRange
+     * @param order
      * @return
      */
-    @Update("UPDATE IBR_BUY_RELATION SET RIGHT_VALUE = RIGHT_VALUE - ${changeRange} , LEFT_VALUE =  LEFT_VALUE - ${changeRange}  where LEFT_VALUE > #{leftValue} and RIGHT_VALUE > rightValue")
-    int updateRightValueAndLeftValueBeforeDelateNode(@Param("groupId") Long groupId, @Param("leftValue") Long leftValue,
-            @Param("rightValue") Long rightValue, @Param("changeRange") Long changeRange);
-
+    @Update("UPDATE  IBR_BUY_RELATION SET IS_MOVING = false ,LEFT_VALUE = LEFT_VALUE + #{changeRange} ,RIGHT_VALUE = RIGHT_VALUE + #{changeRange} WHERE IS_MOVING = true  ORDER BY LEFT_VALUE ${order} ")
+    int updateMovingRightValueAndLeftValue(@Param("groupId") Long groupId, @Param("changeRange") Long changeRange,
+            @Param("order") String order);
 }
