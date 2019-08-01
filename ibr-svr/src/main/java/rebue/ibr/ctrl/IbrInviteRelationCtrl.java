@@ -1,5 +1,7 @@
 package rebue.ibr.ctrl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
@@ -180,6 +182,10 @@ public class IbrInviteRelationCtrl {
     IbrInviteRelationMo getOne(final IbrInviteRelationMo mo) {
         _log.info("received get:/ibr/invite-relation/get-one");
         _log.info("ibrInviteRelationMoCtrl.mo: {}", mo);
-        return svc.getOne(mo);
+        List<IbrInviteRelationMo> result = svc.list(mo);
+        if (result.size() > 0) {
+            return result.get(0);
+        }
+        return null;
     }
 }

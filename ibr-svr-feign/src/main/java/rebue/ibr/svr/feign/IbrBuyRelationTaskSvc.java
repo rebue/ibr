@@ -45,4 +45,12 @@ public interface IbrBuyRelationTaskSvc {
     @PostMapping("/ibr/execute-task")
     void executeMatchBuyRelationTask(@RequestParam("taskId") final Long taskId);
 
+    /**
+     * 执行退货成功后重新匹配任务。
+     * 
+     * @param taskId
+     */
+    @PostMapping("/ibr/execute-task-refund")
+    void executeRefundAgainMatchTask(@RequestParam("taskId") final Long taskId);
+
 }

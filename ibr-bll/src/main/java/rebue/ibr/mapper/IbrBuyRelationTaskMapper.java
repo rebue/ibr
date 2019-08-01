@@ -77,7 +77,7 @@ public interface IbrBuyRelationTaskMapper extends MybatisBaseMapper<IbrBuyRelati
      */
     int countSelective(IbrBuyRelationTaskMo record);
 
-    @Select("select ID from IBR_BUY_RELATION_TASK where EXECUTE_STATE= #{executeState} and EXECUTE_PLAN_TIME<=SYSDATE() and TASK_TYPE=#{taskType}")
+    @Select("select ID from IBR_BUY_RELATION_TASK where EXECUTE_STATE= #{executeState} and EXECUTE_PLAN_TIME<=SYSDATE() and TASK_TYPE=#{taskType} order by EXECUTE_PLAN_TIME  ")
     List<Long> getTaskIdsThatShouldExecute(@Param("executeState") Byte executeState, @Param("taskType") Byte taskType);
 
 }
