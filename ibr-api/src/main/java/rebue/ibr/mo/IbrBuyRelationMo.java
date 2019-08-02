@@ -114,6 +114,15 @@ public class IbrBuyRelationMo implements Serializable {
     private Boolean isMoving;
 
     /**
+     *    是否已返佣
+     *
+     *    数据库字段: IBR_BUY_RELATION.IS_COMMISSION
+     *
+     *    @mbg.generated 自动生成，如需修改，请删除本行
+     */
+    private Boolean isCommission;
+
+    /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
     private static final long serialVersionUID = 1L;
@@ -361,6 +370,28 @@ public class IbrBuyRelationMo implements Serializable {
     }
 
     /**
+     *    是否已返佣
+     *
+     *    数据库字段: IBR_BUY_RELATION.IS_COMMISSION
+     *
+     *    @mbg.generated 自动生成，如需修改，请删除本行
+     */
+    public Boolean getIsCommission() {
+        return isCommission;
+    }
+
+    /**
+     *    是否已返佣
+     *
+     *    数据库字段: IBR_BUY_RELATION.IS_COMMISSION
+     *
+     *    @mbg.generated 自动生成，如需修改，请删除本行
+     */
+    public void setIsCommission(Boolean isCommission) {
+        this.isCommission = isCommission;
+    }
+
+    /**
      *    @mbg.generated 自动生成，如需修改，请删除本行
      */
     @Override
@@ -380,6 +411,7 @@ public class IbrBuyRelationMo implements Serializable {
         sb.append(", relationSource=").append(relationSource);
         sb.append(", paidNotifyTimestamp=").append(paidNotifyTimestamp);
         sb.append(", isMoving=").append(isMoving);
+        sb.append(", isCommission=").append(isCommission);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
