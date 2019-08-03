@@ -2,3 +2,5 @@ ibr:
   scheduler:
     # 匹配购买的任务执行的间隔(毫秒)，默认5分钟检查一次
     buyRelation: 6000
+    # 匹配结算的任务执行的间隔(毫秒)，默认5分钟检查一次
+    settleRelation: 6000

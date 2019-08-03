@@ -1,5 +1,7 @@
 package rebue.ibr.svc.impl;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +13,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import rebue.afc.dic.TradeTypeDic;
+import rebue.afc.mo.AfcPlatformTradeMo;
+import rebue.afc.mo.AfcTradeMo;
+import rebue.afc.platform.dic.PlatformTradeTypeDic;
+import rebue.afc.svr.feign.AfcPlatformTradeTradeSvc;
+import rebue.afc.svr.feign.AfcTradeSvc;
 import rebue.ibr.dao.IbrBuyRelationTaskDao;
 import rebue.ibr.dic.MatchSchemeDic;
 import rebue.ibr.dic.TaskTypeDic;
@@ -85,6 +93,12 @@ public class IbrBuyRelationTaskSvcImpl extends
 
     @Resource
     private IbrBuyRelationMapper ibrBuyRelationMapper;
+
+    @Resource
+    private AfcTradeSvc afcTradeSvc;
+
+    @Resource
+    private AfcPlatformTradeTradeSvc afcPlatformTradeSvc;
 
     @Override
     public List<Long> getTaskIdsThatShouldExecute(TaskExecuteStateDic executeState, TaskTypeDic taskType) {
@@ -259,7 +273,7 @@ public class IbrBuyRelationTaskSvcImpl extends
             _log.info("------------------------------循环插入节点树开始------------------------------");
             _log.info("5：匹配父节点");
             OrdOrderDetailMo detailResult = ordOrderDetailSvc.getById(childrenNode.getId());
-            MatchTo matchTo = new MatchTo();
+            MatchTo          matchTo      = new MatchTo();
             matchTo.setOrderDetailId(detailResult.getId());
             matchTo.setMatchPrice(detailResult.getBuyPrice());
             matchTo.setBuyerId(detailResult.getUserId());
@@ -340,6 +354,139 @@ public class IbrBuyRelationTaskSvcImpl extends
             _log.error("修改任务失败 modifyTaskMo-{}", modifyTaskMo);
             throw new IllegalArgumentException("修改任务失败");
         }
+
+    }
+
+    /**
+     * 订单结算任务
+     */
+    @Override
+    public void executeOrderSettleTask(Long taskId) {
+        // 1：将任务取出来
+        IbrBuyRelationTaskMo taskResult = super.getById(taskId);
+        if (taskResult == null) {
+            _log.error("任务不存在 taskId-{}", taskId);
+            throw new IllegalArgumentException("任务不存在");
+        }
+        // 2.获取任务的的购买关系
+        _log.info("获取本家购买关系的参数 detailId-{}", taskResult.getOrderDetailId());
+        IbrBuyRelationMo buyRelationResult = ibrBuyRelationSvc.getById(taskResult.getOrderDetailId());
+        _log.info("获取本家购买关系的结果 detailResult-{}", buyRelationResult);
+        if (buyRelationResult == null) {
+            _log.error("本家订单详情不存在 orderDetailId-{}", taskResult.getOrderDetailId());
+            throw new IllegalArgumentException("本家订单详情不存在");
+        }
+        // 3.修改本家订单结算状态
+        IbrBuyRelationMo modifySettled = new IbrBuyRelationMo();
+        modifySettled.setId(buyRelationResult.getId());
+        modifySettled.setIsSettled(true);
+        buyRelationResult.setIsSettled(true);
+        _log.info("修改本家订单结算状态的参数为：-{}", modifySettled);
+        int modifyResult = ibrBuyRelationSvc.modify(modifySettled);
+        _log.info("修改本家订单结算状态的返回值为：-{}", modifyResult);
+        if (modifyResult != 1) {
+            _log.error("修改本家订单状态出错 modifySettled-{}", modifySettled);
+            throw new IllegalArgumentException("修改本家结算状态出错");
+        }
+        // 4.判断本家是否可以返佣
+        _log.info("开始判断本家是否可以返佣");
+        cashback(buyRelationResult);
+        // 5.获取上家的购买关系
+        _log.info("获取上家购买关系的参数 parentId-{}", buyRelationResult.getParentId());
+        IbrBuyRelationMo parentRelationResult = ibrBuyRelationSvc.getById(buyRelationResult.getParentId());
+        _log.info("获取上家购买关系的结果 parentRelationResult-{}", parentRelationResult);
+        if (parentRelationResult == null) {
+            _log.error("上家订单详情不存在 id-{}", buyRelationResult.getId());
+        } else {
+            // 6.判断上家是否可以返佣
+            _log.info("开始判断上家是否可以返佣");
+            if (!parentRelationResult.getIsSettled()) {
+                _log.error("上家还没有结算 parentId-{}", parentRelationResult.getIsSettled());
+            } else {
+                cashback(parentRelationResult);
+            }
+        }
+    }
+
+    // 返佣
+    public void cashback(IbrBuyRelationMo buyRelation) {
+        _log.info("-----------------------------------开始返佣----------------------------------");
+        // 查询该购买关系的下家
+        Timestamp timestamp = new Timestamp(new Date().getTime());
+        if (buyRelation.getChildrenCount() == 2) {
+            _log.info("该订单详情有2个下家");
+            // 获取该购买关系下家的购买关系，并判断两个下家是否已结算
+            IbrBuyRelationMo parentBuyRelation = new IbrBuyRelationMo();
+            parentBuyRelation.setParentId(buyRelation.getId());
+            _log.info("根据父id查询下家购买关系的参数 parentBuyRelation-{}", parentBuyRelation);
+            List<IbrBuyRelationMo> childrenBuyRelationResult = ibrBuyRelationSvc.list(parentBuyRelation);
+            _log.info("根据父id查询下家购买关系的返回值 childrenBuyRelationResult-{}", childrenBuyRelationResult);
+            // 判断下家是否都已结算
+            Boolean childrenSettle = true;
+            for (IbrBuyRelationMo childBuyRelation : childrenBuyRelationResult) {
+                if (!childBuyRelation.getIsSettled()) {
+                    _log.info("该订单详情，有下家处于未结算状态");
+                    childrenSettle = false;
+                    break;
+                }
+            }
+            // 两个下家已结算将返佣金返还给用户
+            if (childrenSettle) {
+                _log.info("该订单详情下家都已结算，添加一笔返佣金记录并将佣金添加给用户");
+                // 返佣金额
+                BigDecimal accountReturn = new BigDecimal(buyRelation.getGroupId()).divide(new BigDecimal("100"), 3,
+                        BigDecimal.ROUND_DOWN);
+
+                timestamp = new Timestamp(new Date().getTime());
+                // 添加一笔交易记录 1. 添加交易记录 2. 修改账户相应的金额字段 3. 添加账户流水
+                OrdOrderDetailMo orderDetail = ordOrderDetailSvc.getById(buyRelation.getId());
+                _log.info("orderDetail -{} ", orderDetail);
+                _log.info("id -{} ", _idWorker.getId());
+                AfcTradeMo accountTrade = new AfcTradeMo();
+                accountTrade.setId(_idWorker.getId());
+                accountTrade.setAccountId(buyRelation.getBuyerId());
+                accountTrade.setTradeType((byte) TradeTypeDic.SETTLE_COMMISSION.getCode());
+                accountTrade.setTradeAmount(accountReturn);
+                accountTrade.setChangeAmount2(accountReturn);
+                accountTrade.setTradeTitle("大麦网络-结算本家订单并返佣金");
+                accountTrade.setTradeTime(timestamp);
+                accountTrade.setOrderId(orderDetail.getOrderId().toString());
+                accountTrade.setOrderDetailId(buyRelation.getId().toString());
+                accountTrade.setOpId(0L);
+                accountTrade.setMac("00-16-3E-12-D8-F4");
+                accountTrade.setIp("127.18.175.121");
+                _log.info("添加一笔返佣金记录的参数为 accountTrade-{}", accountTrade);
+
+                afcTradeSvc.addTrade(accountTrade);
+
+                // 从平台扣除相应的佣金,添加一条平台流水
+                AfcPlatformTradeMo platformTrade = new AfcPlatformTradeMo();
+                platformTrade.setId(_idWorker.getId());
+                platformTrade.setPlatformTradeType((byte) PlatformTradeTypeDic.PLATFORM_RETURN_TO_USER.getCode());
+                platformTrade.setOrderId(orderDetail.getOrderId().toString());
+                platformTrade.setOrderDetailId(buyRelation.getId().toString());
+                platformTrade.setTradeAmount(accountReturn);
+                platformTrade.setModifiedTimestamp(new Date().getTime());
+                _log.info("添加一笔平台扣除返佣金记录的参数为 platformTrade-{}", platformTrade);
+
+                afcPlatformTradeSvc.addTrade(platformTrade);
+
+                // 购买关系中改为已返佣
+                IbrBuyRelationMo modifyCommission = new IbrBuyRelationMo();
+                modifyCommission.setId(buyRelation.getId());
+                modifyCommission.setIsCommission(true);
+                _log.info("修改购买关系返佣状态的参数为：-{}", modifyCommission);
+                int modifyResult = ibrBuyRelationSvc.modify(modifyCommission);
+                _log.info("修改购买关系返佣状态的返回值为：-{}", modifyResult);
+                if (modifyResult != 1) {
+                    _log.error("修改购买关系返佣状态出错 modifySettled-{}", modifyCommission);
+                    throw new IllegalArgumentException("修改购买关系返佣状态出错");
+                }
+            }
+        } else {
+            _log.error("该订单详情的下家不足2个,childrenCount:-{}", buyRelation.getChildrenCount());
+        }
+        _log.info("+++++++++++++++++++++++++++++++++结束返佣++++++++++++++++++++++++++++++++++++");
 
     }
 }

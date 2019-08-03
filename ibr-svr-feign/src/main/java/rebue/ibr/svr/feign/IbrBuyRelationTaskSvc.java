@@ -53,4 +53,12 @@ public interface IbrBuyRelationTaskSvc {
     @PostMapping("/ibr/execute-task-refund")
     void executeRefundAgainMatchTask(@RequestParam("taskId") final Long taskId);
 
+    /**
+     * 执行订单结算任务
+     * 
+     * @param taskId
+     */
+    @PostMapping("/ibr/execute-order-settle-task")
+    void executeOrderBuyRelationTask(@RequestParam("taskId") final Long taskId);
+
 }

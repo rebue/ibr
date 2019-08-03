@@ -207,4 +207,20 @@ public class IbrBuyRelationTaskCtrl {
     void executeRefundAgainMatchTask(@RequestParam("taskId") final Long taskId) {
         svc.executeRefundAgainMatchTask(taskId);
     }
+
+    /**
+     * 执行订单结算任务
+     * 
+     * @param taskId
+     */
+    @PostMapping("/ibr/execute-order-settle-task")
+    void executeOrderBuyRelationTask(@RequestParam("taskId") final Long taskId) {
+        _log.info("received post:/ibr/execute-order-settle-task: {}", taskId);
+        svc.executeOrderSettleTask(taskId);
+    }
+//    单元测试
+//    void executeOrderBuyRelationTask(@RequestBody TempTo tempTo) {
+//        _log.info("received post:/ibr/execute-order-settle-task: {}", tempTo.getTaskId());
+//        svc.executeOrderSettleTask(tempTo.getTaskId());
+//    }
 }

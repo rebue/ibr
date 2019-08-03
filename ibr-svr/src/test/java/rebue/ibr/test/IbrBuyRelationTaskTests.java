@@ -1,12 +1,18 @@
 package rebue.ibr.test;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.util.Date;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import rebue.ibr.dic.TaskTypeDic;
 import rebue.ibr.mo.IbrBuyRelationTaskMo;
+import rebue.ibr.to.TempTo;
 import rebue.robotech.dic.ResultDic;
 import rebue.robotech.ro.IdRo;
 import rebue.robotech.ro.Ro;
@@ -36,11 +42,11 @@ public class IbrBuyRelationTaskTests {
     private final ObjectMapper _objectMapper = new ObjectMapper();
 
     /**
-     *  测试基本的增删改查
+     * 测试基本的增删改查
      *
-     *  @mbg.generated 自动生成，如需修改，请删除本行
+     * @mbg.generated 自动生成，如需修改，请删除本行
      */
-    @Test
+    // @Test
     public void testCrud() throws IOException, ReflectiveOperationException {
         IbrBuyRelationTaskMo mo = null;
         for (int i = 0; i < 20; i++) {
@@ -71,5 +77,28 @@ public class IbrBuyRelationTaskTests {
         final Ro deleteRo = _objectMapper.readValue(deleteResult, Ro.class);
         _log.info(deleteRo.toString());
         Assert.assertEquals(ResultDic.SUCCESS, deleteRo.getResult());
+    }
+
+    // 添加结算任务
+    // @Test
+    public void addTask() throws IOException {
+        IbrBuyRelationTaskMo mo = new IbrBuyRelationTaskMo();
+        mo.setId(1L);
+        mo.setExecuteState((byte) 0);
+        mo.setExecutePlanTime(new Date());
+        mo.setTaskType((byte) TaskTypeDic.SETTLE_COMMISSION.getCode());
+        mo.setOrderDetailId(1L);
+        _log.info("添加购买关系任务的参数为：" + mo);
+        final String addResult = OkhttpUtils.postByJsonParams(hostUrl + "/ibr/buy-relation-task", mo);
+        _log.info("添加购买关系任务的返回值为：" + addResult);
+    }
+
+    // 开始结算任务
+    @Test
+    public void orderTask() throws IOException {
+        TempTo to = new TempTo();
+        to.setTaskId(1L);
+        final String addResult = OkhttpUtils.postByJsonParams(hostUrl + "/ibr/execute-order-settle-task", to);
+        _log.info("添加购买关系任务的返回值为：" + addResult);
     }
 }

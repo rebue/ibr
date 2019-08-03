@@ -36,6 +36,11 @@
 				<version>1.0.9</version>
 			</dependency>
 			<dependency>
+				<groupId>com.github.rebue.afc</groupId>
+				<artifactId>afc-svr-feign</artifactId>
+				<version>1.0.9</version>
+			</dependency>
+			<dependency>
 				<groupId>com.github.rebue.ibr</groupId>
 				<artifactId>ibr-svr-feign</artifactId>
 				<version>1.0.9</version>
