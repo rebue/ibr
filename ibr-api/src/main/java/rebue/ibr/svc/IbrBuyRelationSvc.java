@@ -3,6 +3,8 @@ package rebue.ibr.svc;
 import rebue.ibr.dic.RelationSourceDic;
 import rebue.ibr.jo.IbrBuyRelationJo;
 import rebue.ibr.mo.IbrBuyRelationMo;
+import rebue.ibr.to.MatchTo;
+import rebue.robotech.ro.Ro;
 import rebue.robotech.svc.BaseSvc;
 
 /**
@@ -28,7 +30,8 @@ public interface IbrBuyRelationSvc extends BaseSvc<java.lang.Long, IbrBuyRelatio
      * @param maxChildernCount
      *            最大子节点的数量，其实就是最多有多少个下家，目前规则是2家
      */
-    void insertNode(IbrBuyRelationMo parent, Long buyerId,Long currentDetalId, Long paidNotifyTimestamp, RelationSourceDic relationSource, Integer maxChildernCount);
+    void insertNode(IbrBuyRelationMo parent, Long buyerId, Long currentDetalId, Long paidNotifyTimestamp,
+            RelationSourceDic relationSource, Integer maxChildernCount);
 
     /**
      * 获取买家最早未匹配满的购买节点
@@ -64,4 +67,12 @@ public interface IbrBuyRelationSvc extends BaseSvc<java.lang.Long, IbrBuyRelatio
      * @return 最早购买记录，如果没有则返回null
      */
     IbrBuyRelationMo getNotFullAndEarlestBuyRelation(Long groupId, Integer maxChildernCount);
+
+    /**
+     * 计算父节点并插入
+     * 
+     * @return
+     */
+    Ro matchParentNodeAndInsertNode(MatchTo To);
+
 }

@@ -262,4 +262,13 @@ public interface IbrBuyRelationMapper extends MybatisBaseMapper<IbrBuyRelationMo
     @Update("UPDATE  IBR_BUY_RELATION SET IS_MOVING = false ,LEFT_VALUE = LEFT_VALUE + #{changeRange} ,RIGHT_VALUE = RIGHT_VALUE + #{changeRange} WHERE IS_MOVING = true  ORDER BY LEFT_VALUE ${order} ")
     int updateMovingRightValueAndLeftValue(@Param("groupId") Long groupId, @Param("changeRange") Long changeRange,
             @Param("order") String order);
+
+    /**
+     * 删除父节点和关系来源
+     * 
+     * @param id
+     * @return
+     */
+    @Update("UPDATE  IBR_BUY_RELATION  SET PARENT_ID = null , RELATION_SOURCE = null where  ID = #{id}  ")
+    int delateParentIdAndRelationResouce(@Param("id") Long id);
 }

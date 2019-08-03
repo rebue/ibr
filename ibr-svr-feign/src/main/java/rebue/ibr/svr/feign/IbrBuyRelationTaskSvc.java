@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import rebue.ibr.dic.TaskTypeDic;
 import rebue.ibr.mo.IbrBuyRelationTaskMo;
 import rebue.robotech.dic.TaskExecuteStateDic;
 import rebue.robotech.ro.IdRo;
@@ -34,8 +33,17 @@ public interface IbrBuyRelationTaskSvc {
      * @return
      */
     @GetMapping(value = "/ibr/buy-relation-task/tasks")
-    List<Long> getTaskIdsThatShouldExecute(@RequestParam("executeState") final TaskExecuteStateDic executeState,
-            @RequestParam("taskType") final TaskTypeDic taskType);
+    List<Long> getTaskIdsThatShouldExecute(@RequestParam("executeState") final TaskExecuteStateDic executeState);
+
+    /**
+     * 获取需要执行的结算任务列表
+     * 
+     * @param executeState
+     * @param taskType
+     * @return
+     */
+    @GetMapping(value = "/ibr/settle-task/tasks")
+    List<Long> getTaskIdsThatShouldSettleExecute(@RequestParam("executeState") final TaskExecuteStateDic executeState);
 
     /**
      * 执行匹配购买关系任务
@@ -46,19 +54,11 @@ public interface IbrBuyRelationTaskSvc {
     void executeMatchBuyRelationTask(@RequestParam("taskId") final Long taskId);
 
     /**
-     * 执行退货成功后重新匹配任务。
-     * 
-     * @param taskId
-     */
-    @PostMapping("/ibr/execute-task-refund")
-    void executeRefundAgainMatchTask(@RequestParam("taskId") final Long taskId);
-
-    /**
      * 执行订单结算任务
      * 
      * @param taskId
      */
     @PostMapping("/ibr/execute-order-settle-task")
-    void executeOrderBuyRelationTask(@RequestParam("taskId") final Long taskId);
+    void executeOrderSettleTask(@RequestParam("taskId") final Long taskId);
 
 }

@@ -15,12 +15,12 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import rebue.ibr.Ro.MatchRelationRo;
 import rebue.ibr.dic.MatchSchemeDic;
 import rebue.ibr.mo.IbrInviteRelationMo;
 import rebue.ibr.to.MatchTo;
 import rebue.robotech.dic.ResultDic;
 import rebue.robotech.ro.IdRo;
-import rebue.robotech.ro.Ro;
 import rebue.wheel.OkhttpUtils;
 
 /**
@@ -42,7 +42,7 @@ public class IbrMatchTests {
     /**
      * 测试匹配
      */
-    // @Test
+    @Test
     public void testMatch() throws IOException {
         // 步骤计数器
         int stepCount = 0;
@@ -130,7 +130,7 @@ public class IbrMatchTests {
         to.setMaxChildernCount(2);
         _log.info("匹配的参数为：" + to);
         postResult = OkhttpUtils.postByJsonParams(hostUrl + "/ibr/match", to);
-        final Ro ro = _objectMapper.readValue(postResult, Ro.class);
+        final MatchRelationRo ro = _objectMapper.readValue(postResult, MatchRelationRo.class);
         _log.info(ro.toString());
         Assert.assertEquals(ResultDic.SUCCESS, ro.getResult());
     }
@@ -140,7 +140,7 @@ public class IbrMatchTests {
      * 
      * @throws IOException
      */
-    @Test
+    // @Test
     public void refundAgainMatchTask() throws IOException {
         Map<String, Object> paramsMap = new LinkedHashMap<>();
         paramsMap.put("taskId", 628504366957068299l);

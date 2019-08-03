@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageInfo;
 
-import rebue.ibr.dic.TaskTypeDic;
 import rebue.ibr.mo.IbrBuyRelationTaskMo;
 import rebue.ibr.svc.IbrBuyRelationTaskSvc;
 import rebue.robotech.dic.ResultDic;
@@ -182,10 +181,20 @@ public class IbrBuyRelationTaskCtrl {
      * @return
      */
     @GetMapping(value = "/ibr/buy-relation-task/tasks")
-    List<Long> getTaskIdsThatShouldExecute(@RequestParam("executeState") final TaskExecuteStateDic executeState,
-            @RequestParam("taskType") final TaskTypeDic taskType) {
-        _log.info("获取需要执行的任务,executeState-{},taskType-{}", executeState, taskType);
-        return svc.getTaskIdsThatShouldExecute(executeState, taskType);
+    List<Long> getTaskIdsThatShouldExecute(@RequestParam("executeState") final TaskExecuteStateDic executeState) {
+        _log.info("获取需要执行的任务,executeState-{}", executeState);
+        return svc.getTaskIdsThatShouldExecute(executeState);
+    }
+
+    /**
+     * 获取需要执行的结算任务列表
+     * 
+     * @return
+     */
+    @GetMapping(value = "/ibr/settle-task/tasks")
+    List<Long> getTaskIdsThatShouldSettleExecute(@RequestParam("executeState") final TaskExecuteStateDic executeState) {
+        _log.info("获取需要执行结算的任务,executeState-{}", executeState);
+        return svc.getTaskIdsThatShouldSettleExecute(executeState);
     }
 
     /**
@@ -214,7 +223,7 @@ public class IbrBuyRelationTaskCtrl {
      * @param taskId
      */
     @PostMapping("/ibr/execute-order-settle-task")
-    void executeOrderBuyRelationTask(@RequestParam("taskId") final Long taskId) {
+    void executeOrderSettleTask(@RequestParam("taskId") final Long taskId) {
         _log.info("received post:/ibr/execute-order-settle-task: {}", taskId);
         svc.executeOrderSettleTask(taskId);
     }
