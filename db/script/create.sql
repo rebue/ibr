@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2019/7/29 14:52:14                           */
+/* Created on:     2019/8/1 15:30:38                            */
 /*==============================================================*/
 
 
@@ -26,6 +26,7 @@ create table IBR_BUY_RELATION
    RELATION_SOURCE      tinyint comment '关系来源（1：自己匹配自己  2：购买关系  3：注册关系  4：差一人且已有购买关系  5：差两人  6：差一人但没有购买关系 7:自由匹配8：指定人）纪录为空的是根节点',
    PAID_NOTIFY_TIMESTAMP bigint not null comment '收到支付完成时的时间戳',
    IS_MOVING            bool default false comment '默认false 是否移动中，在退款成功后移动节点树的时候true',
+   IS_COMMISSION        bool default false comment '是否已返佣',
    primary key (ID),
    unique key AK_GROUP_ID_AND_LEFT_VALUE_AND_IS_MOVING (GROUP_ID, LEFT_VALUE, IS_MOVING),
    unique key AK_GROUP_ID_AND_RIGHT_VALUE_AND_IS_MOVING (GROUP_ID, RIGHT_VALUE, IS_MOVING)
@@ -65,3 +66,4 @@ create table IBR_INVITE_RELATION
 );
 
 alter table IBR_INVITE_RELATION comment '邀请关系';
+
