@@ -162,10 +162,4 @@ public class IbrBuyRelationSvcImpl
         return _mapper.getNotFullAndEarlestBuyRelation(groupId, maxChildernCount);
     }
 
-    /**
-     * 转移关系方法，临时
-     */
-    public void transferRelation() {
-
-    }
 }

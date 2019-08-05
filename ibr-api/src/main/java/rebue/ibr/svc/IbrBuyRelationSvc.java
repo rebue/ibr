@@ -3,8 +3,6 @@ package rebue.ibr.svc;
 import rebue.ibr.dic.RelationSourceDic;
 import rebue.ibr.jo.IbrBuyRelationJo;
 import rebue.ibr.mo.IbrBuyRelationMo;
-import rebue.ibr.to.MatchTo;
-import rebue.robotech.ro.Ro;
 import rebue.robotech.svc.BaseSvc;
 
 /**
@@ -67,12 +65,5 @@ public interface IbrBuyRelationSvc extends BaseSvc<java.lang.Long, IbrBuyRelatio
      * @return 最早购买记录，如果没有则返回null
      */
     IbrBuyRelationMo getNotFullAndEarlestBuyRelation(Long groupId, Integer maxChildernCount);
-
-    /**
-     * 计算父节点并插入
-     * 
-     * @return
-     */
-    Ro matchParentNodeAndInsertNode(MatchTo To);
 
 }
