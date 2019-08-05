@@ -107,7 +107,7 @@ public class IbrBuyRelationTaskSvcImpl extends
 
     @Override
     public List<Long> getTaskIdsThatShouldSettleExecute(TaskExecuteStateDic executeState) {
-        return _mapper.getTaskIdsThatShouldExecute((byte) executeState.getCode());
+        return _mapper.getTaskIdsThatShouldSettleExecute((byte) executeState.getCode());
     }
 
     /**
@@ -232,13 +232,15 @@ public class IbrBuyRelationTaskSvcImpl extends
             }
             _log.info("5-1:更新父节点，来源字段。");
             if (result.getResult() == ResultDic.SUCCESS && result.isFirst()) {
+                NewLeftValue = 1l;
                 _log.info("匹配结果为首单,去掉当前节点的父节点，来源字段 isFirst-{}", result.isFirst());
                 if (ibrBuyRelationMapper.delateParentIdAndRelationResouce(childrenNode.getId()) != 1) {
                     _log.error("去掉当前节点的父节点，来源字段失败");
                     throw new IllegalArgumentException("去掉当前节点的父节点，来源字段失败");
                 }
-                NewLeftValue = 1l;
+
             } else if (result.getResult() == ResultDic.SUCCESS) {
+                NewLeftValue = result.getParentNode().getLeftValue() + 1;
                 _log.info("匹配结果不为首单,修改当前节点的父节点，来源字段 isFirst-{}", result.isFirst());
                 IbrBuyRelationMo modifyMo = new IbrBuyRelationMo();
                 modifyMo.setId(childrenNode.getId());
@@ -248,10 +250,7 @@ public class IbrBuyRelationTaskSvcImpl extends
                     _log.error("修改当前节点的父节点，来源字段失败");
                     throw new IllegalArgumentException("修改当前节点的父节点，来源字段失败");
                 }
-                NewLeftValue = result.getParentNode().getLeftValue() + 1;
-            }
 
-            if (!result.isFirst()) {
                 _log.info("6：增加节点数(调整幅度公式为：即将插入的节点数x2)");
                 // 这里*-1是因为mapper里面和删除使用的是同一个方法，方法里面是减去调整幅度，而这里却是要加，所以使用负数
                 int movingCount = ibrBuyRelationMapper.getMovingNodesCound(childrenNode.getGroupId(),
@@ -264,13 +263,12 @@ public class IbrBuyRelationTaskSvcImpl extends
                 _log.info("6-2:更新左值(加上增加的节点数量),更新幅度为负数 changeRange-{}", changeRange);
                 ibrBuyRelationMapper.updateLeftValue(groupId, result.getParentNode().getLeftValue(), changeRange,
                         "DESC");
-            } else {
-                _log.info("首单，不需要增加节点数");
             }
 
             _log.info("7：调整即将插入节点树的左右值(调整幅度为：当前插入节点的左值-当前插入节点旧的左值)");
             changeRange = NewLeftValue - childrenNode.getLeftValue();
-            ibrBuyRelationMapper.updateMovingRightValueAndLeftValue(childrenNode.getLeftValue(),childrenNode.getRightValue(),childrenNode.getGroupId(), changeRange,
+            ibrBuyRelationMapper.updateMovingRightValueAndLeftValue(childrenNode.getLeftValue(),
+                    childrenNode.getRightValue(), childrenNode.getGroupId(), changeRange,
                     changeRange > 0 ? "DESC" : "ASC");
 
             _log.info("++++++++++++++++++++++++++++++++循环插入节点树结束+++++++++++++++++++++++++");
