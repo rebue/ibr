@@ -251,20 +251,26 @@ public class IbrBuyRelationTaskSvcImpl extends
                 NewLeftValue = result.getParentNode().getLeftValue() + 1;
             }
 
-            _log.info("6：增加节点数(调整幅度公式为：即将插入的节点数x2)");
-            // 这里*-1是因为mapper里面和删除使用的是同一个方法，方法里面是减去调整幅度，而这里却是要加，所以使用负数
-            int movingCount = ibrBuyRelationMapper.getMovingNodesCound(childrenNode.getGroupId(),
-                    buyRelationResult.getLeftValue(), buyRelationResult.getRightValue());
-            final Long groupId = matchTo.getMatchPrice().multiply(BigDecimal.valueOf(100)).longValueExact();
-            changeRange = movingCount * 2 * -1;
-            _log.info("6-1:更新右值(加上增加的节点数量),更新幅度为负数 changeRange-{}", changeRange);
-            ibrBuyRelationMapper.updateRightValue(groupId, result.getParentNode().getRightValue(), changeRange, "DESC");
-            _log.info("6-2:更新左值(加上增加的节点数量),更新幅度为负数 changeRange-{}", changeRange);
-            ibrBuyRelationMapper.updateLeftValue(groupId, result.getParentNode().getLeftValue(), changeRange, "DESC");
+            if (!result.isFirst()) {
+                _log.info("6：增加节点数(调整幅度公式为：即将插入的节点数x2)");
+                // 这里*-1是因为mapper里面和删除使用的是同一个方法，方法里面是减去调整幅度，而这里却是要加，所以使用负数
+                int movingCount = ibrBuyRelationMapper.getMovingNodesCound(childrenNode.getGroupId(),
+                        childrenNode.getLeftValue(), childrenNode.getRightValue());
+                final Long groupId = matchTo.getMatchPrice().multiply(BigDecimal.valueOf(100)).longValueExact();
+                changeRange = movingCount * 2 * -1;
+                _log.info("6-1:更新右值(加上增加的节点数量),更新幅度为负数 changeRange-{}", changeRange);
+                ibrBuyRelationMapper.updateRightValue(groupId, result.getParentNode().getRightValue(), changeRange,
+                        "DESC");
+                _log.info("6-2:更新左值(加上增加的节点数量),更新幅度为负数 changeRange-{}", changeRange);
+                ibrBuyRelationMapper.updateLeftValue(groupId, result.getParentNode().getLeftValue(), changeRange,
+                        "DESC");
+            } else {
+                _log.info("首单，不需要增加节点数");
+            }
 
             _log.info("7：调整即将插入节点树的左右值(调整幅度为：当前插入节点的左值-当前插入节点旧的左值)");
             changeRange = NewLeftValue - childrenNode.getLeftValue();
-            ibrBuyRelationMapper.updateMovingRightValueAndLeftValue(childrenNode.getGroupId(), changeRange,
+            ibrBuyRelationMapper.updateMovingRightValueAndLeftValue(childrenNode.getLeftValue(),childrenNode.getRightValue(),childrenNode.getGroupId(), changeRange,
                     changeRange > 0 ? "DESC" : "ASC");
 
             _log.info("++++++++++++++++++++++++++++++++循环插入节点树结束+++++++++++++++++++++++++");
