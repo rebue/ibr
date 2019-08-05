@@ -253,10 +253,11 @@ public class IbrBuyRelationTaskSvcImpl extends
 
                 _log.info("6：增加节点数(调整幅度公式为：即将插入的节点数x2)");
                 // 这里*-1是因为mapper里面和删除使用的是同一个方法，方法里面是减去调整幅度，而这里却是要加，所以使用负数
-                int movingCount = ibrBuyRelationMapper.getMovingNodesCound(childrenNode.getGroupId(),
-                        childrenNode.getLeftValue(), childrenNode.getRightValue());
+//                int movingCount = ibrBuyRelationMapper.getMovingNodesCound(childrenNode.getGroupId(),
+//                        childrenNode.getLeftValue(), childrenNode.getRightValue());
+                int movingCount = (int) (childrenNode.getRightValue() - childrenNode.getLeftValue() + 1);
                 final Long groupId = matchTo.getMatchPrice().multiply(BigDecimal.valueOf(100)).longValueExact();
-                changeRange = movingCount * 2 * -1;
+                changeRange = movingCount * -1;
                 _log.info("6-1:更新右值(加上增加的节点数量),更新幅度为负数 changeRange-{}", changeRange);
                 ibrBuyRelationMapper.updateRightValue(groupId, result.getParentNode().getRightValue(), changeRange,
                         "DESC");
