@@ -2,6 +2,7 @@ package rebue.ibr.test;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -17,9 +18,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import rebue.ibr.Ro.MatchRelationRo;
 import rebue.ibr.dic.MatchSchemeDic;
+import rebue.ibr.dic.TaskTypeDic;
+import rebue.ibr.mo.IbrBuyRelationTaskMo;
 import rebue.ibr.mo.IbrInviteRelationMo;
 import rebue.ibr.to.MatchTo;
 import rebue.robotech.dic.ResultDic;
+import rebue.robotech.dic.TaskExecuteStateDic;
 import rebue.robotech.ro.IdRo;
 import rebue.wheel.OkhttpUtils;
 
@@ -42,7 +46,7 @@ public class IbrMatchTests {
     /**
      * 测试匹配
      */
-    @Test
+    // @Test
     public void testMatch() throws IOException {
         // 步骤计数器
         int stepCount = 0;
@@ -145,6 +149,53 @@ public class IbrMatchTests {
         Map<String, Object> paramsMap = new LinkedHashMap<>();
         paramsMap.put("taskId", 628504366957068299l);
         OkhttpUtils.postByFormParams(hostUrl + "/ibr/execute-task-refund", paramsMap);
+
+    }
+
+    /**
+     * 添加匹配任务
+     * 注意：添加之前要去订单哪里将订单的数据插入进去
+     * 
+     * @throws IOException
+     */
+    @Test
+    public void addTask() throws IOException {
+        int stepCount = 0;
+
+//        _log.info("{}. 添加邀请关系 买家4邀请买家7", ++stepCount);
+//        postAddInviteRelation(4L, 7L);
+//        _log.info("{}. 添加邀请关系 买家4邀请买家8", ++stepCount);
+//        postAddInviteRelation(4L, 8L);
+//        _log.info("{}. 添加邀请关系 买家4邀请买家9", ++stepCount);
+//        postAddInviteRelation(4L, 9L);
+//        _log.info("{}. 添加邀请关系 买家5邀请买家9", ++stepCount);
+//        postAddInviteRelation(5L, 9L);
+
+//        for (int i = 1; i < 10; i++) {
+//
+//            IbrBuyRelationTaskMo addTaskMo = new IbrBuyRelationTaskMo();
+//            final Calendar calendar = Calendar.getInstance();
+//            calendar.setTime(new Date());
+//            calendar.add(Calendar.SECOND, i);
+//            final Date executePlanTime = calendar.getTime();
+//            addTaskMo.setExecuteState((byte) TaskExecuteStateDic.NONE.getCode());
+//            addTaskMo.setTaskType((byte) TaskTypeDic.MATCH_BUY_RELATION.getCode());
+//            addTaskMo.setExecutePlanTime(executePlanTime);
+//            addTaskMo.setOrderDetailId(Long.valueOf(i));
+//            OkhttpUtils.postByJsonParams(hostUrl + "/ibr/buy-relation-task", addTaskMo);
+//        }
+
+        // 添加退款成功后宠幸匹配任务
+        IbrBuyRelationTaskMo addTaskMo = new IbrBuyRelationTaskMo();
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.MONDAY, 2);
+        final Date executePlanTime = calendar.getTime();
+        addTaskMo.setExecuteState((byte) TaskExecuteStateDic.NONE.getCode());
+        addTaskMo.setTaskType((byte) TaskTypeDic.REFUND_AGAIN_MATCH.getCode());
+        addTaskMo.setExecutePlanTime(executePlanTime);
+        addTaskMo.setOrderDetailId(Long.valueOf(4)); // 改变里面的值就能添加不同节点的退款
+        OkhttpUtils.postByJsonParams(hostUrl + "/ibr/buy-relation-task", addTaskMo);
 
     }
 
