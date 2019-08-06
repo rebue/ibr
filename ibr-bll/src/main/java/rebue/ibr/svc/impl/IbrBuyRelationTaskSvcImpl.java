@@ -250,7 +250,14 @@ public class IbrBuyRelationTaskSvcImpl extends
                     _log.error("修改当前节点的父节点，来源字段失败");
                     throw new IllegalArgumentException("修改当前节点的父节点，来源字段失败");
                 }
-
+                _log.info("匹配结果不为首单,将父节点的下家数量加1");
+                IbrBuyRelationMo modifyParentChildrenCount = new IbrBuyRelationMo();
+                modifyParentChildrenCount.setId(result.getParentNode().getId());
+                modifyParentChildrenCount.setChildrenCount((byte) (result.getParentNode().getChildrenCount() + 1));
+                if (ibrBuyRelationSvc.modify(modifyParentChildrenCount) != 1) {
+                    _log.error("将父节点的下家数量加1失败");
+                    throw new IllegalArgumentException("将父节点的下家数量加1失败");
+                }
                 _log.info("6：增加节点数(调整幅度公式为：即将插入的节点数x2)");
                 // 这里*-1是因为mapper里面和删除使用的是同一个方法，方法里面是减去调整幅度，而这里却是要加，所以使用负数
 //                int movingCount = ibrBuyRelationMapper.getMovingNodesCound(childrenNode.getGroupId(),
@@ -399,6 +406,17 @@ public class IbrBuyRelationTaskSvcImpl extends
                 cashback(parentRelationResult);
             }
         }
+        _log.info("修改任务");
+        IbrBuyRelationTaskMo modifyTaskMo = new IbrBuyRelationTaskMo();
+        modifyTaskMo.setId(taskId);
+        modifyTaskMo.setExecuteFactTime(new Date());
+        modifyTaskMo.setExecuteState((byte) TaskExecuteStateDic.DONE.getCode());
+        _log.info("修改任务的参数为 modifyTaskMo-{}", modifyTaskMo);
+        if (super.modify(modifyTaskMo) != 1) {
+            _log.error("修改任务失败 modifyTaskMo-{}", modifyTaskMo);
+            throw new IllegalArgumentException("修改任务失败");
+        }
+
     }
 
     // 返佣
