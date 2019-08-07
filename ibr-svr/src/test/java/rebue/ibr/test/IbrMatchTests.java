@@ -185,17 +185,34 @@ public class IbrMatchTests {
 //            OkhttpUtils.postByJsonParams(hostUrl + "/ibr/buy-relation-task", addTaskMo);
 //        }
 
-        // 添加退款成功后宠幸匹配任务
-        IbrBuyRelationTaskMo addTaskMo = new IbrBuyRelationTaskMo();
-        final Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-        calendar.add(Calendar.MONDAY, 2);
-        final Date executePlanTime = calendar.getTime();
-        addTaskMo.setExecuteState((byte) TaskExecuteStateDic.NONE.getCode());
-        addTaskMo.setTaskType((byte) TaskTypeDic.REFUND_AGAIN_MATCH.getCode());
-        addTaskMo.setExecutePlanTime(executePlanTime);
-        addTaskMo.setOrderDetailId(Long.valueOf(4)); // 改变里面的值就能添加不同节点的退款
-        OkhttpUtils.postByJsonParams(hostUrl + "/ibr/buy-relation-task", addTaskMo);
+        // 添加退款成功后重新匹配任务
+//        IbrBuyRelationTaskMo addTaskMo = new IbrBuyRelationTaskMo();
+//        final Calendar calendar = Calendar.getInstance();
+//        calendar.setTime(new Date());
+//        calendar.add(Calendar.MONDAY, 2);
+//        final Date executePlanTime = calendar.getTime();
+//        addTaskMo.setExecuteState((byte) TaskExecuteStateDic.NONE.getCode());
+//        addTaskMo.setTaskType((byte) TaskTypeDic.REFUND_AGAIN_MATCH.getCode());
+//        addTaskMo.setExecutePlanTime(executePlanTime);
+//        // 添加节点3退款，任务执行之后应该是3下面的6节点匹配到1下面
+//        // addTaskMo.setOrderDetailId(Long.valueOf(3));
+//        // 添加节点1退款，任务执行之后应该是2成为首单，6在4下面
+//        addTaskMo.setOrderDetailId(Long.valueOf(1));
+//
+//        OkhttpUtils.postByJsonParams(hostUrl + "/ibr/buy-relation-task", addTaskMo);
+
+        // 添加退款成功后重新匹配任务
+        IbrBuyRelationTaskMo addTaskMo2 = new IbrBuyRelationTaskMo();
+        final Calendar calendar2 = Calendar.getInstance();
+        calendar2.setTime(new Date());
+        calendar2.add(Calendar.MONDAY, 2);
+        final Date executePlanTime2 = calendar2.getTime();
+        addTaskMo2.setExecuteState((byte) TaskExecuteStateDic.NONE.getCode());
+        addTaskMo2.setTaskType((byte) TaskTypeDic.SETTLE_COMMISSION.getCode());
+        addTaskMo2.setExecutePlanTime(executePlanTime2);
+        addTaskMo2.setOrderDetailId(Long.valueOf(5));
+
+        OkhttpUtils.postByJsonParams(hostUrl + "/ibr/buy-relation-task", addTaskMo2);
 
     }
 

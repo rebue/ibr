@@ -200,7 +200,7 @@ public class IbrBuyRelationTaskSvcImpl extends
                 changeRange, "ASC");
         _log.info("4-2:更新左值(减去删除的节点数量),更新幅度为 changeRange-{}", changeRange);
         ibrBuyRelationMapper.updateLeftValue(buyRelationResult.getGroupId(), buyRelationResult.getLeftValue(),
-                changeRange, "ASC");
+                buyRelationResult.getRightValue(), changeRange, "ASC");
 
         IbrBuyRelationMo getchildrenNodesMo = new IbrBuyRelationMo();
         getchildrenNodesMo.setParentId(detailId);
@@ -211,6 +211,7 @@ public class IbrBuyRelationTaskSvcImpl extends
             // 定义即将插入节点的左值以便后面计算
             long NewLeftValue = 0;
             _log.info("5:匹配父节点");
+            _log.info("当前节点 childrenNode-{}", childrenNode);
             OrdOrderDetailMo detailResult = ordOrderDetailSvc.getById(childrenNode.getId());
             MatchTo matchTo = new MatchTo();
             matchTo.setOrderDetailId(detailResult.getId());
@@ -240,7 +241,7 @@ public class IbrBuyRelationTaskSvcImpl extends
                 }
 
             } else if (result.getResult() == ResultDic.SUCCESS) {
-                NewLeftValue = result.getParentNode().getLeftValue() + 1;
+                NewLeftValue = result.getParentNode().getRightValue();
                 _log.info("匹配结果不为首单,修改当前节点的父节点，来源字段 isFirst-{}", result.isFirst());
                 IbrBuyRelationMo modifyMo = new IbrBuyRelationMo();
                 modifyMo.setId(childrenNode.getId());
@@ -259,9 +260,7 @@ public class IbrBuyRelationTaskSvcImpl extends
                     throw new IllegalArgumentException("将父节点的下家数量加1失败");
                 }
                 _log.info("6：增加节点数(调整幅度公式为：即将插入的节点数x2)");
-                // 这里*-1是因为mapper里面和删除使用的是同一个方法，方法里面是减去调整幅度，而这里却是要加，所以使用负数
-//                int movingCount = ibrBuyRelationMapper.getMovingNodesCound(childrenNode.getGroupId(),
-//                        childrenNode.getLeftValue(), childrenNode.getRightValue());
+
                 int movingCount = (int) (childrenNode.getRightValue() - childrenNode.getLeftValue() + 1);
                 final Long groupId = matchTo.getMatchPrice().multiply(BigDecimal.valueOf(100)).longValueExact();
                 changeRange = movingCount * -1;
@@ -269,12 +268,14 @@ public class IbrBuyRelationTaskSvcImpl extends
                 ibrBuyRelationMapper.updateRightValue(groupId, result.getParentNode().getRightValue(), changeRange,
                         "DESC");
                 _log.info("6-2:更新左值(加上增加的节点数量),更新幅度为负数 changeRange-{}", changeRange);
-                ibrBuyRelationMapper.updateLeftValue(groupId, result.getParentNode().getLeftValue(), changeRange,
-                        "DESC");
+                ibrBuyRelationMapper.updateLeftValue(groupId, result.getParentNode().getLeftValue(),
+                        result.getParentNode().getRightValue(), changeRange, "DESC");
             }
 
-            _log.info("7：调整即将插入节点树的左右值(调整幅度为：当前插入节点的左值-当前插入节点旧的左值)");
             changeRange = NewLeftValue - childrenNode.getLeftValue();
+            _log.info("{},{},{}", changeRange, NewLeftValue, childrenNode.getLeftValue());
+            _log.info("7：调整即将插入节点树的左右值(调整幅度为：当前插入节点的左值-当前插入节点旧的左值) changeRange-{}", changeRange);
+
             ibrBuyRelationMapper.updateMovingRightValueAndLeftValue(childrenNode.getLeftValue(),
                     childrenNode.getRightValue(), childrenNode.getGroupId(), changeRange,
                     changeRange > 0 ? "DESC" : "ASC");

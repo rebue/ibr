@@ -209,7 +209,7 @@ public interface IbrBuyRelationMapper extends MybatisBaseMapper<IbrBuyRelationMo
      * @param changeRange
      * @return
      */
-    @Update("UPDATE IBR_BUY_RELATION SET RIGHT_VALUE = RIGHT_VALUE - ${changeRange} where RIGHT_VALUE >= #{rightValue} AND IS_MOVING = false  ORDER BY RIGHT_VALUE ${order} ")
+    @Update("UPDATE IBR_BUY_RELATION SET RIGHT_VALUE = RIGHT_VALUE - ${changeRange} where RIGHT_VALUE >= #{rightValue} AND IS_MOVING = false and  GROUP_ID =  #{groupId}   ORDER BY RIGHT_VALUE ${order} ")
     int updateRightValue(@Param("groupId") Long groupId, @Param("rightValue") Long rightValue,
             @Param("changeRange") Long changeRange, @Param("order") String order);
 
@@ -222,9 +222,9 @@ public interface IbrBuyRelationMapper extends MybatisBaseMapper<IbrBuyRelationMo
      * @param changeRange
      * @return
      */
-    @Update("UPDATE IBR_BUY_RELATION SET  LEFT_VALUE =  LEFT_VALUE - ${changeRange}  where LEFT_VALUE > #{leftValue} AND IS_MOVING = false ORDER BY LEFT_VALUE ${order} ")
+    @Update("UPDATE IBR_BUY_RELATION SET  LEFT_VALUE =  LEFT_VALUE - ${changeRange}  where LEFT_VALUE > #{leftValue} AND RIGHT_VALUE > #{rightValue} AND IS_MOVING = false  and  GROUP_ID =  #{groupId}  ORDER BY LEFT_VALUE ${order} ")
     int updateLeftValue(@Param("groupId") Long groupId, @Param("leftValue") Long leftValue,
-            @Param("changeRange") Long changeRange, @Param("order") String order);
+            @Param("rightValue") Long rightValue, @Param("changeRange") Long changeRange, @Param("order") String order);
 
     /**
      * 设置删除节点下的子节点isMoving字段为true
@@ -234,7 +234,7 @@ public interface IbrBuyRelationMapper extends MybatisBaseMapper<IbrBuyRelationMo
      * @param rightValue
      * @return
      */
-    @Update("UPDATE  IBR_BUY_RELATION SET IS_MOVING = true  WHERE LEFT_VALUE > #{leftValue} AND RIGHT_VALUE < #{rightValue}  ")
+    @Update("UPDATE  IBR_BUY_RELATION SET IS_MOVING = true  WHERE LEFT_VALUE > #{leftValue} AND RIGHT_VALUE < #{rightValue}  and  GROUP_ID =  #{groupId}   ")
     int updateIsmoving(@Param("groupId") Long groupId, @Param("leftValue") Long leftValue,
             @Param("rightValue") Long rightValue);
 
@@ -246,7 +246,7 @@ public interface IbrBuyRelationMapper extends MybatisBaseMapper<IbrBuyRelationMo
      * @param rightValue
      * @return
      */
-    @Select("SELECT COUNT(*) FROM   IBR_BUY_RELATION  WHERE LEFT_VALUE >= #{leftValue} AND RIGHT_VALUE <= #{rightValue}  AND IS_MOVING = true ")
+    @Select("SELECT COUNT(*) FROM   IBR_BUY_RELATION  WHERE LEFT_VALUE >= #{leftValue} AND RIGHT_VALUE <= #{rightValue}  AND IS_MOVING = true  and  GROUP_ID =  #{groupId}   ")
     int getMovingNodesCound(@Param("groupId") Long groupId, @Param("leftValue") Long leftValue,
             @Param("rightValue") Long rightValue);
 
@@ -259,7 +259,7 @@ public interface IbrBuyRelationMapper extends MybatisBaseMapper<IbrBuyRelationMo
      * @param order
      * @return
      */
-    @Update("UPDATE  IBR_BUY_RELATION SET IS_MOVING = false ,LEFT_VALUE = LEFT_VALUE + #{changeRange} ,RIGHT_VALUE = RIGHT_VALUE + #{changeRange} WHERE IS_MOVING = true and LEFT_VALUE >= #{leftValue} and RIGHT_VALUE <= #{rightValue} ORDER BY LEFT_VALUE ${order} ")
+    @Update("UPDATE  IBR_BUY_RELATION SET IS_MOVING = false ,LEFT_VALUE = LEFT_VALUE + #{changeRange} ,RIGHT_VALUE = RIGHT_VALUE + #{changeRange} WHERE IS_MOVING = true and LEFT_VALUE >= #{leftValue} and RIGHT_VALUE <= #{rightValue}  and  GROUP_ID =  #{groupId}  ORDER BY LEFT_VALUE ${order} ")
     int updateMovingRightValueAndLeftValue(@Param("leftValue") Long leftValue, @Param("rightValue") Long rightValue,
             @Param("groupId") Long groupId, @Param("changeRange") Long changeRange, @Param("order") String order);
 

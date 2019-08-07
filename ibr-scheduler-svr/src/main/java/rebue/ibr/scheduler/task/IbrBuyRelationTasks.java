@@ -21,7 +21,7 @@ public class IbrBuyRelationTasks {
     private IbrBuyRelationTaskSvc ibrBuyRelationTaskSvc;
 
     // buyRelation:订单匹配关执行的间隔(毫秒)，默认5分钟检查一次
-    @Scheduled(fixedDelayString = "${ibr.scheduler.buyRelation:300000}")
+    @Scheduled(fixedDelayString = "${ibr.scheduler.buyRelation:20000}")
     public void executeTasks() throws InterruptedException {
         _log.info("定时执行需要订单匹配关系的的任务");
         List<Long> taskIds = ibrBuyRelationTaskSvc.getTaskIdsThatShouldExecute(TaskExecuteStateDic.NONE);
