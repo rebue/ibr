@@ -1,6 +1,5 @@
 package rebue.ibr.svc.impl;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -12,20 +11,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import rebue.ibr.Ro.MatchRelationRo;
 import rebue.ibr.dao.IbrBuyRelationTaskDao;
-import rebue.ibr.dic.MatchSchemeDic;
 import rebue.ibr.jo.IbrBuyRelationTaskJo;
 import rebue.ibr.mapper.IbrBuyRelationMapper;
 import rebue.ibr.mapper.IbrBuyRelationTaskMapper;
-import rebue.ibr.mo.IbrBuyRelationMo;
 import rebue.ibr.mo.IbrBuyRelationTaskMo;
 import rebue.ibr.svc.IbrBuyRelationSvc;
 import rebue.ibr.svc.IbrBuyRelationTaskSvc;
 import rebue.ibr.svc.IbrMatchSvc;
-import rebue.ibr.to.MatchTo;
-import rebue.ord.mo.OrdOrderDetailMo;
-import rebue.ord.mo.OrdOrderMo;
 import rebue.ord.svr.feign.OrdOrderDetailSvc;
 import rebue.ord.svr.feign.OrdOrderSvc;
 import rebue.robotech.dic.ResultDic;
@@ -106,7 +99,7 @@ public class IbrBuyRelationTaskSvcImpl extends
      */
     @Override
     public void executeMatchTask(Long taskId) {
-        Ro                   result;
+        Ro result;
         IbrBuyRelationTaskMo taskResult = super.getById(taskId);
         _log.info("当前执行的任务为 taskResult-{}", taskResult);
         if (taskResult == null) {
@@ -115,10 +108,10 @@ public class IbrBuyRelationTaskSvcImpl extends
         }
         switch (taskResult.getTaskType()) {
         case 1:
-            result = executePaidNotifyMatchTask(taskResult.getOrderDetailId());
+            result = ibrBuyRelationSvc.executePaidNotifyMatchTask(taskResult.getOrderDetailId());
             break;
         case 3:
-            result = executeRefundAgainMatchTask(taskResult.getOrderDetailId());
+            result = ibrBuyRelationSvc.executeRefundAgainMatchTask(taskResult.getOrderDetailId());
             break;
         default:
             throw new RuntimeException("任务类型错误，匹配关系任务type:" + taskResult.getTaskType());
@@ -140,209 +133,6 @@ public class IbrBuyRelationTaskSvcImpl extends
             throw new IllegalArgumentException("修改任务失败");
         }
 
-    }
-
-    /**
-     * 1：先删除(当前删除节点)
-     * 2：给删除的节点下面的所有子节点设置IS_MOVING=true的标识
-     * 3：整个树大于删除节点的左右值都减去节点数
-     * 4：匹配父节点
-     * 5：大于父节点的节点的左右值增加节点数
-     * 6：调整即将插入节点树的左右值。
-     * 提示： 加上排序的字段是因为在调整节点的时候可能会有唯一约束,因此如果是减的，就从左右值小的开始减起，增加的则相反
-     */
-    @Override
-    public Ro executeRefundAgainMatchTask(Long detailId) {
-        IbrBuyRelationMo buyRelationResult = ibrBuyRelationSvc.getById(detailId);
-        _log.info("当前节点 currentNode-{}", buyRelationResult);
-        if (buyRelationResult == null) {
-            final String msg = "关系不存在";
-            return new Ro(ResultDic.FAIL, msg);
-        }
-
-        _log.info("1:将当前节点的父节点(如果有，首单的话没有父节点)的下家数量减1");
-        IbrBuyRelationMo parentResult = ibrBuyRelationSvc.getById(buyRelationResult.getParentId());
-        if (parentResult != null) {
-            IbrBuyRelationMo modifyParentChildrenCountMo = new IbrBuyRelationMo();
-            modifyParentChildrenCountMo.setId(buyRelationResult.getParentId());
-            modifyParentChildrenCountMo.setChildrenCount((byte) (parentResult.getChildrenCount() - 1));
-            _log.info("修改父节点下家数量的参数为：Mo-{}", modifyParentChildrenCountMo);
-            if (ibrBuyRelationSvc.modify(modifyParentChildrenCountMo) != 1) {
-                final String msg = "修改父节点下家数量失败";
-                return new Ro(ResultDic.FAIL, msg);
-            }
-        }
-
-        _log.info("2:删除(当前删除节点");
-        ibrBuyRelationSvc.del(buyRelationResult.getId());
-
-        _log.info("3:将其子节点都加上标识");
-        ibrBuyRelationMapper.updateIsmoving(buyRelationResult.getGroupId(), buyRelationResult.getLeftValue(),
-                buyRelationResult.getRightValue());
-
-        _log.info("4:调整剩下节点的左右值(调整幅度=删除的节点右值-删除节点左值+1)");
-        long changeRange = (buyRelationResult.getRightValue() - buyRelationResult.getLeftValue()) + 1;
-        _log.info("4-1:更新右值(减去删除的节点数量),更新幅度为 changeRange-{}", changeRange);
-        ibrBuyRelationMapper.updateRightValue(buyRelationResult.getGroupId(), buyRelationResult.getRightValue(),
-                changeRange, "ASC");
-        _log.info("4-2:更新左值(减去删除的节点数量),更新幅度为 changeRange-{}", changeRange);
-        ibrBuyRelationMapper.updateLeftValue(buyRelationResult.getGroupId(), buyRelationResult.getLeftValue(),
-                buyRelationResult.getRightValue(), changeRange, "ASC");
-
-        IbrBuyRelationMo getchildrenNodesMo = new IbrBuyRelationMo();
-        getchildrenNodesMo.setParentId(detailId);
-        List<IbrBuyRelationMo> childrenNodes = ibrBuyRelationSvc.list(getchildrenNodesMo);
-        _log.info("子节点childrenNodes-{}", childrenNodes);
-        for (IbrBuyRelationMo childrenNode : childrenNodes) {
-            _log.info("------------------------------循环插入节点树开始------------------------------");
-            // 定义即将插入节点的左值以便后面计算
-            long NewLeftValue = 0;
-            _log.info("5:匹配父节点");
-            _log.info("当前节点 childrenNode-{}", childrenNode);
-            OrdOrderDetailMo detailResult = ordOrderDetailSvc.getById(childrenNode.getId());
-            MatchTo          matchTo      = new MatchTo();
-            matchTo.setOrderDetailId(detailResult.getId());
-            matchTo.setMatchPrice(detailResult.getBuyPrice());
-            matchTo.setBuyerId(detailResult.getUserId());
-            matchTo.setPaidNotifyTimestamp(childrenNode.getPaidNotifyTimestamp());
-            matchTo.setMaxChildernCount(2);
-            if (detailResult.getInviteId() != null) {
-                matchTo.setMatchPersonId(detailResult.getInviteId());
-                matchTo.setMatchScheme(MatchSchemeDic.SPECIFIED_PERSON);
-            } else {
-                matchTo.setMatchScheme(MatchSchemeDic.SELF);
-            }
-            _log.info("调用执行匹配的参数为：matchTo-{}", matchTo);
-            MatchRelationRo result = ibrMatchSvc.match(matchTo);
-            if (result.getResult() != ResultDic.SUCCESS) {
-                _log.error("匹配失败");
-                throw new IllegalArgumentException("匹配失败");
-            }
-            _log.info("5-1:更新父节点，来源字段。");
-            if (result.getResult() == ResultDic.SUCCESS && result.isFirst()) {
-                NewLeftValue = 1l;
-                _log.info("匹配结果为首单,去掉当前节点的父节点，来源字段 isFirst-{}", result.isFirst());
-                if (ibrBuyRelationMapper.delateParentIdAndRelationResouce(childrenNode.getId()) != 1) {
-                    _log.error("去掉当前节点的父节点，来源字段失败");
-                    throw new IllegalArgumentException("去掉当前节点的父节点，来源字段失败");
-                }
-
-            } else if (result.getResult() == ResultDic.SUCCESS) {
-                NewLeftValue = result.getParentNode().getRightValue();
-                _log.info("匹配结果不为首单,修改当前节点的父节点，来源字段 isFirst-{}", result.isFirst());
-                IbrBuyRelationMo modifyMo = new IbrBuyRelationMo();
-                modifyMo.setId(childrenNode.getId());
-                modifyMo.setParentId(result.getParentNode().getId());
-                modifyMo.setRelationSource((byte) result.getSource().getCode());
-                if (ibrBuyRelationSvc.modify(modifyMo) != 1) {
-                    _log.error("修改当前节点的父节点，来源字段失败");
-                    throw new IllegalArgumentException("修改当前节点的父节点，来源字段失败");
-                }
-                _log.info("匹配结果不为首单,将父节点的下家数量加1");
-                IbrBuyRelationMo modifyParentChildrenCount = new IbrBuyRelationMo();
-                modifyParentChildrenCount.setId(result.getParentNode().getId());
-                modifyParentChildrenCount.setChildrenCount((byte) (result.getParentNode().getChildrenCount() + 1));
-                if (ibrBuyRelationSvc.modify(modifyParentChildrenCount) != 1) {
-                    _log.error("将父节点的下家数量加1失败");
-                    throw new IllegalArgumentException("将父节点的下家数量加1失败");
-                }
-                _log.info("6：增加节点数(调整幅度公式为：即将插入的节点数x2)");
-
-                int        movingCount = (int) (childrenNode.getRightValue() - childrenNode.getLeftValue() + 1);
-                final Long groupId     = matchTo.getMatchPrice().multiply(BigDecimal.valueOf(100)).longValueExact();
-                changeRange = movingCount * -1;
-                _log.info("6-1:更新右值(加上增加的节点数量),更新幅度为负数 changeRange-{}", changeRange);
-                ibrBuyRelationMapper.updateRightValue(groupId, result.getParentNode().getRightValue(), changeRange,
-                        "DESC");
-                _log.info("6-2:更新左值(加上增加的节点数量),更新幅度为负数 changeRange-{}", changeRange);
-                ibrBuyRelationMapper.updateLeftValue(groupId, result.getParentNode().getLeftValue(),
-                        result.getParentNode().getRightValue(), changeRange, "DESC");
-            }
-
-            changeRange = NewLeftValue - childrenNode.getLeftValue();
-            _log.info("{},{},{}", changeRange, NewLeftValue, childrenNode.getLeftValue());
-            _log.info("7：调整即将插入节点树的左右值(调整幅度为：当前插入节点的左值-当前插入节点旧的左值) changeRange-{}", changeRange);
-
-            ibrBuyRelationMapper.updateMovingRightValueAndLeftValue(childrenNode.getLeftValue(),
-                    childrenNode.getRightValue(), childrenNode.getGroupId(), changeRange,
-                    changeRange > 0 ? "DESC" : "ASC");
-
-            _log.info("++++++++++++++++++++++++++++++++循环插入节点树结束+++++++++++++++++++++++++");
-        }
-
-        final String msg = "执行退款成功后重新匹配任务成功";
-        _log.info(msg);
-        return new Ro(ResultDic.SUCCESS, msg);
-
-    }
-
-    @Override
-    public Ro executePaidNotifyMatchTask(Long detailId) {
-        // 1：获取订单详情信息
-        _log.info("获取订单详情信息的参数 detailId-{}", detailId);
-        OrdOrderDetailMo detailResult = ordOrderDetailSvc.getById(detailId);
-        _log.info("获取订单详情信息的结果 detailResult-{}", detailResult);
-        if (detailResult == null || detailResult.getSubjectType() == 0) {
-            final String msg = "该订单详情不存在或已退货或不是全返商品";
-            return new Ro(ResultDic.FAIL, msg);
-        }
-        if (detailResult.getReturnState() == 2) {
-            final String msg = "订单已退货";
-            return new Ro(ResultDic.SUCCESS, msg);
-        }
-
-        // 2：获取订单信息
-        _log.info("获取订单信息的参数：orserId-{}", detailResult.getOrderId());
-        OrdOrderMo orderResult = ordOrderSvc.getById(detailResult.getOrderId());
-        _log.info("获取订单信息的结果为： orderResult-{}", orderResult);
-        if (orderResult == null) {
-            final String msg = "订单不存在";
-            return new Ro(ResultDic.FAIL, msg);
-        }
-        if (orderResult.getOrderState() < 2) {
-            final String msg = "订单未支付或已作废";
-            return new Ro(ResultDic.SUCCESS, msg);
-        }
-
-        // 3:调用执行匹配的方法
-        MatchTo matchTo = new MatchTo();
-        matchTo.setOrderDetailId(detailResult.getId());
-        matchTo.setMatchPrice(detailResult.getBuyPrice());
-        matchTo.setBuyerId(detailResult.getUserId());
-        matchTo.setPaidNotifyTimestamp(orderResult.getPayTime().getTime());
-        matchTo.setMaxChildernCount(2);
-        if (detailResult.getInviteId() != null) {
-            matchTo.setMatchPersonId(detailResult.getInviteId());
-            matchTo.setMatchScheme(MatchSchemeDic.SPECIFIED_PERSON);
-        } else {
-            matchTo.setMatchScheme(MatchSchemeDic.SELF);
-        }
-        _log.info("调用执行计算匹配的参数为：matchTo-{}", matchTo);
-        MatchRelationRo result = ibrMatchSvc.match(matchTo);
-        _log.info("调用执行计算匹配的返回值为：result-{}", result);
-        if (result.getResult() == ResultDic.SUCCESS && result.isFirst()) {
-            _log.info("匹配结果为首单直接添加到分组的根节点 isFirst-{}", result.isFirst());
-            final Long             groupId = matchTo.getMatchPrice().multiply(BigDecimal.valueOf(100)).longValueExact();
-            final IbrBuyRelationMo mo      = new IbrBuyRelationMo();
-            mo.setId(matchTo.getOrderDetailId());
-            mo.setGroupId(groupId);
-            mo.setLeftValue(1L);
-            mo.setRightValue(2L);
-            mo.setBuyerId(matchTo.getBuyerId());
-            mo.setPaidNotifyTimestamp(matchTo.getPaidNotifyTimestamp());
-            if (ibrBuyRelationSvc.add(mo) == 1) {
-                final String msg = "添加首单成功";
-                return new Ro(ResultDic.SUCCESS, msg);
-            }
-        } else if (result.getResult() == ResultDic.SUCCESS) {
-            _log.info("插入新节点");
-            ibrBuyRelationSvc.insertNode(result.getParentNode(), matchTo.getBuyerId(), matchTo.getOrderDetailId(),
-                    matchTo.getPaidNotifyTimestamp(), result.getSource(), matchTo.getMaxChildernCount());
-            final String msg = "添加关系成功";
-            return new Ro(ResultDic.SUCCESS, msg);
-        }
-        final String msg = "添加关系失败";
-        return new Ro(ResultDic.FAIL, msg);
     }
 
     /**

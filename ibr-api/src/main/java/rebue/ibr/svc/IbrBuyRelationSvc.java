@@ -3,6 +3,7 @@ package rebue.ibr.svc;
 import rebue.ibr.dic.RelationSourceDic;
 import rebue.ibr.jo.IbrBuyRelationJo;
 import rebue.ibr.mo.IbrBuyRelationMo;
+import rebue.robotech.ro.Ro;
 import rebue.robotech.svc.BaseSvc;
 
 /**
@@ -65,5 +66,19 @@ public interface IbrBuyRelationSvc extends BaseSvc<java.lang.Long, IbrBuyRelatio
      * @return 最早购买记录，如果没有则返回null
      */
     IbrBuyRelationMo getNotFullAndEarlestBuyRelation(Long groupId, Integer maxChildernCount);
+
+    /**
+     * 执行退款后重新匹配购买关系任务。
+     * 
+     * @param detailId
+     */
+    Ro executeRefundAgainMatchTask(Long detailId);
+
+    /**
+     * 执行支付完成通知匹配购买关系任务
+     * 
+     * @param detailId
+     */
+    Ro executePaidNotifyMatchTask(Long detailId);
 
 }

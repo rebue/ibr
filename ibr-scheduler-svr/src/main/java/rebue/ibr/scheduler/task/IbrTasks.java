@@ -13,9 +13,9 @@ import rebue.ibr.svr.feign.IbrBuyRelationTaskSvc;
 import rebue.robotech.dic.TaskExecuteStateDic;
 
 @Component
-public class IbrBuyRelationTasks {
+public class IbrTasks {
 
-    private final static Logger _log = LoggerFactory.getLogger(IbrBuyRelationTasks.class);
+    private final static Logger _log = LoggerFactory.getLogger(IbrTasks.class);
 
     @Resource
     private IbrBuyRelationTaskSvc ibrBuyRelationTaskSvc;
@@ -23,9 +23,9 @@ public class IbrBuyRelationTasks {
     // buyRelation:订单匹配关执行的间隔(毫秒)，默认5分钟检查一次
     @Scheduled(fixedDelayString = "${ibr.scheduler.buyRelation:20000}")
     public void executeTasks() throws InterruptedException {
-        _log.info("定时执行需要订单匹配关系的的任务");
+        _log.info("定时执行需要执行的任务");
         List<Long> taskIds = ibrBuyRelationTaskSvc.getTaskIdsThatShouldExecute(TaskExecuteStateDic.NONE);
-        _log.info("获取到所有需要订单匹配关系的任务的列表为：{}", taskIds);
+        _log.info("定时执行需要执行的任务的列表为：{}", taskIds);
         try {
             for (Long taskId : taskIds) {
                 try {
@@ -33,11 +33,11 @@ public class IbrBuyRelationTasks {
                     ibrBuyRelationTaskSvc.executeMatchBuyRelationTask(taskId);
                     Thread.sleep(10000);
                 } catch (final RuntimeException e) {
-                    _log.error("需要执行订单匹配关系任务失败", e);
+                    _log.error("定时执行需要执行的任务失败", e);
                 }
             }
         } catch (final RuntimeException e) {
-            _log.info("获取需要执行订单匹配关系任务时出现异常", e);
+            _log.info("定时执行需要执行的任务时出现异常", e);
         }
     }
 

@@ -139,18 +139,7 @@ public class IbrMatchTests {
         Assert.assertEquals(ResultDic.SUCCESS, ro.getResult());
     }
 
-    /**
-     * 退款成功后重新匹配关系测试
-     * 
-     * @throws IOException
-     */
-    // @Test
-    public void refundAgainMatchTask() throws IOException {
-        Map<String, Object> paramsMap = new LinkedHashMap<>();
-        paramsMap.put("taskId", 628504366957068299l);
-        OkhttpUtils.postByFormParams(hostUrl + "/ibr/execute-task-refund", paramsMap);
 
-    }
 
     /**
      * 添加匹配任务

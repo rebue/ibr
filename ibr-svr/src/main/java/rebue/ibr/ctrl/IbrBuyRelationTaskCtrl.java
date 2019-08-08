@@ -208,16 +208,6 @@ public class IbrBuyRelationTaskCtrl {
     }
 
     /**
-     * 执行退货成功后重新匹配任务。
-     * 
-     * @param taskId
-     */
-    @PostMapping("/ibr/execute-task-refund")
-    void executeRefundAgainMatchTask(@RequestParam("taskId") final Long taskId) {
-        svc.executeRefundAgainMatchTask(taskId);
-    }
-
-    /**
      * 执行订单结算任务
      * 
      * @param taskId
