@@ -265,22 +265,6 @@ public class IbrMatchSvcImpl implements IbrMatchSvc {
         _log.info("-----------------------------------开始返佣----------------------------------");
         // 查询订单详情id为父id或id时已结算的购买关系数量
         Timestamp timestamp = new Timestamp(new Date().getTime());
-//            _log.info("该订单详情有2个下家");
-//            // 获取该购买关系下家的购买关系，并判断两个下家是否已结算
-//            IbrBuyRelationMo parentBuyRelation = new IbrBuyRelationMo();
-//            parentBuyRelation.setParentId(buyRelation.getId());
-//            _log.info("根据父id查询下家购买关系的参数 parentBuyRelation-{}", parentBuyRelation);
-//            List<IbrBuyRelationMo> childrenBuyRelationResult = buyRelationSvc.list(parentBuyRelation);
-//            _log.info("根据父id查询下家购买关系的返回值 childrenBuyRelationResult-{}", childrenBuyRelationResult);
-//            // 判断下家是否都已结算
-//            Boolean childrenSettle = true;
-//            for (IbrBuyRelationMo childBuyRelation : childrenBuyRelationResult) {
-//                if (!childBuyRelation.getIsSettled()) {
-//                    _log.info("该订单详情，有下家处于未结算状态");
-//                    childrenSettle = false;
-//                    break;
-//                }
-//            }
         _log.info("查询订单详情id为父id或id时已结算的购买关系数量参数为:id-{}", buyRelation.getId());
         int settleCount = buyRelationSvc.getCountByIdOrPId(buyRelation.getId());
         _log.info("查询订单详情id为父id或id时已结算的购买关系数量返回值为:count-{}", settleCount);
