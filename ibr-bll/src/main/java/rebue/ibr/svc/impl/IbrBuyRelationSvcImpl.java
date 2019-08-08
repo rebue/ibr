@@ -87,13 +87,13 @@ public class IbrBuyRelationSvcImpl
      * 在指定的父节点下插入新节点
      *
      * @param parent
-     *            父节点购买关系
+     *                            父节点购买关系
      * @param buyerId
-     *            买家ID
+     *                            买家ID
      * @param paidNotifyTimestamp
-     *            收到支付通知时的时间戳
+     *                            收到支付通知时的时间戳
      * @param maxChildernCount
-     *            最大子节点的数量，其实就是最多有多少个下家，目前规则是2家
+     *                            最大子节点的数量，其实就是最多有多少个下家，目前规则是2家
      */
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
@@ -131,11 +131,11 @@ public class IbrBuyRelationSvcImpl
      * 获取买家最早未匹配满的购买节点
      *
      * @param groupId
-     *            分组ID，其实就是销售价格*100
+     *                         分组ID，其实就是销售价格*100
      * @param buyerId
-     *            买家ID
+     *                         买家ID
      * @param maxChildernCount
-     *            最大子节点的数量，其实就是最多有多少个下家，目前规则是2家
+     *                         最大子节点的数量，其实就是最多有多少个下家，目前规则是2家
      * @return 最早购买记录，如果没有则返回null
      */
     @Override
@@ -151,9 +151,9 @@ public class IbrBuyRelationSvcImpl
      * 获取最近邀请人的最早未匹配满的购买关系记录
      *
      * @param groupId
-     *            分组ID，其实就是销售价格*100
+     *                         分组ID，其实就是销售价格*100
      * @param maxChildernCount
-     *            最大子节点的数量，其实就是最多有多少个下家，目前规则是2家
+     *                         最大子节点的数量，其实就是最多有多少个下家，目前规则是2家
      * @return 最早购买记录，如果没有则返回null
      */
     @Override
@@ -169,9 +169,9 @@ public class IbrBuyRelationSvcImpl
      * 获取最早未匹配满的购买关系记录
      *
      * @param groupId
-     *            分组ID，其实就是销售价格*100
+     *                         分组ID，其实就是销售价格*100
      * @param maxChildernCount
-     *            最大子节点的数量，其实就是最多有多少个下家，目前规则是2家
+     *                         最大子节点的数量，其实就是最多有多少个下家，目前规则是2家
      * @return 最早购买记录，如果没有则返回null
      */
     @Override
@@ -238,7 +238,7 @@ public class IbrBuyRelationSvcImpl
             _log.info("5:匹配父节点");
             _log.info("当前节点 childrenNode-{}", childrenNode);
             OrdOrderDetailMo detailResult = ordOrderDetailSvc.getById(childrenNode.getId());
-            MatchTo matchTo = new MatchTo();
+            MatchTo          matchTo      = new MatchTo();
             matchTo.setOrderDetailId(detailResult.getId());
             matchTo.setMatchPrice(detailResult.getBuyPrice());
             matchTo.setBuyerId(detailResult.getUserId());
@@ -286,8 +286,8 @@ public class IbrBuyRelationSvcImpl
                 }
                 _log.info("6：增加节点数(调整幅度公式为：即将插入的节点数x2)");
 
-                int movingCount = (int) (childrenNode.getRightValue() - childrenNode.getLeftValue() + 1);
-                final Long groupId = matchTo.getMatchPrice().multiply(BigDecimal.valueOf(100)).longValueExact();
+                int        movingCount = (int) (childrenNode.getRightValue() - childrenNode.getLeftValue() + 1);
+                final Long groupId     = matchTo.getMatchPrice().multiply(BigDecimal.valueOf(100)).longValueExact();
                 changeRange = movingCount * -1;
                 _log.info("6-1:更新右值(加上增加的节点数量),更新幅度为负数 changeRange-{}", changeRange);
                 _mapper.updateRightValue(groupId, result.getParentNode().getRightValue(), changeRange, "DESC");
@@ -358,8 +358,8 @@ public class IbrBuyRelationSvcImpl
         _log.info("调用执行计算匹配的返回值为：result-{}", result);
         if (result.getResult() == ResultDic.SUCCESS && result.isFirst()) {
             _log.info("匹配结果为首单直接添加到分组的根节点 isFirst-{}", result.isFirst());
-            final Long groupId = matchTo.getMatchPrice().multiply(BigDecimal.valueOf(100)).longValueExact();
-            final IbrBuyRelationMo mo = new IbrBuyRelationMo();
+            final Long             groupId = matchTo.getMatchPrice().multiply(BigDecimal.valueOf(100)).longValueExact();
+            final IbrBuyRelationMo mo      = new IbrBuyRelationMo();
             mo.setId(matchTo.getOrderDetailId());
             mo.setGroupId(groupId);
             mo.setLeftValue(1L);
@@ -388,11 +388,11 @@ public class IbrBuyRelationSvcImpl
      * 3:插入节点
      */
     public void ImportOldData() {
-        Long userId = 0l;
-        Long parentId = 1l;
-        Long childrenId = 2l;
-        Long groupId = 3l;
-        Long time = new Date().getTime();
+        Long              userId         = 0l;
+        Long              parentId       = 1l;
+        Long              childrenId     = 2l;
+        Long              groupId        = 3l;
+        Long              time           = new Date().getTime();
         RelationSourceDic relationSource = RelationSourceDic.APPOINTED;
 
         final IbrBuyRelationMo qo = new IbrBuyRelationMo();
@@ -417,6 +417,15 @@ public class IbrBuyRelationSvcImpl
             insertNode(parentNode, userId, childrenId, time, relationSource, 2);
         }
 
+    }
+
+    /**
+     * 根据id或父id获取已结算购买关系的数量
+     */
+    @Override
+    public int getCountByIdOrPId(Long id) {
+        _log.info("id或父id -{}", id);
+        return _mapper.getCountByIdOrPId(id);
     }
 
 }

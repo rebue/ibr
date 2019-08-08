@@ -83,11 +83,11 @@ public interface IbrBuyRelationMapper extends MybatisBaseMapper<IbrBuyRelationMo
      * 在插入新节点前更新父节点的子节点数+=1
      *
      * @param parentId
-     *            父节点ID
+     *                         父节点ID
      * @param nodeCount
-     *            插入的节点数
+     *                         插入的节点数
      * @param maxChildernCount
-     *            最大子节点的数量，其实就是最多有多少个下家，目前规则是2家
+     *                         最大子节点的数量，其实就是最多有多少个下家，目前规则是2家
      * @return 影响行数
      */
     @//
@@ -103,11 +103,11 @@ public interface IbrBuyRelationMapper extends MybatisBaseMapper<IbrBuyRelationMo
      * 在插入节点前更新右值
      *
      * @param groupId
-     *            分组ID，其实就是销售价格*100
+     *                         分组ID，其实就是销售价格*100
      * @param nodeCount
-     *            插入的节点数
+     *                         插入的节点数
      * @param parentRightValue
-     *            父结点的右值
+     *                         父结点的右值
      * @return 影响行数
      */
     @//
@@ -123,11 +123,11 @@ public interface IbrBuyRelationMapper extends MybatisBaseMapper<IbrBuyRelationMo
      * 在插入节点前更新左值
      *
      * @param groupId
-     *            分组ID，其实就是销售价格*100
+     *                         分组ID，其实就是销售价格*100
      * @param nodeCount
-     *            插入的节点数
+     *                         插入的节点数
      * @param parentRightValue
-     *            父结点的右值
+     *                         父结点的右值
      * @return 影响行数
      */
     @//
@@ -143,11 +143,11 @@ public interface IbrBuyRelationMapper extends MybatisBaseMapper<IbrBuyRelationMo
      * 获取买家最早未匹配满的购买节点
      *
      * @param groupId
-     *            分组ID，其实就是销售价格*100
+     *                         分组ID，其实就是销售价格*100
      * @param buyerId
-     *            买家ID
+     *                         买家ID
      * @param maxChildernCount
-     *            最大子节点的数量，其实就是最多有多少个下家，目前规则是2家
+     *                         最大子节点的数量，其实就是最多有多少个下家，目前规则是2家
      * @return 最早购买记录，如果没有则返回null
      */
     @//
@@ -168,9 +168,9 @@ public interface IbrBuyRelationMapper extends MybatisBaseMapper<IbrBuyRelationMo
      * 获取最近邀请人的最早未匹配满的购买关系记录
      *
      * @param groupId
-     *            分组ID，其实就是销售价格*100
+     *                         分组ID，其实就是销售价格*100
      * @param maxChildernCount
-     *            最大子节点的数量，其实就是最多有多少个下家，目前规则是2家
+     *                         最大子节点的数量，其实就是最多有多少个下家，目前规则是2家
      * @return 最早购买记录，如果没有则返回null
      */
     @ResultMap("BaseResultMap")
@@ -181,9 +181,9 @@ public interface IbrBuyRelationMapper extends MybatisBaseMapper<IbrBuyRelationMo
      * 获取最早未匹配满的购买关系记录
      *
      * @param groupId
-     *            分组ID，其实就是销售价格*100
+     *                         分组ID，其实就是销售价格*100
      * @param maxChildernCount
-     *            最大子节点的数量，其实就是最多有多少个下家，目前规则是2家
+     *                         最大子节点的数量，其实就是最多有多少个下家，目前规则是2家
      * @return 最早购买记录，如果没有则返回null
      */
     @//
@@ -271,4 +271,13 @@ public interface IbrBuyRelationMapper extends MybatisBaseMapper<IbrBuyRelationMo
      */
     @Update("UPDATE  IBR_BUY_RELATION  SET PARENT_ID = null , RELATION_SOURCE = null where  ID = #{id}  ")
     int delateParentIdAndRelationResouce(@Param("id") Long id);
+
+    /**
+     * 根据id或父id获取已结算购买关系的数量
+     * 
+     * @param id
+     * @return
+     */
+    @Select("SELECT COUNT(*) FROM IBR_BUY_RELATION WHERE IS_SETTLED = TRUE AND (ID = #{id} OR  PARENT_ID = #{id})")
+    int getCountByIdOrPId(@Param("id") Long id);
 }
