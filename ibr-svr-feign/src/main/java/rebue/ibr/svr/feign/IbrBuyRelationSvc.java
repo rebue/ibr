@@ -4,9 +4,13 @@ import java.util.List;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import rebue.ibr.mo.IbrBuyRelationMo;
+import rebue.ibr.to.ImportOldDataTo;
+import rebue.robotech.ro.Ro;
 import rebue.sbs.feign.FeignConfig;
 
 @FeignClient(name = "ibr-svr", configuration = FeignConfig.class)
@@ -27,5 +31,8 @@ public interface IbrBuyRelationSvc {
      */
     @GetMapping("/ibr/buy-relation/get-by-id")
     IbrBuyRelationMo getById(@RequestParam("id") final java.lang.Long id);
+
+    @PostMapping("/ibr/buy-relation-import-old-data")
+    Ro importOldData(@RequestBody ImportOldDataTo to);
 
 }

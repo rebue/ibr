@@ -30,7 +30,7 @@ public class IbrTasks {
             for (Long taskId : taskIds) {
                 try {
                     _log.info("当前任务id-{}", taskId);
-                    ibrBuyRelationTaskSvc.executeMatchBuyRelationTask(taskId);
+                    ibrBuyRelationTaskSvc.executeTask(taskId);
                     Thread.sleep(10000);
                 } catch (final RuntimeException e) {
                     _log.error("定时执行需要执行的任务失败", e);

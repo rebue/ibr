@@ -187,39 +187,13 @@ public class IbrBuyRelationTaskCtrl {
     }
 
     /**
-     * 获取需要执行的结算任务列表
-     * 
-     * @return
-     */
-    @GetMapping(value = "/ibr/settle-task/tasks")
-    List<Long> getTaskIdsThatShouldSettleExecute(@RequestParam("executeState") final TaskExecuteStateDic executeState) {
-        _log.info("获取需要执行结算的任务,executeState-{}", executeState);
-        return svc.getTaskIdsThatShouldSettleExecute(executeState);
-    }
-
-    /**
      * 执行匹配购买关系任务
      * 
      * @param taskId
      */
     @PostMapping("/ibr/execute-task")
-    void executeMatchBuyRelationTask(@RequestParam("taskId") final Long taskId) {
-        svc.executeMatchTask(taskId);
+    void executeTask(@RequestParam("taskId") final Long taskId) {
+        svc.executeTask(taskId);
     }
 
-    /**
-     * 执行订单结算任务
-     * 
-     * @param taskId
-     */
-    @PostMapping("/ibr/execute-order-settle-task")
-    void executeOrderSettleTask(@RequestParam("taskId") final Long taskId) {
-        _log.info("received post:/ibr/execute-order-settle-task: {}", taskId);
-        svc.executeOrderSettleTask(taskId);
-    }
-//    单元测试
-//    void executeOrderBuyRelationTask(@RequestBody TempTo tempTo) {
-//        _log.info("received post:/ibr/execute-order-settle-task: {}", tempTo.getTaskId());
-//        svc.executeOrderSettleTask(tempTo.getTaskId());
-//    }
 }

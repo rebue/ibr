@@ -36,29 +36,11 @@ public interface IbrBuyRelationTaskSvc {
     List<Long> getTaskIdsThatShouldExecute(@RequestParam("executeState") final TaskExecuteStateDic executeState);
 
     /**
-     * 获取需要执行的结算任务列表
-     * 
-     * @param executeState
-     * @param taskType
-     * @return
-     */
-    @GetMapping(value = "/ibr/settle-task/tasks")
-    List<Long> getTaskIdsThatShouldSettleExecute(@RequestParam("executeState") final TaskExecuteStateDic executeState);
-
-    /**
      * 执行匹配购买关系任务
      * 
      * @param taskId
      */
     @PostMapping("/ibr/execute-task")
-    void executeMatchBuyRelationTask(@RequestParam("taskId") final Long taskId);
-
-    /**
-     * 执行订单结算任务
-     * 
-     * @param taskId
-     */
-    @PostMapping("/ibr/execute-order-settle-task")
-    void executeOrderSettleTask(@RequestParam("taskId") final Long taskId);
+    void executeTask(@RequestParam("taskId") final Long taskId);
 
 }

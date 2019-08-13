@@ -5,6 +5,7 @@ import java.util.List;
 import rebue.ibr.jo.IbrBuyRelationTaskJo;
 import rebue.ibr.mo.IbrBuyRelationTaskMo;
 import rebue.robotech.dic.TaskExecuteStateDic;
+import rebue.robotech.ro.Ro;
 import rebue.robotech.svc.BaseSvc;
 
 /**
@@ -24,24 +25,15 @@ public interface IbrBuyRelationTaskSvc extends BaseSvc<java.lang.Long, IbrBuyRel
     List<Long> getTaskIdsThatShouldExecute(TaskExecuteStateDic executeState);
 
     /**
-     * 
-     * 获取需要执行结算的任务ids集合
-     * 
-     * @param taskId
-     * @return
-     */
-    List<Long> getTaskIdsThatShouldSettleExecute(TaskExecuteStateDic executeState);
-
-    /**
-     * 执行匹配购买关系任务
+     * 执行任务
      * 
      * @param taskId
      */
-    void executeMatchTask(Long taskId);
+    void executeTask(Long taskId);
 
     /**
      * 执行订单结算任务
      */
-    void executeOrderSettleTask(Long taskId);
+    Ro executeOrderSettleTask(Long taskId);
 
 }

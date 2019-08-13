@@ -1,7 +1,6 @@
 package rebue.ibr.svc.impl;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -21,6 +20,7 @@ import rebue.ibr.mapper.IbrBuyRelationMapper;
 import rebue.ibr.mo.IbrBuyRelationMo;
 import rebue.ibr.svc.IbrBuyRelationSvc;
 import rebue.ibr.svc.IbrMatchSvc;
+import rebue.ibr.to.ImportOldDataTo;
 import rebue.ibr.to.MatchTo;
 import rebue.ord.mo.OrdOrderDetailMo;
 import rebue.ord.mo.OrdOrderMo;
@@ -68,6 +68,7 @@ public class IbrBuyRelationSvcImpl
             _log.error("添加购买关系失败,id(订单详情id)没有传进来");
             throw new IllegalArgumentException("添加购买关系失败");
         }
+
         return super.add(mo);
     }
 
@@ -87,13 +88,13 @@ public class IbrBuyRelationSvcImpl
      * 在指定的父节点下插入新节点
      *
      * @param parent
-     *                            父节点购买关系
+     *            父节点购买关系
      * @param buyerId
-     *                            买家ID
+     *            买家ID
      * @param paidNotifyTimestamp
-     *                            收到支付通知时的时间戳
+     *            收到支付通知时的时间戳
      * @param maxChildernCount
-     *                            最大子节点的数量，其实就是最多有多少个下家，目前规则是2家
+     *            最大子节点的数量，其实就是最多有多少个下家，目前规则是2家
      */
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
@@ -131,11 +132,11 @@ public class IbrBuyRelationSvcImpl
      * 获取买家最早未匹配满的购买节点
      *
      * @param groupId
-     *                         分组ID，其实就是销售价格*100
+     *            分组ID，其实就是销售价格*100
      * @param buyerId
-     *                         买家ID
+     *            买家ID
      * @param maxChildernCount
-     *                         最大子节点的数量，其实就是最多有多少个下家，目前规则是2家
+     *            最大子节点的数量，其实就是最多有多少个下家，目前规则是2家
      * @return 最早购买记录，如果没有则返回null
      */
     @Override
@@ -151,9 +152,9 @@ public class IbrBuyRelationSvcImpl
      * 获取最近邀请人的最早未匹配满的购买关系记录
      *
      * @param groupId
-     *                         分组ID，其实就是销售价格*100
+     *            分组ID，其实就是销售价格*100
      * @param maxChildernCount
-     *                         最大子节点的数量，其实就是最多有多少个下家，目前规则是2家
+     *            最大子节点的数量，其实就是最多有多少个下家，目前规则是2家
      * @return 最早购买记录，如果没有则返回null
      */
     @Override
@@ -169,9 +170,9 @@ public class IbrBuyRelationSvcImpl
      * 获取最早未匹配满的购买关系记录
      *
      * @param groupId
-     *                         分组ID，其实就是销售价格*100
+     *            分组ID，其实就是销售价格*100
      * @param maxChildernCount
-     *                         最大子节点的数量，其实就是最多有多少个下家，目前规则是2家
+     *            最大子节点的数量，其实就是最多有多少个下家，目前规则是2家
      * @return 最早购买记录，如果没有则返回null
      */
     @Override
@@ -238,7 +239,7 @@ public class IbrBuyRelationSvcImpl
             _log.info("5:匹配父节点");
             _log.info("当前节点 childrenNode-{}", childrenNode);
             OrdOrderDetailMo detailResult = ordOrderDetailSvc.getById(childrenNode.getId());
-            MatchTo          matchTo      = new MatchTo();
+            MatchTo matchTo = new MatchTo();
             matchTo.setOrderDetailId(detailResult.getId());
             matchTo.setMatchPrice(detailResult.getBuyPrice());
             matchTo.setBuyerId(detailResult.getUserId());
@@ -286,8 +287,8 @@ public class IbrBuyRelationSvcImpl
                 }
                 _log.info("6：增加节点数(调整幅度公式为：即将插入的节点数x2)");
 
-                int        movingCount = (int) (childrenNode.getRightValue() - childrenNode.getLeftValue() + 1);
-                final Long groupId     = matchTo.getMatchPrice().multiply(BigDecimal.valueOf(100)).longValueExact();
+                int movingCount = (int) (childrenNode.getRightValue() - childrenNode.getLeftValue() + 1);
+                final Long groupId = matchTo.getMatchPrice().multiply(BigDecimal.valueOf(100)).longValueExact();
                 changeRange = movingCount * -1;
                 _log.info("6-1:更新右值(加上增加的节点数量),更新幅度为负数 changeRange-{}", changeRange);
                 _mapper.updateRightValue(groupId, result.getParentNode().getRightValue(), changeRange, "DESC");
@@ -358,8 +359,8 @@ public class IbrBuyRelationSvcImpl
         _log.info("调用执行计算匹配的返回值为：result-{}", result);
         if (result.getResult() == ResultDic.SUCCESS && result.isFirst()) {
             _log.info("匹配结果为首单直接添加到分组的根节点 isFirst-{}", result.isFirst());
-            final Long             groupId = matchTo.getMatchPrice().multiply(BigDecimal.valueOf(100)).longValueExact();
-            final IbrBuyRelationMo mo      = new IbrBuyRelationMo();
+            final Long groupId = matchTo.getMatchPrice().multiply(BigDecimal.valueOf(100)).longValueExact();
+            final IbrBuyRelationMo mo = new IbrBuyRelationMo();
             mo.setId(matchTo.getOrderDetailId());
             mo.setGroupId(groupId);
             mo.setLeftValue(1L);
@@ -382,50 +383,128 @@ public class IbrBuyRelationSvcImpl
     }
 
     /**
-     * 到入旧的数据
-     * 1:检查是否是首单
-     * 2:获取应该被匹配到的父节点
-     * 3:插入节点
-     */
-    public void ImportOldData() {
-        Long              userId         = 0l;
-        Long              parentId       = 1l;
-        Long              childrenId     = 2l;
-        Long              groupId        = 3l;
-        Long              time           = new Date().getTime();
-        RelationSourceDic relationSource = RelationSourceDic.APPOINTED;
-
-        final IbrBuyRelationMo qo = new IbrBuyRelationMo();
-        qo.setGroupId(groupId);
-        qo.setIsMoving(false);
-        List<IbrBuyRelationMo> isfirstResult = super.list(qo);
-        if (isfirstResult.size() < 1) {
-            _log.info("首单不存在，当前订单详情是首单");
-            final IbrBuyRelationMo mo = new IbrBuyRelationMo();
-            mo.setId(childrenId);
-            mo.setGroupId(groupId);
-            mo.setLeftValue(1L);
-            mo.setRightValue(2L);
-            mo.setBuyerId(userId);
-            mo.setPaidNotifyTimestamp(time);
-
-        } else {
-            _log.info("首单已存在，当前订单详情不是首单");
-            _log.info("获取节点的参数 parentId-{}", parentId);
-            IbrBuyRelationMo parentNode = super.getById(parentId);
-            _log.info("获取节点的结果 parentNode-{}", parentNode);
-            insertNode(parentNode, userId, childrenId, time, relationSource, 2);
-        }
-
-    }
-
-    /**
      * 根据id或父id获取已结算购买关系的数量
      */
     @Override
     public int getCountByIdOrPId(Long id) {
         _log.info("id或父id -{}", id);
         return _mapper.getCountByIdOrPId(id);
+    }
+
+    /**
+     * 导入入旧的数据
+     * 1:检查是否是首单
+     * 2:获取应该被匹配到的父节点
+     * 3:插入节点
+     */
+    @Override
+    public Ro importOldData(ImportOldDataTo to) {
+
+        final IbrBuyRelationMo qo = new IbrBuyRelationMo();
+        final Long groupId = to.getGroupId().multiply(BigDecimal.valueOf(100)).longValueExact();
+        qo.setGroupId(groupId);
+        qo.setIsMoving(false);
+        if (!super.existSelective(qo)) {
+            _log.info("首单不存在，当前订单详情是首单");
+            final IbrBuyRelationMo mo = new IbrBuyRelationMo();
+            mo.setId(to.getParentNodeId());
+            mo.setGroupId(groupId);
+            mo.setLeftValue(1L);
+            mo.setRightValue(2L);
+            mo.setBuyerId(to.getUplineUserId());
+            mo.setPaidNotifyTimestamp(to.getPayTime());
+            // 还需要设置该条插入的是否已经结算，是否已经返佣
+            if (to.getIsCommission()) {
+                mo.setIsCommission(true);
+            }
+            if (to.getIsSettled()) {
+                mo.setIsSettled(true);
+            }
+            if (super.add(mo) != 1) {
+                final String msg = "添加首单失败";
+                throw new IllegalArgumentException(msg);
+            }
+
+        } else {
+            if (to.isFitst()) {
+                _log.info("是相同价格的树，需要合并");
+                if (super.getById(to.getParentNodeId()) == null) {
+                    _log.info("插入节点");
+                    // 3:调用执行匹配的方法
+                    MatchTo matchTo = new MatchTo();
+                    matchTo.setOrderDetailId(to.getParentNodeId());
+                    matchTo.setMatchPrice(to.getGroupId());
+                    matchTo.setBuyerId(to.getUplineUserId());
+                    matchTo.setPaidNotifyTimestamp(to.getPayTime());
+                    matchTo.setMaxChildernCount(2);
+                    matchTo.setMatchScheme(MatchSchemeDic.SELF);
+                    _log.info("调用执行计算匹配的参数为：matchTo-{}", matchTo);
+                    MatchRelationRo result = ibrMatchSvc.match(matchTo);
+                    _log.info("调用执行计算匹配的结果为：result-{}", result);
+
+                    insertNode(result.getParentNode(), to.getUplineUserId(), to.getParentNodeId(), to.getPayTime(),
+                            result.getSource(), 2);
+                } else {
+
+                    String msg = "节点已经存在";
+                    _log.info(msg);
+                    return new Ro(ResultDic.WARN, msg);
+                }
+
+                // 还需要修改该条插入的是否已经结算，是否已经返佣
+                if (to.getIsCommission() || to.getIsSettled()) {
+                    IbrBuyRelationMo modifyMo = new IbrBuyRelationMo();
+                    modifyMo.setId(to.getParentNodeId());
+                    if (to.getIsCommission()) {
+                        modifyMo.setIsCommission(true);
+                    }
+                    if (to.getIsSettled()) {
+                        modifyMo.setIsSettled(true);
+                    }
+                    _log.info("修改已返佣参数-modifyMo-{}", modifyMo);
+                    if (super.modify(modifyMo) != 1) {
+                        throw new IllegalArgumentException("修改已结算或已返佣失败");
+                    }
+                }
+
+            } else {
+                _log.info("首单已存在，当前订单详情不是首单");
+                _log.info("获取节点的参数 parentId-{}", to.getParentNodeId());
+                IbrBuyRelationMo parentNode = super.getById(to.getParentNodeId());
+                _log.info("获取节点的结果 parentNode-{}", parentNode);
+                // if (parentNode != null) {
+                if (super.getById(to.getChildrenNodeId()) == null) {
+                    _log.info("插入子节点");
+                    insertNode(parentNode, to.getDownlineUserId(), to.getChildrenNodeId(), to.getPayTime(),
+                            to.getRelationSource(), 2);
+                } else {
+                    String msg = "节点已经存在";
+                    _log.info(msg);
+                    return new Ro(ResultDic.WARN, msg);
+                }
+
+                // }
+                // 还需要修改该条插入的是否已经结算，是否已经返佣
+                if (to.getIsCommission() || to.getIsSettled()) {
+                    IbrBuyRelationMo modifyMo = new IbrBuyRelationMo();
+                    modifyMo.setId(to.getChildrenNodeId());
+                    if (to.getIsCommission()) {
+                        modifyMo.setIsCommission(true);
+                    }
+                    if (to.getIsSettled()) {
+                        modifyMo.setIsSettled(true);
+                    }
+                    _log.info("修改已返佣参数-modifyMo-{}", modifyMo);
+                    if (super.modify(modifyMo) != 1) {
+                        throw new IllegalArgumentException("修改已结算或已返佣失败");
+                    }
+                }
+            }
+
+        }
+
+        final String msg = "添加节点成功";
+        return new Ro(ResultDic.SUCCESS, msg);
     }
 
 }

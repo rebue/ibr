@@ -80,7 +80,4 @@ public interface IbrBuyRelationTaskMapper extends MybatisBaseMapper<IbrBuyRelati
     @Select("select ID from IBR_BUY_RELATION_TASK where EXECUTE_STATE= #{executeState} and EXECUTE_PLAN_TIME<=SYSDATE()  order by EXECUTE_PLAN_TIME  ")
     List<Long> getTaskIdsThatShouldExecute(@Param("executeState") Byte executeState);
 
-    @Select("select ID from IBR_BUY_RELATION_TASK where EXECUTE_STATE= #{executeState} and EXECUTE_PLAN_TIME<=SYSDATE() and TASK_TYPE in(2) order by EXECUTE_PLAN_TIME  ")
-    List<Long> getTaskIdsThatShouldSettleExecute(@Param("executeState") Byte executeState);
-
 }

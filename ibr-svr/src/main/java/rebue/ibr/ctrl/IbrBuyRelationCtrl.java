@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import rebue.ibr.mo.IbrBuyRelationMo;
 import rebue.ibr.svc.IbrBuyRelationSvc;
+import rebue.ibr.to.ImportOldDataTo;
 import rebue.robotech.dic.ResultDic;
 import rebue.robotech.ro.IdRo;
 import rebue.robotech.ro.Ro;
@@ -162,5 +163,10 @@ public class IbrBuyRelationCtrl {
     IbrBuyRelationMo getOne(@RequestBody final IbrBuyRelationMo mo) {
         _log.info(" getOne by mo: {}", mo);
         return svc.getOne(mo);
+    }
+
+    @PostMapping("/ibr/buy-relation-import-old-data")
+    Ro importOldData(@RequestBody ImportOldDataTo to) {
+        return svc.importOldData(to);
     }
 }

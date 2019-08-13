@@ -85,11 +85,6 @@ public class IbrBuyRelationTaskSvcImpl extends
         return _mapper.getTaskIdsThatShouldExecute((byte) executeState.getCode());
     }
 
-    @Override
-    public List<Long> getTaskIdsThatShouldSettleExecute(TaskExecuteStateDic executeState) {
-        return _mapper.getTaskIdsThatShouldSettleExecute((byte) executeState.getCode());
-    }
-
     /**
      * 执行匹配购买关系任务
      * 1: 将任务取出来
@@ -98,8 +93,13 @@ public class IbrBuyRelationTaskSvcImpl extends
      * 4：调用执行匹配的方法
      */
     @Override
-    public void executeMatchTask(Long taskId) {
+    public void executeTask(Long taskId) {
         Ro result;
+        if (taskId == null) {
+            final String msg = "参数不正确";
+            _log.error(msg);
+            throw new RuntimeException(msg);
+        }
         IbrBuyRelationTaskMo taskResult = super.getById(taskId);
         _log.info("当前执行的任务为 taskResult-{}", taskResult);
         if (taskResult == null) {
@@ -109,6 +109,9 @@ public class IbrBuyRelationTaskSvcImpl extends
         switch (taskResult.getTaskType()) {
         case 1:
             result = ibrBuyRelationSvc.executePaidNotifyMatchTask(taskResult.getOrderDetailId());
+            break;
+        case 2:
+            result = executeOrderSettleTask(taskId);
             break;
         case 3:
             result = ibrBuyRelationSvc.executeRefundAgainMatchTask(taskResult.getOrderDetailId());
@@ -139,13 +142,9 @@ public class IbrBuyRelationTaskSvcImpl extends
      * 订单结算任务
      */
     @Override
-    public void executeOrderSettleTask(Long taskId) {
+    public Ro executeOrderSettleTask(Long taskId) {
         // 1：将任务取出来
         IbrBuyRelationTaskMo taskResult = super.getById(taskId);
-        if (taskResult == null) {
-            _log.error("任务不存在 taskId-{}", taskId);
-            throw new IllegalArgumentException("任务不存在");
-        }
         if (TaskExecuteStateDic.DONE.getCode() == taskResult.getExecuteState()) {
             final String msg = "任务已被执行，不能取消";
             _log.error("{}-{}", msg, taskId);
@@ -162,17 +161,10 @@ public class IbrBuyRelationTaskSvcImpl extends
             _log.error("执行订单结算任务订单结算时出错", e);
             throw new RuntimeException("订单结算出错");
         }
-        _log.info("修改任务");
-        IbrBuyRelationTaskMo modifyTaskMo = new IbrBuyRelationTaskMo();
-        modifyTaskMo.setId(taskId);
-        modifyTaskMo.setExecuteFactTime(new Date());
-        modifyTaskMo.setExecuteState((byte) TaskExecuteStateDic.DONE.getCode());
-        _log.info("修改任务的参数为 modifyTaskMo-{}", modifyTaskMo);
-        if (super.modify(modifyTaskMo) != 1) {
-            _log.error("修改任务失败 modifyTaskMo-{}", modifyTaskMo);
-            throw new IllegalArgumentException("修改任务失败");
-        }
 
+        final String msg = "执行订单结算任务订单结算任务成功";
+        _log.info(msg);
+        return new Ro(ResultDic.SUCCESS, msg);
     }
 
 }
