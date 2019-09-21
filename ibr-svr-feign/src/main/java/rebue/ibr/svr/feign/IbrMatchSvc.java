@@ -8,7 +8,7 @@ import rebue.ibr.Ro.MatchRelationRo;
 import rebue.ibr.to.MatchTo;
 import rebue.sbs.feign.FeignConfig;
 
-@FeignClient(name = "ibr-svr", configuration = FeignConfig.class)
+@FeignClient(name = "ibr-svr", configuration = FeignConfig.class, contextId = "ibr-svr-match")
 public interface IbrMatchSvc {
 
     /**

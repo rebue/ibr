@@ -13,7 +13,7 @@ import rebue.ibr.to.ImportOldDataTo;
 import rebue.robotech.ro.Ro;
 import rebue.sbs.feign.FeignConfig;
 
-@FeignClient(name = "ibr-svr", configuration = FeignConfig.class)
+@FeignClient(name = "ibr-svr", configuration = FeignConfig.class, contextId = "ibr-svr-buy-relation")
 public interface IbrBuyRelationSvc {
 
     /**

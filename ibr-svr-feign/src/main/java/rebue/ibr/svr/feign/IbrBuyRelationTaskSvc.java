@@ -13,7 +13,7 @@ import rebue.robotech.dic.TaskExecuteStateDic;
 import rebue.robotech.ro.IdRo;
 import rebue.sbs.feign.FeignConfig;
 
-@FeignClient(name = "ibr-svr", configuration = FeignConfig.class)
+@FeignClient(name = "ibr-svr", configuration = FeignConfig.class, contextId = "ibr-svr-buy-relation-task")
 public interface IbrBuyRelationTaskSvc {
 
     /**

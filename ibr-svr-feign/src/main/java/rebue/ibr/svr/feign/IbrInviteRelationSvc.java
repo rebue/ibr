@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import rebue.ibr.mo.IbrInviteRelationMo;
 import rebue.sbs.feign.FeignConfig;
 
-@FeignClient(name = "ibr-svr", configuration = FeignConfig.class)
+@FeignClient(name = "ibr-svr", configuration = FeignConfig.class, contextId = "ibr-svr-invite-relation")
 public interface IbrInviteRelationSvc {
 
     /**
